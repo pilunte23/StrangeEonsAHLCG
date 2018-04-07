@@ -1,0 +1,31 @@
+AHLCG-Event-Default-template = ArkhamHorrorLCG/templates/AHLCG-Event-G.jp2
+AHLCG-EventBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-PlayerBack.jp2
+
+AHLCG-Event-Label-region = 21,60,36,14
+AHLCG-Event-Label-alignment = center, middle
+AHLCG-Event-Label-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 4.7; WEIGHT: WEIGHT_BOLD; WIDTH: 0.92; FOREGROUND: #000000
+
+AHLCG-Event-Name-region = 40,304,297,29
+
+AHLCG-Event-Subtype-region = 86,331,203,15
+AHLCG-Event-Subtype-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 5.5; WEIGHT: WEIGHT_BOLD; WIDTH: 0.94; FOREGROUND: #000000
+AHLCG-Event-Subtype-alignment = center, middle
+
+AHLCG-Event-Level-region = 14,35,49,23
+
+AHLCG-Event-Body-region = 44,334,288,158
+AHLCG-Event-WeaknessBody-region = 44,349,288,143
+AHLCG-Event-Body-alignment = left
+AHLCG-Event-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 8.2; WEIGHT: WEIGHT_MEDIUM; WIDTH: 0.97; FOREGROUND: #000000
+
+AHLCG-Event-Portrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+AHLCG-Event-Portrait-portrait-pany = 0
+
+AHLCG-Event-Portrait-portrait-clip-region = 0,0,375,288
+
+AHLCG-Event-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-Event-Collection-portrait-pany = 0
+
+AHLCG-Event-Collection-portrait-clip-region = 320,510,13,13
+
+AHLCG-Event-Dash-tint = 0.0, 0.0, 1.0

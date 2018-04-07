@@ -1,0 +1,6 @@
+
+AHLCG-BackPortrait-Default-template = ArkhamHorrorLCG/templates/AHLCG-Scenario.jp2
+
+AHLCG-BackPortrait-BackPortrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+AHLCG-BackPortrait-BackPortrait-portrait-pany = 0
+AHLCG-BackPortrait-BackPortrait-portrait-clip-region = 0,0,375,525

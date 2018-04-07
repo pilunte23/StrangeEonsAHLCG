@@ -1,0 +1,14 @@
+AHLCG-MiniInvestigator-Default-template = ArkhamHorrorLCG/templates/AHLCG-MiniInvestigator.jp2
+AHLCG-MiniInvestigatorBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-MiniInvestigator.jp2
+
+AHLCG-MiniInvestigator-Portrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+
+AHLCG-MiniInvestigator-Portrait-portrait-pany = 0
+AHLCG-MiniInvestigator-Portrait-portrait-panx = 0
+AHLCG-MiniInvestigator-Portrait-portrait-clip-region = 0,0,244,375
+
+AHLCG-MiniInvestigator-GreyscalePortrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+
+AHLCG-MiniInvestigator-GreyscalePortrait-portrait-pany = 0
+AHLCG-MiniInvestigator-GreyscalePortrait-portrait-panx = 0
+AHLCG-MiniInvestigator-GreyscalePortrait-portrait-clip-region = 0,0,244,375
