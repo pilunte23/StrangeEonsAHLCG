@@ -649,7 +649,7 @@ function layoutWeaknessStats( bindings, faceIndex ) {
 	return StatPanel;
 }
 
-function layoutBackTypeStats( bindings, faceIndex ) {
+function layoutBackTypeStats( diy, bindings, faceIndex ) {
 	var StatsPanel = new Grid();
 	StatsPanel.setTitle( @AHLCG-BasicData );
 
@@ -659,10 +659,10 @@ function layoutBackTypeStats( bindings, faceIndex ) {
 	BackList.addActionListener( function updateShape( actionEvent ) {
 		try {
 			if ( (String)(BackList.getSelectedItem()) == 'Player' ) {
-				$AHLCG-AssetStoryBack-Default-template = 'ArkhamHorrorLCG/templates/AHLCG-PlayerBack.jp2';				
+				diy.settings.set( 'AHLCG-' + CardTypes[1] + '-Default-template', 'ArkhamHorrorLCG/templates/AHLCG-PlayerBack.jp2' );
 			}
 			else {
-				$AHLCG-AssetStoryBack-Default-template = 'ArkhamHorrorLCG/templates/AHLCG-EncounterBack.jp2';
+				diy.settings.set( 'AHLCG-' + CardTypes[1] + '-Default-template', 'ArkhamHorrorLCG/templates/AHLCG-EncounterBack.jp2' );
 			}
 		} catch (ex) {
 			Error.handleUncaught( ex );
@@ -1088,10 +1088,11 @@ function layoutPortraitsWithPanels( diy, bindings, frontPortrait, backPortrait, 
 		
 		resultArray.push( frontPortraitImagePanel );
 	}
-	if ( backPortrait != null && backPortrait.length > 0 ) {
+//	if ( backPortrait != null && backPortrait.length > 0 ) {
+	if ( backNeeded ) {
 		let backPortraitImagePanel = null;
-		if ( frontNeeded ) backPortraitImagePanel = new portraitPanel( diy, getPortraitIndex( backPortrait ), @AHLCG-Portrait + " : " + @AHLCG-Back );
-		backPortraitImagePanel = new portraitPanel( diy, getPortraitIndex( backPortrait ), @AHLCG-Portrait );
+		if ( frontNeeded ) backPortraitImagePanel = new portraitPanel( diy, getPortraitIndex( backPortrait ), @AHLCG-Portrait + ' : ' + @AHLCG-Back );
+		else backPortraitImagePanel = new portraitPanel( diy, getPortraitIndex( backPortrait ), @AHLCG-Portrait );
 
 		let backMirrorButton = null;
 		if (mirror) backMirrorButton = createPortraitMirrorButton( backPortrait, backPortraitImagePanel );

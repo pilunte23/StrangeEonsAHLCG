@@ -17,6 +17,7 @@
     @AHLCG-TreacheryEncounter = diy:ArkhamHorrorLCG/diy/Treachery.js | ArkhamHorrorLCG/icons/AHLCG-Treachery.png | AHLCG
     @AHLCG-TreacheryWeakness = diy:ArkhamHorrorLCG/diy/WeaknessTreachery.js | ArkhamHorrorLCG/icons/AHLCG-Weakness.png | AHLCG
     @AHLCG-TreacheryPortrait = diy:ArkhamHorrorLCG/diy/TreacheryPortrait.js | ArkhamHorrorLCG/icons/AHLCG-Treachery.png | AHLCG
+    @AHLCG-TreacheryStory = diy:ArkhamHorrorLCG/diy/TreacheryStory.js | ArkhamHorrorLCG/icons/AHLCG-Treachery.png | AHLCG
    
  @cat-enemies
     @AHLCG-EnemyEncounter = diy:ArkhamHorrorLCG/diy/Enemy.js | ArkhamHorrorLCG/icons/AHLCG-Enemy.png | AHLCG

@@ -60,7 +60,7 @@ function createInterface( diy, editor ) {
 	TextTab.editorTabScrolling = true;
 	TextTab.addToEditor( editor, @AHLCG-Rules );
 
-	PortraitTab = layoutPortraits( diy, bindings, 'Portrait', null, true, false );
+	PortraitTab = layoutPortraits( diy, bindings, 'Portrait', null, true, false, false );
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
 
 	var CollectionImagePanel = new portraitPanel( diy, getPortraitIndex( 'Collection' ), @AHLCG-CustomCollection );

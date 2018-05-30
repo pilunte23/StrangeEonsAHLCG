@@ -67,7 +67,7 @@ function createInterface( diy, editor ) {
 	var TitlePanel = layoutTitleUnique( diy, bindings, true, [0], FACE_FRONT );
 	var StatsPanel = layoutAssetStoryStats( bindings, FACE_FRONT );
 	StatsPanel.setTitle( @AHLCG-BasicData + ': ' + @AHLCG-Front );
-	var BackStatPanel = layoutBackTypeStats( bindings, FACE_BACK );
+	var BackStatPanel = layoutBackTypeStats( diy, bindings, FACE_BACK );
 	BackStatPanel.setTitle( @AHLCG-BasicData + ': ' + @AHLCG-Back );
 	var CopyrightPanel = layoutCopyright( bindings, [0], FACE_FRONT );
 

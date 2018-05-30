@@ -54,8 +54,13 @@ function drawGuideTemplate( g, sheet  ) {
 		// overlay header for supported languages
 		var locale = getLocale();
 
-		if ( locale == 'it' ) {
-			sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Guide75Title-' + locale + '.png'), new Region(172, 147, 783, 130) );
+		switch ( locale ) {
+			case 'fr':
+				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Guide75Title-' + locale + '.png'), new Region(187, 51, 750, 227) );
+				break;
+			case 'it':
+				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Guide75Title-' + locale + '.png'), new Region(172, 147, 783, 130) );
+				break;
 		}
 	}
 }
@@ -1058,6 +1063,13 @@ function drawCollectionIcon( g, diy, sheet ) {
 	}
 }
 
+function drawBasicWeaknessIcon( g, diy, sheet, overlayName ) {
+	var faceIndex = sheet.getSheetIndex();
+
+	sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-BasicWeakness.png'), 
+		diy.settings.getRegion( getExpandedKey( faceIndex, 'BasicWeaknessIcon-region' ) ) );
+}
+
 function drawOverlay( g, diy, sheet, overlayName ) {
 	var faceIndex = sheet.getSheetIndex();
 
@@ -1312,7 +1324,7 @@ function drawScenarioIndexBack( g, diy, sheet, typeText, textBox ) {
 	var text = $ScenarioIndex;
 
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'ScenarioIndex-region' ) );
-	
+//	println('Region : ' + region );
 	var lineHeight = region.height / 2;
 	
 	// first line

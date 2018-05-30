@@ -26,8 +26,15 @@ AHLCG-WeaknessTreachery-Copyright-style = FAMILY: {Eons.namedObjects.AHLCGObject
 AHLCG-WeaknessTreachery-Copyright-alignment = center
 
 AHLCG-WeaknessTreachery-BasicWeakness-region = 156,243,66,41
+AHLCG-WeaknessTreachery-BasicWeaknessIcon-region = 175,253,28,28
 
 AHLCG-WeaknessTreachery-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-WeaknessTreachery-Collection-portrait-pany = 0
 
 AHLCG-WeaknessTreachery-Collection-portrait-clip-region = 320,510,13,13
+
+AHLCG-WeaknessTreachery-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-WeaknessTreachery-Encounter-portrait-pany = 0
+
+AHLCG-WeaknessTreachery-Encounter-portrait-clip-region = 175,254,28,28
+

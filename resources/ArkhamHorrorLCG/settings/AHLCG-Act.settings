@@ -65,7 +65,7 @@ AHLCG-Act-ScenarioIndex-region = 67,5,134,21
 AHLCG-Act-ScenarioIndex-alignment = center, middle
 AHLCG-Act-ScenarioIndex-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 6.5; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
 
-AHLCG-ActBack-ScenarioIndex-region = 21,34,45,15
+AHLCG-ActBack-ScenarioIndex-region = 22,30,45,16
 AHLCG-ActBack-ScenarioIndex-alignment = center
 AHLCG-ActBack-ScenarioIndex-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 4.4; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
 AHLCG-ActBack-ScenarioIndex-tightness = 0.1

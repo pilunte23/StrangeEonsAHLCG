@@ -1,5 +1,6 @@
 AHLCG-Treachery-Default-template = ArkhamHorrorLCG/templates/AHLCG-Treachery.jp2
 AHLCG-TreacheryBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-EncounterBack.jp2
+AHLCG-TreacheryStoryBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-PlayerBack.jp2
 
 AHLCG-Treachery-Label-region = 137,284,104,14
 AHLCG-Treachery-Label-alignment = center, middle

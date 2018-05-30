@@ -147,6 +147,7 @@ function paintFront( g, diy, sheet ) {
 
 	if ( $Subtype == 'BasicWeakness' ) {
 		drawOverlay( g, diy, sheet, 'BasicWeaknessEnemy' );
+		drawBasicWeaknessIcon( g, diy, sheet );
 		
 		subtypeText = #AHLCG-Label-BasicWeakness;
 	}

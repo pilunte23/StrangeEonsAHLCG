@@ -8,7 +8,7 @@ importClass( arkham.component.DefaultPortrait );
 
 const CardTypes = [ 'Investigator', 'InvestigatorBack' ];
 const BindingSuffixes = [ '', 'Back' ];
-const PortraitTypeList = [ 'TransparentPortrait-Front', 'Portrait-Back', 'Collection-Front' ];
+const PortraitTypeList = [ 'TransparentPortrait-Both', 'Portrait-Back', 'Collection-Front' ];
 
 function create( diy ) {
 	diy.frontTemplateKey = getExpandedKey( FACE_FRONT, 'Default', '-template' );	// not used, set card size
@@ -189,12 +189,14 @@ function paintFront( g, diy, sheet ) {
 function paintBack( g, diy, sheet ) {
 	clearImage( g, sheet );
 
-	if ( $PortraitShare == '1' ) {
-		PortraitList[getPortraitIndex( 'TransparentPortrait' )].paint( g, sheet.getRenderTarget() );
-	}
-	else {
+//	if ( $PortraitShare == '1' ) {
+//		PortraitList[getPortraitIndex( 'Portrait' )].setImage( PortraitList[getPortraitIndex( 'TransparentPortrait' )].getSource(), PortraitList[getPortraitIndex( 'TransparentPortrait' )].getImage() );
+//		PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
+//		PortraitList[getPortraitIndex( 'TransparentPortrait' )].paint( g, sheet.getRenderTarget() );
+//	}
+//	else {
 		PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
-	}
+//	}
 //	PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
 
 	drawTemplate( g, sheet, $CardClass );

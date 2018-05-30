@@ -6,14 +6,14 @@ useLibrary( 'fontutils' );
 
 importClass( arkham.component.DefaultPortrait );
 
-const CardTypes = [ 'WeaknessTreachery', 'WeaknessTreacheryBack' ];
+const CardTypes = [ 'WeaknessTreachery', 'TreacheryStoryBack' ];
 const BindingSuffixes = [ '' ];
 
-const PortraitTypeList = [ 'Portrait-Front', 'Collection-Front' ];
+const PortraitTypeList = [ 'Portrait-Front', 'Collection-Front', 'Encounter-Front' ];
 
 function create( diy ) {
-	diy.frontTemplateKey = getExpandedKey(FACE_FRONT, 'Default', '-template');	// not used, set card size
-	diy.backTemplateKey = getExpandedKey(FACE_BACK, 'Default', '-template');
+	diy.frontTemplateKey = getExpandedKey( FACE_FRONT, 'Default', '-template' );	// not used, set card size
+	diy.backTemplateKey = getExpandedKey( FACE_BACK, 'Default', '-template' );
 
 	diy.faceStyle = FaceStyle.PLAIN_BACK;
 
@@ -21,14 +21,15 @@ function create( diy ) {
 
 	setDefaults();
 	createPortraits( diy, PortraitTypeList );
+	setDefaultEncounter();
 	setDefaultCollection();
-
+	
 	diy.version = 5;
 }
 
 function setDefaults() {
-	$Subtype = 'BasicWeakness';
-	
+	$BackTypeBack = 'Player';
+
 	$Traits = '';
 	$Keywords = '';
 	$Rules = '';
@@ -50,12 +51,14 @@ function createInterface( diy, editor ) {
 	var bindings = new Bindings( editor, diy );
 
 	var TitlePanel = layoutTitle( diy, bindings, false, [0], FACE_FRONT );
-	var StatPanel = layoutWeaknessStats( bindings, FACE_FRONT );
+//	var BackStatPanel = layoutBackTypeStats( diy, bindings, FACE_BACK );
+//	BackStatPanel.setTitle( @AHLCG-BasicData + ': ' + @AHLCG-Back );
 	var CopyrightPanel = layoutCopyright( bindings, [0], FACE_FRONT );
-	
+
 	var StatisticsTab = new Grid();
 	StatisticsTab.editorTabScrolling = true;
-	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', StatPanel, 'wrap, pushx, growx', CopyrightPanel, 'wrap, pushx, growx' );
+//	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', BackStatPanel, 'wrap, pushx, growx', CopyrightPanel, 'wrap, pushx, growx' );
+	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', CopyrightPanel, 'wrap, pushx, growx' );
 	StatisticsTab.addToEditor( editor , @AHLCG-General );
 	
 	var TextTab = layoutText( bindings, [ 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ], '', FACE_FRONT );
@@ -73,6 +76,14 @@ function createInterface( diy, editor ) {
 	CollectionTab.place( CollectionPanel, 'wrap, pushx, growx', CollectionImagePanel, 'wrap, pushx, growx' );
 	CollectionTab.addToEditor(editor, @AHLCG-Collection);
 
+	var EncounterImagePanel = new portraitPanel( diy, getPortraitIndex( 'Encounter' ), @AHLCG-CustomEncounterSet );
+	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, true, false, [0, 1], [0], FACE_FRONT );
+	
+	var EncounterTab = new Grid();
+	EncounterTab.editorTabScrolling = true;
+	EncounterTab.place( EncounterPanel, 'wrap, pushx, growx', EncounterImagePanel, 'wrap, pushx, growx' );
+	EncounterTab.addToEditor(editor, @AHLCG-EncounterSet);
+
 	bindings.bind();
 }
 
@@ -82,8 +93,8 @@ function createFrontPainter( diy, sheet ) {
 	Label_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Label-alignment'));
 
 	Name_box = markupBox(sheet);
-	Name_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Name-style'), null);
-	Name_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Name-alignment'));
+	Name_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Name-style'), null);
+	Name_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'Name-alignment'));
 
 	Subtype_box = markupBox(sheet);
 	Subtype_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Subtype-style'), null);
@@ -97,18 +108,22 @@ function createFrontPainter( diy, sheet ) {
 	initBodyTags( diy, Body_box );	
 	
 	Artist_box = markupBox(sheet);
-	Artist_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Artist-style'), null);
-	Artist_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Artist-alignment'));
+	Artist_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Artist-style'), null);
+	Artist_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'Artist-alignment'));
 
 	Copyright_box = markupBox(sheet);
-	Copyright_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Copyright-style'), null);
-	Copyright_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Copyright-alignment'));
-
+	Copyright_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Copyright-style'), null);
+	Copyright_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'Copyright-alignment'));
+ 
 	initCopyrightTags( diy, Copyright_box );	
 
 	Collection_box = markupBox(sheet);
-	Collection_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'CollectionNumber-style'), null);
-	Collection_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'CollectionNumber-alignment'));
+	Collection_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'CollectionNumber-style'), null);
+	Collection_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'CollectionNumber-alignment'));
+
+	Encounter_box = markupBox(sheet);
+	Encounter_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'EncounterNumber-style'), null);
+	Encounter_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'EncounterNumber-alignment'));
 }
 
 function createBackPainter( diy, sheet ) {
@@ -133,13 +148,6 @@ function paintFront( g, diy, sheet ) {
 
 	var subtypeText = #AHLCG-Label-Weakness;
 
-	if ( $Subtype == 'BasicWeakness' ) {
-		drawOverlay( g, diy, sheet, 'BasicWeakness' );
-		drawBasicWeaknessIcon( g, diy, sheet );
-		
-		subtypeText = #AHLCG-Label-BasicWeakness;
-	}
-
 	Subtype_box.markupText = subtypeText.toUpperCase();
 	Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
 
@@ -150,6 +158,9 @@ function paintFront( g, diy, sheet ) {
 	
 	drawCollectionIcon( g, diy, sheet );
 	drawCollectionNumber (g, diy, sheet, false );
+
+	drawEncounterIcon( g, diy, sheet );	
+	drawEncounterInfo( g, diy, sheet );
 }
 
 function paintBack( g, diy, sheet ) {
@@ -158,7 +169,7 @@ function paintBack( g, diy, sheet ) {
 }
 
 function onClear() {
-	setDefaults();	
+	setDefaults();
 }
 
 // These can be used to perform special processing during open/save.
@@ -168,7 +179,8 @@ function onRead(diy, oos) {
 	readPortraits( diy, oos, PortraitTypeList );
 
 	updateCollection();
-	
+	updateEncounter();
+
 	diy.version = 5;
 }
 
