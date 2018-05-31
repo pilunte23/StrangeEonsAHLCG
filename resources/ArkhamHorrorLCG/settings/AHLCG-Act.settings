@@ -17,7 +17,7 @@ AHLCG-ActBack-Header-tightness = 0.85
 
 AHLCG-ActBack-Story-region = 127,38,355,310
 AHLCG-ActBack-Story-alignment = left
-AHLCG-ActBack-Story-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 8; WIDTH: 0.93; POSTURE: OBLIQUE
+AHLCG-ActBack-Story-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 8; WIDTH: 0.93; POSTURE: OBLIQUE; FOREGROUND: #000000
 AHLCG-ActBack-Story-tightness = 0.85
 
 AHLCG-ActBack-Body-region = 112,38,370,310
