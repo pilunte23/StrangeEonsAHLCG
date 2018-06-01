@@ -151,6 +151,8 @@ function paintFront( g, diy, sheet ) {
 	Subtype_box.markupText = subtypeText.toUpperCase();
 	Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
 
+	drawOverlay( g, diy, sheet, 'BasicWeakness' );
+
 	drawBody( g, diy, sheet, Body_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ) );
 
 	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
