@@ -1032,7 +1032,8 @@ function drawEncounterIcon( g, diy, sheet ) {
 		sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-' + iconName + '.png'), region );		
 	}
 	// custom
-	else {	
+	else {
+		// [0] because that is the type the portrait is reading its setting from
 		diy.settings.setRegion( 'AHLCG-' + CardTypes[0] + '-Encounter-portrait-clip-region', region );
 		PortraitList[getPortraitIndex( 'Encounter' )].paint( g, sheet.getRenderTarget() );
 	}
@@ -1047,7 +1048,8 @@ function drawCollectionIcon( g, diy, sheet ) {
 	let region = diy.settings.getRegion( getExpandedKey( faceIndex, 'DefaultCollection-portrait-clip-region' ),
 		// default - if no DefaultCollection defined, use normal Collection
 		diy.settings.getRegion( getExpandedKey( faceIndex, 'Collection-portrait-clip-region' ) ) );
-	if ( $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );	
+
+	if ( faceIndex == FACE_FRONT && $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );	
 	
 	// resource
 	if ( $CollectionType == '0' ) {
@@ -1057,8 +1059,8 @@ function drawCollectionIcon( g, diy, sheet ) {
 	}
 	// custom
 	else {
+		// [0] because that is the type the portrait is reading its setting from
 		diy.settings.setRegion( 'AHLCG-' + CardTypes[0] + '-Collection-portrait-clip-region', region );
-		
 		PortraitList[getPortraitIndex( 'Collection' )].paint( g, sheet.getRenderTarget() );
 	}
 }

@@ -29,10 +29,12 @@ AHLCG-AssetStory-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.
 AHLCG-AssetStory-Collection-portrait-pany = 0
 
 AHLCG-AssetStory-Collection-portrait-clip-region = 320,510,13,13
+AHLCG-AssetStory-DefaultCollection-portrait-clip-region = 320,510,13,13
 
 AHLCG-AssetStory-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-AssetStory-Encounter-portrait-pany = 0
 
 AHLCG-AssetStory-Encounter-portrait-clip-region = 331,10,28,28
+AHLCG-AssetStory-DefaultEncounter-portrait-clip-region = 331,10,28,28
 
 AHLCG-AssetStory-Dash-tint = 0.0, 0.0, 1.0

@@ -38,5 +38,6 @@ AHLCG-Story-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Story-Encounter-portrait-pany = 0
 
 AHLCG-Story-Encounter-portrait-clip-region = 308,27,36,36
+AHLCG-Story-DefaultEncounter-portrait-clip-region = 308,27,36,36
 
 AHLCG-Story-Dash-tint = 38.0, 0.14, 1.0

@@ -738,6 +738,10 @@ function createPortrait( diy, fullKey ) {
 			fillBackground = true;
 			allowRotation = true;
 			break;
+		case 'TransparentPortrait':
+			fillBackground = false;
+			allowRotation = false;
+			break;
 		case 'Portrait1':
 		case 'Portrait2':
 			fillBackground = false;
@@ -1358,10 +1362,16 @@ const createAlphaInvertedImage = filterFunction(
 function createStencilImage( source, mask )
 {
 	var stencilImage = ImageUtils.resize( ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-' + mask + 'Mask.png'), source.width, source.height );
-	var filter = new ca.cgjennings.graphics.filters.StencilFilter( stencilImage );
+//	var filter = new ca.cgjennings.graphics.filters.StencilFilter( stencilImage );
 
-	var destImage = ImageUtils.resize( stencilImage, source.width, source.height );
-	filter.filter( source, destImage );
+//	var destImage = ImageUtils.resize( stencilImage, source.width, source.height );
+	var destImage = ImageUtils.create( source.width, source.height, true );
+	g = destImage.createGraphics();
+	g.drawImage( stencilImage, 0, 0, null );
+	g.setComposite( java.awt.AlphaComposite.SrcIn );
+	g.drawImage( source, 0, 0, null );
+	g.dispose();
+
 	return destImage;
 }
 
