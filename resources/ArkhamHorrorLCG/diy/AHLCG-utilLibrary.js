@@ -52,7 +52,6 @@ function readPortraits( diy, oos, typeList ) {
 
 		// update base keys for newer versions...	
 		let key = PortraitList[index].getBaseKey();
-
 		let searchKey = '';
 		let replaceKey = '';
 		
@@ -97,7 +96,7 @@ function readPortraits( diy, oos, typeList ) {
 }
 
 function writePortraits( oos, typeList ) {
-	for ( let index = 0; index < PortraitTypeList.length; index++) {
+	for ( let index = 0; index < typeList.length; index++) {
 		oos.writeObject( getPortrait( index ) );
 	}
 }
@@ -807,7 +806,7 @@ function createPortrait( diy, fullKey ) {
 */
 	setPortraitDefaults( diy, settingsFace, key, portraitKey );
 	if ( faces == 'Both' ) 	setPortraitDefaults( diy, FACE_BACK, key, portraitKey );
-
+/*
 	if ( key == 'Portrait1' ) {
 		PortraitList[portraitIndex] = new JavaAdapter(
 			ca.cgjennings.apps.arkham.component.DefaultPortrait,
@@ -859,8 +858,9 @@ function createPortrait( diy, fullKey ) {
 		);	
 	}
 	else {
+*/
 		PortraitList[portraitIndex] = new DefaultPortrait( diy, getExpandedKey( settingsFace, portraitKey, '-portrait-template' ), allowRotation );
-	}
+//	}
 	
 	PortraitList[portraitIndex].facesToUpdate = facesArray;
 	PortraitList[portraitIndex].backgroundFilled = fillBackground;
@@ -889,7 +889,6 @@ function createPortraits( diy, portraitKeys ) {
 
 function getGuidePortraitRegion( diy, position ) {
 	var region = null;
-	
 	var bodyWidth = diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ).width;
 	var pageHeight = diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ).height;
 	var bodyHeight = diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'BodyLeft' + $PageType + '-region') ).height;

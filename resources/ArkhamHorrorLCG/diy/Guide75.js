@@ -131,26 +131,13 @@ function onClear() {
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	if ( diy.version < 2 ) {
-		$PageType = 'Title';
-		$PageTypeBack = 'Title';
+	readPortraits( diy, oos, PortraitTypeList );
 
-		$Artist = '';
-		$ArtistBack = '';
-	}
-	
-	if ( $PageType == 'Portrait' ) PortraitList[0] = oos.readObject();
-	else createPortrait( diy, PortraitTypeList[0] );
-	
-	if ( $PageTypeBack == 'Portrait' ) PortraitList[1] = oos.readObject();
-	else createPortrait( diy, PortraitTypeList[1] );
-	
 	diy.version = 5;
 }
 
 function onWrite( diy, oos ) {
-	if ( $PageType == 'Portrait' ) oos.writeObject( getPortrait(0) );
-	if ( $PageTypeBack == 'Portrait' ) oos.writeObject( getPortrait(1) );
+	writePortraits( oos, PortraitTypeList );
 }
 
 // This is part of the diy library; calling it from within a

@@ -87,17 +87,36 @@ function layoutTitleGuide( diy, bindings, updateFaces, bindingFaceIndex, portrai
 	// update portrait pan/scale, stencil
 	TypeList.addActionListener( function updatePosition( actionEvent ) {
 		try {
-			// have to do this now or the computes won't work
-			diy.settings.set( 'PageType' + BindingSuffixes[bindingFaceIndex], (String)(TypeList.getSelectedItem()) );
+			// test is primarily to keep the region from resetting during loading
+			if ( (String)(TypeList.getSelectedItem()) != $( 'PageType' + BindingSuffixes[bindingFaceIndex] ) ) {
+				// have to do this now or the computes won't work
+				diy.settings.set( 'PageType' + BindingSuffixes[bindingFaceIndex], (String)(TypeList.getSelectedItem()) );
 
-			for ( let i = 0; i < portraitPanels.length; i++) {
-				let portrait = portraitPanels[i].portrait;
-				let image = portrait.getImage();
+				for ( let i = 0; i < portraitPanels.length; i++) {
+					let region = getGuidePortraitRegion( diy, (String)($( 'PositionPortrait'+ (i+1) )) );
+					let portrait = portraitPanels[i].portrait;
+					let image = portrait.getImage();
+
+					if ( region == null ) {
+						portrait.pan = Point2D.Float( 0, 0 );
+						portrait.scale = 1.0;
+					}
+					else {
+						let image = portrait.image;
+			
+						let clipDimension = portrait.getClipDimensions();
+					
+						let coveringScale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
+
+						portrait.pan = Point2D.Float( region.x + (region.width - clipDimension.width) / 2, region.y + (region.height - clipDimension.height) / 2 );					
+						portrait.scale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
+						portrait.scale = coveringScale;
 				
-				portrait.pan = portrait.computeDefaultImagePan( image );
-				portrait.scale = portrait.computeDefaultImageScale( image );
+						portraitPanels[i].portrait = portrait;
+					}
 				
-				portraitPanels[i].portrait = portrait;
+					portraitPanels[i].portrait = portrait;
+				}
 			}
 			
 			createPortraitStencil( diy, PortraitList[0], portraitPanels[0], $PositionPortrait1, (String)(TypeList.getSelectedItem()) );
@@ -154,11 +173,25 @@ function layoutActStats( diy, bindings, faceIndex, portraitPanels ) {
 			let portrait = portraitPanels[index].portrait;
 			
 			let region = diy.settings.getRegion( 'AHLCG-Act-DefaultPortrait-portrait-clip-region',
-				// default - if no PortraitCollection defined, use normal Portrait
+				// default - if no DefaultPortrait defined, use normal Portrait
 				diy.settings.getRegion( 'AHLCG-Act-Portrait-portrait-clip-region') );
 			if ( orientationSetting == 'Reversed' ) region = reverseRegion( region );
 			
 			diy.settings.setRegion( 'AHLCG-Act-Portrait-portrait-clip-region', region );
+
+			region = diy.settings.getRegion( 'AHLCG-Act-DefaultEncounter-portrait-clip-region',
+				// default - if no DefaultPortrait defined, use normal Portrait
+				diy.settings.getRegion( 'AHLCG-Act-Encounter-portrait-clip-region') );
+			if ( orientationSetting == 'Reversed' ) region = reverseRegion( region );
+			
+			diy.settings.setRegion( 'AHLCG-Act-Encounter-portrait-clip-region', region );
+
+			region = diy.settings.getRegion( 'AHLCG-Act-DefaultCollection-portrait-clip-region',
+				// default - if no DefaultPortrait defined, use normal Portrait
+				diy.settings.getRegion( 'AHLCG-Act-Collection-portrait-clip-region') );
+			if ( orientationSetting == 'Reversed' ) region = shiftRegion( region, CardTypes[FACE_FRONT] );
+			
+			diy.settings.setRegion( 'AHLCG-Act-Collection-portrait-clip-region', region );
 				
 //			portraitPanels[index].portrait = portrait;
 		} catch ( ex if ex instanceof ReferenceError ) {
@@ -215,11 +248,7 @@ function layoutAgendaStats( diy, bindings, faceIndex, portraitPanels ) {
 			let region = diy.settings.getRegion( 'AHLCG-Agenda-DefaultPortrait-portrait-clip-region',
 				// default - if no PortraitCollection defined, use normal Portrait
 				diy.settings.getRegion( 'AHLCG-Agenda-Portrait-portrait-clip-region') );
-			if ( orientationSetting == 'Reversed' ) region = reverseRegion( region );
-			
-			diy.settings.setRegion( 'AHLCG-Agenda-Portrait-portrait-clip-region', region );
-				
-//			portraitPanels[index].portrait = portrait;
+			if ( orientationSetting == 'Reversed' ) region = reverseRegion( region );			
 		} catch ( ex if ex instanceof ReferenceError ) {
 			// means Body_box has not been created yet (during createInterface)
 			// we can safely ignore this
@@ -1008,31 +1037,33 @@ function layoutGuidePortraitOptions( diy, bindings, faces, bindingFaceIndex, por
 	var PositionList = new comboBox( list, null );
 	bindings.add( 'Position' + portraitName + BindingSuffixes[bindingFaceIndex], PositionList, faces );
 
-	var portrait = PortraitList[getPortraitIndex( portraitName )];
+	var portraitIndex = getPortraitIndex( portraitName );
+	var portrait = PortraitList[portraitIndex];
 
 	// update portrait pan/scale, stencil
 	PositionList.addActionListener( function updatePosition( actionEvent ) {
 		try {
-			// update portrait positioning
-			let region = getGuidePortraitRegion( diy, (String)(PositionList.getSelectedItem()) );
-			
-			if ( region != null ) {
-//				diy.settings.setRegion( 'AHLCG-Guide75-' + portraitName + '-clip-region', getGuidePortraitRegion( diy, (String)(PositionList.getSelectedItem()) ) );
-//				let clipDimension = portrait.getClipDimensions();
-				
-//				let region = getGuidePortraitRegion( diy, (String)(PositionList.getSelectedItem()) );
-				// have to do this now or computes don't work
-				diy.settings.set( 'Position' + portraitName + BindingSuffixes[bindingFaceIndex], (String)(PositionList.getSelectedItem()) );
-				let image = portrait.image;
-			
-//				let coveringScale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
+			if ( (String)(PositionList.getSelectedItem()) != $( 'PositionPortrait'+ (portraitIndex+1) )  ) {
+				// update portrait positioning
+				let region = getGuidePortraitRegion( diy, (String)(PositionList.getSelectedItem()) );
 
-//				portrait.pan = Point2D.Float( region.x + (region.width - clipDimension.width) / 2, region.y + (region.height - clipDimension.height) / 2 );
-//				portrait.scale = coveringScale;
-				portrait.pan = portrait.computeDefaultImagePan( image );
-				portrait.scale = portrait.computeDefaultImageScale( image );
+				if ( region == null ) {
+					portrait.pan = Point2D.Float( 0, 0 );
+					portrait.scale = 1.0;
+				}
+				else {
+					let image = portrait.image;
 			
-				panel.portrait = portrait;
+					let clipDimension = portrait.getClipDimensions();
+					
+					let coveringScale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
+
+					portrait.pan = Point2D.Float( region.x + (region.width - clipDimension.width) / 2, region.y + (region.height - clipDimension.height) / 2 );					
+					portrait.scale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
+					portrait.scale = coveringScale;
+				
+					panel.portrait = portrait;
+				}
 			}
 			
 			createPortraitStencil( diy, portrait, panel, (String)(PositionList.getSelectedItem()), $PageType );
