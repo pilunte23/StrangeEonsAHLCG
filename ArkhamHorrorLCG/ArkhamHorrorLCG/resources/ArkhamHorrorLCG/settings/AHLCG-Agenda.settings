@@ -1,0 +1,69 @@
+AHLCG-Agenda-Default-template = ArkhamHorrorLCG/templates/AHLCG-Agenda.jp2
+AHLCG-AgendaBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-AgendaBack.jp2
+
+AHLCG-Agenda-Name-region = 255,64,250,22
+AHLCG-Agenda-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 11.5; WEIGHT: WEIGHT_REGULAR; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
+
+AHLCG-AgendaBack-Name-region = 21,110,48,226
+AHLCG-AgendaBack-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 12.5; WEIGHT: WEIGHT_REGULAR; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
+
+AHLCG-Agenda-Body-region = 253,98,259,230
+AHLCG-Agenda-Body-alignment = left
+AHLCG-Agenda-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 7.8; WEIGHT: WEIGHT_MEDIUM; WIDTH: 1.04; FOREGROUND: #000000
+AHLCG-Agenda-Body-tightness = 0.75
+
+AHLCG-AgendaBack-Header-alignment = left
+AHLCG-AgendaBack-Header-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 8; WIDTH: 0.93; WEIGHT: WEIGHT_BOLD; FOREGROUND: #000000
+AHLCG-AgendaBack-Header-tightness = 0.85
+
+AHLCG-AgendaBack-Story-region = 128,38,355,310
+AHLCG-AgendaBack-Story-alignment = left
+AHLCG-AgendaBack-Story-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 7.8; WEIGHT: WEIGHT_MEDIUM; WIDTH: 1.03; FOREGROUND: #000000; POSTURE: OBLIQUE
+AHLCG-AgendaBack-Story-tightness = 0.75
+
+AHLCG-AgendaBack-Body-region = 113,38,370,310
+AHLCG-AgendaBack-Body-alignment = left
+AHLCG-AgendaBack-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 7.8; WEIGHT: WEIGHT_MEDIUM; WIDTH: 1.03; FOREGROUND: #000000
+AHLCG-AgendaBack-Body-tightness = 0.75
+
+AHLCG-Agenda-Portrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+AHLCG-Agenda-Portrait-portrait-pany = 0
+AHLCG-Agenda-Portrait-portrait-clip-region = 0,0,305,375
+AHLCG-Agenda-DefaultPortrait-portrait-clip-region = 0,0,305,375
+
+AHLCG-Agenda-Doom-region = 233,291,50,49
+AHLCG-Agenda-DoomPerInv-region = 227,291,50,48
+AHLCG-Agenda-PerInv-region = 254,293,30,48
+
+AHLCG-Agenda-Dash-tint = 38.0, 0.14, 1.0
+
+AHLCG-Agenda-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-Agenda-Encounter-portrait-pany = 0
+
+AHLCG-Agenda-Encounter-portrait-clip-region = 368,27,28,28
+AHLCG-Agenda-DefaultEncounter-portrait-clip-region = 368,27,28,28
+AHLCG-AgendaBack-Encounter-portrait-clip-region = 27,57,36,36
+
+AHLCG-Agenda-Artist-region = 220,359,120,10
+AHLCG-Agenda-Copyright-region = 343,359,89,10
+
+AHLCG-Agenda-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-Agenda-Collection-portrait-pany = 0
+
+AHLCG-Agenda-Collection-portrait-clip-region = 476,358,13,13
+AHLCG-Agenda-DefaultCollection-portrait-clip-region = 476,358,13,13
+
+AHLCG-Agenda-CollectionNumber-region = 499,359,21,10
+
+AHLCG-Agenda-ScenarioIndex-region = 314,5,134,21
+AHLCG-Agenda-ScenarioIndex-alignment = center, middle
+AHLCG-Agenda-ScenarioIndex-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 6.5; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
+
+AHLCG-AgendaBack-ScenarioIndex-region = 22,30,45,16
+AHLCG-AgendaBack-ScenarioIndex-alignment = center
+AHLCG-AgendaBack-ScenarioIndex-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 4.4; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
+AHLCG-AgendaBack-ScenarioIndex-tightness = 0.1
+
+AHLCG-Agenda-EncounterNumber-region = 432,359,35,10
+AHLCG-Agenda-EncounterNumber-alignment = center, middle
+AHLCG-Agenda-EncounterNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 4.5; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
