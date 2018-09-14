@@ -62,6 +62,9 @@ function drawGuideTemplate( g, sheet  ) {
 			case 'it':
 				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Guide75Title-' + locale + '.png'), new Region(172, 147, 783, 130) );
 				break;
+			case 'de':
+				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Guide75Title-' + locale + '.png'), new Region(172, 147, 783, 130) );
+				break;
 		}
 	}
 }
