@@ -1,0 +1,32 @@
+AHLCG-Skill-Default-template = ArkhamHorrorLCG/templates/AHLCG-Skill-N.jp2
+AHLCG-SkillBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-PlayerBack.jp2
+
+AHLCG-Skill-Label-region = 21,60,38,14
+AHLCG-Skill-Label-alignment = center, middle
+AHLCG-Skill-Label-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 4.7; WEIGHT: WEIGHT_BOLD; WIDTH: 0.90; FOREGROUND: #000000
+
+AHLCG-Skill-Name-region = 73,15,294,29
+AHLCG-Skill-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 11.0; WEIGHT: WEIGHT_REGULAR; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
+AHLCG-Skill-Name-alignment = left, middle
+
+AHLCG-Skill-Subtype-region = 86,346,203,15
+AHLCG-Skill-Subtype-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 5.5; WEIGHT: WEIGHT_BOLD; WIDTH: 0.94; FOREGROUND: #000000
+AHLCG-Skill-Subtype-alignment = center, middle
+
+AHLCG-Skill-Level-region = 14,35,49,23
+AHLCG-Skill-NoLevel-region = 9,24,58,38
+
+AHLCG-Skill-Body-region = 37,349,301,144
+AHLCG-Skill-Body-alignment = left
+AHLCG-Skill-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 8.2; WEIGHT: WEIGHT_MEDIUM; WIDTH: 0.96; FOREGROUND: #000000
+AHLCG-Skill-Body-tightness = 0.78
+
+AHLCG-Skill-Portrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+AHLCG-Skill-Portrait-portrait-pany = 0
+
+AHLCG-Skill-Portrait-portrait-clip-region = 14,40,348,298
+
+AHLCG-Skill-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-Skill-Collection-portrait-pany = 0
+
+AHLCG-Skill-Collection-portrait-clip-region = 320,510,13,13
