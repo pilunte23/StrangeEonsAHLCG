@@ -23,7 +23,7 @@ function create( diy ) {
 	createPortraits( diy, PortraitTypeList );
 	setDefaultCollection();
 
-	diy.version = 6;
+	diy.version = 8;
 }
 
 function setDefaults() {
@@ -102,10 +102,11 @@ function createFrontPainter( diy, sheet ) {
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
-	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
+//	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
 	
-	if ( $CardClass == 'Weakness' || $CardClass == 'BasicWeakness' ) createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'WeaknessBody-region') ) );
-	else createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );
+//	if ( $CardClass == 'Weakness' || $CardClass == 'BasicWeakness' ) createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'WeaknessBody-region') ) );
+//	else 
+	createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );
 
 	initBodyTags( diy, Body_box );	
 	
@@ -144,18 +145,18 @@ function paintFront( g, diy, sheet ) {
 	drawLabel( g, diy, sheet, Label_box, #AHLCG-Label-Event );
 	drawName( g, diy, sheet, Name_box );
 
+	var subtypeRegion = diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) );
+	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) subtypeRegion.y -= 2;
+	
 	if ($CardClass == 'Weakness' ) {	
-		Subtype_box.markupText = #AHLCG-Label-Weakness.toUpperCase();
-		Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
+		drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-Weakness );
 	}
 	else if ($CardClass == 'BasicWeakness' ) {	
-		Subtype_box.markupText = #AHLCG-Label-BasicWeakness.toUpperCase();
-		Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
+		drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-BasicWeakness );
 		
 		drawOverlay( g, diy, sheet, 'BasicWeaknessEvent' );
 		drawBasicWeaknessIcon( g, diy, sheet );
 	}
-//	if ( $CardClass != 'Weakness' ) {
 	else {
 		drawLevel( g, diy, sheet, $CardClass );
 	}
@@ -192,7 +193,8 @@ function createTextShape( textBox, textRegion, className  ) {
 	
 	var path = new java.awt.geom.Path2D.Double();
 	
-	var xPathPoints = new Array( 0.0, -0.054, -0.009, 0.179 );
+//	var xPathPoints = new Array( 0.0, -0.054, -0.009, 0.179 );
+	var xPathPoints = new Array( 0.0, -0.054, -0.004, 0.179 );
 	var yPathPoints = new Array( 0.0, 0.333, 0.892, 1.000 );
 	
 	var xControlPoints = new Array( 0.004, -0.060, -0.083, 0.006, 0.088, 0.047 );
@@ -231,7 +233,7 @@ function onRead(diy, oos) {
 
 	updateCollection();
 	
-	diy.version = 5;
+	diy.version = 8;
 }
 
 function onWrite( diy, oos ) {

@@ -1,42 +1,34 @@
 AHLCG-Chaos-Default-template = ArkhamHorrorLCG/templates/AHLCG-Chaos.jp2
-AHLCG-ChaosBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-Chaos.jp2
 
-AHLCG-Chaos-Name-region = 28,90,307,25
-AHLCG-Chaos-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 15; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.05; FOREGROUND: #000000
-
-AHLCG-ChaosBack-Name-region = 28,90,307,30
+AHLCG-Chaos-Name-region = 28,92,307,25
+AHLCG-Chaos-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 14	; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.05; FOREGROUND: #000000
 
 AHLCG-Difficulty-region = 129,125,114,14
-AHLCG-Difficulty-alignment = center, middle
-AHLCG-Difficulty-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 5.8; WEIGHT: WEIGHT_BOLD; WIDTH: 0.97; FOREGROUND: #000000
+AHLCG-Difficulty-alignment = center, top
+AHLCG-Difficulty-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.difficultySize}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.97; FOREGROUND: #000000
 
-AHLCG-Chaos-Body-region = 95,158,240,305
+AHLCG-Chaos-Body-region = 95,156,240,305
 AHLCG-Chaos-Body-alignment = left, middle
-AHLCG-Chaos-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 7.8; WEIGHT: WEIGHT_MEDIUM; WIDTH: 1.02; FOREGROUND: #000000
-AHLCG-Chaos-BodyIcon-region = 44,149,48,48
-AHLCG-ChaosBack-Body-region = 110,40,370,300
-AHLCG-ChaosBack-Body-alignment = left
-AHLCG-ChaosBack-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 7.8; WEIGHT: WEIGHT_MEDIUM; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
-AHLCG-ChaosBack-Body-tightness = 0.6
+AHLCG-Chaos-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize*0.96}; WEIGHT: WEIGHT_MEDIUM; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
+AHLCG-Chaos-BodyIcon-region = 44,148,47,47
+AHLCG-Chaos-Body-tightness = 1.0
 
 AHLCG-Chaos-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Chaos-Encounter-portrait-pany = 0
 
 AHLCG-Chaos-Encounter-portrait-clip-region = 173,59,28,28
-AHLCG-ChaosBack-Encounter-portrait-clip-region = 173,59,28,28
 
-AHLCG-Chaos-EncounterNumber-region = 276,509,33,15
+AHLCG-Chaos-EncounterNumber-region = 276,515,35,10
 AHLCG-Chaos-EncounterNumber-alignment = center, middle
-AHLCG-Chaos-EncounterNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 4.5; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
+AHLCG-Chaos-EncounterNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 
-AHLCG-Chaos-Copyright-region = 19,510,102,13
-AHLCG-Chaos-Copyright-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 4.5; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
+AHLCG-Chaos-Copyright-region = 19,515,102,10
+AHLCG-Chaos-Copyright-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 AHLCG-Chaos-Copyright-alignment = left, middle
 
 AHLCG-Chaos-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Chaos-Collection-portrait-pany = 0
 
-AHLCG-Chaos-Collection-portrait-clip-region = 320,510,13,13
-AHLCG-ChaosBack-Collection-portrait-clip-region = 320,510,13,13
+AHLCG-Chaos-Collection-portrait-clip-region = 320,512,13,13
 
-AHLCG-Chaos-CollectionNumber-region = 333,510,26,13
+AHLCG-Chaos-CollectionNumber-region = 333,515,21,10

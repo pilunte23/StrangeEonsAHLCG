@@ -1,20 +1,20 @@
 AHLCG-AssetStory-Default-template = ArkhamHorrorLCG/templates/AHLCG-AssetStory.jp2
 AHLCG-AssetStoryBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-PlayerBack.jp2
 
-AHLCG-AssetStory-Label-region = 20,59,38,14
+AHLCG-AssetStory-Label-region = 20,62,38,14
 AHLCG-AssetStory-Label-alignment = center, middle
-AHLCG-AssetStory-Label-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 4.5; WEIGHT: WEIGHT_BOLD; WIDTH: 0.85; FOREGROUND: #000000
+AHLCG-AssetStory-Label-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.smallLabelSize}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.85; FOREGROUND: #000000
 
 AHLCG-AssetStory-Name-region = 68,10,238,29
 
-AHLCG-AssetStory-SubtitleN-region = 68,39,240,22
-AHLCG-AssetStory-SubtitleTextN-region = 68,38,240,22
-AHLCG-AssetStory-Subtitle-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 6.0; WEIGHT: WEIGHT_BOLD; FOREGROUND: #000000
+AHLCG-AssetStory-SubtitleN-region = 68,41,240,22
+AHLCG-AssetStory-SubtitleTextN-region = 68,42,240,22
+AHLCG-AssetStory-Subtitle-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.subtitleSize}; WEIGHT: WEIGHT_BOLD; FOREGROUND: #000000
 AHLCG-AssetStory-Subtitle-alignment = center, middle
 
-AHLCG-AssetStory-Body-region = 20,318,336,132
+AHLCG-AssetStory-Body-region = 20,320,336,140
 AHLCG-AssetStory-Body-alignment = left
-AHLCG-AssetStory-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 8.2; WEIGHT: WEIGHT_MEDIUM; WIDTH: 0.97; FOREGROUND: #000000
+AHLCG-AssetStory-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WEIGHT: WEIGHT_MEDIUM; WIDTH: 0.97; FOREGROUND: #000000
 AHLCG-AssetStory-Body-tightness = 0.75
 
 AHLCG-AssetStory-Portrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2

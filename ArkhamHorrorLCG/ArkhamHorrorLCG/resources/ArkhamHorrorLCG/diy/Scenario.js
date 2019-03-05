@@ -22,7 +22,7 @@ function create( diy ) {
 	setDefaults();
 	createPortraits( diy, PortraitTypeList );
 	
-	diy.version = 5;
+	diy.version = 8;
 }
 
 function setDefaults() {
@@ -84,8 +84,7 @@ function createFrontPainter( diy, sheet ) {
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
-//	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
-	Body_box.setLineTightness( 0 );	
+	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
 	initBodyTags( diy, Body_box );	
 
 	Artist_box = markupBox(sheet);
@@ -184,7 +183,7 @@ function onRead(diy, oos) {
 	if ( $PageTypeBack == 'Portrait' ) PortraitList[1] = oos.readObject();
 	else createPortrait( diy, PortraitTypeList[1] );
 	
-	diy.version = 5;
+	diy.version = 8;
 }
 
 function onWrite( diy, oos ) {

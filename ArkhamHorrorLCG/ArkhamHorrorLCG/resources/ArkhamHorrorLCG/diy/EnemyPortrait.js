@@ -24,7 +24,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 
-	diy.version = 5;
+	diy.version = 8;
 }
 
 function setDefaults() {
@@ -226,7 +226,7 @@ function onRead(diy, oos) {
 	updateCollection();
 	updateEncounter();
 	
-	diy.version = 5;
+	diy.version = 8;
 }
 
 function onWrite( diy, oos ) {

@@ -23,7 +23,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 	
-	diy.version = 7;
+	diy.version = 8;
 }
 
 function setDefaults() {
@@ -144,7 +144,7 @@ function createFrontPainter( diy, sheet ) {
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
-	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
+//	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
 	updateReversableTextBoxShape( diy, $Orientation );
 
 	initBodyTags( diy, Body_box );	
@@ -180,17 +180,17 @@ function createBackPainter( diy, sheet ) {
 	BackHeader_box = markupBox(sheet);
 	BackHeader_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Header-style'), null);
 	BackHeader_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Header-alignment'));
-	BackHeader_box.setLineTightness( $(getExpandedKey(FACE_BACK, 'Header', '-tightness') + '-tightness') );	
+//	BackHeader_box.setLineTightness( $(getExpandedKey(FACE_BACK, 'Header', '-tightness') + '-tightness') );	
 
 	BackStory_box = markupBox(sheet);
 	BackStory_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Story-style'), null);
 	BackStory_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Story-alignment'));
-	BackStory_box.setLineTightness( $(getExpandedKey(FACE_BACK, 'Story', '-tightness') + '-tightness') );	
+//	BackStory_box.setLineTightness( $(getExpandedKey(FACE_BACK, 'Story', '-tightness') + '-tightness') );	
 
 	BackBody_box = markupBox(sheet);
 	BackBody_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Body-style'), null);
 	BackBody_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Body-alignment'));
-	BackBody_box.setLineTightness( $(getExpandedKey(FACE_BACK, 'Body', '-tightness') + '-tightness') );	
+//	BackBody_box.setLineTightness( $(getExpandedKey(FACE_BACK, 'Body', '-tightness') + '-tightness') );	
 
 	initBodyTags( diy, BackStory_box );	
 	initBodyTags( diy, BackBody_box );	
@@ -198,7 +198,7 @@ function createBackPainter( diy, sheet ) {
 	BackIndex_box = markupBox(sheet);
 	BackIndex_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'ScenarioIndex-style'), null);
 	BackIndex_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'ScenarioIndex-alignment'));
-	BackIndex_box.setLineTightness( $(getExpandedKey(FACE_BACK, 'ScenarioIndex', '-tightness') + '-tightness') );	
+//	BackIndex_box.setLineTightness( $(getExpandedKey(FACE_BACK, 'ScenarioIndex', '-tightness') + '-tightness') );	
 }
 
 function paintFront( g, diy, sheet ) {
@@ -320,7 +320,7 @@ function onRead(diy, oos) {
 	updateCollection();
 	updateEncounter();
 
-	diy.version = 7;
+	diy.version = 8;
 }
 
 function onWrite( diy, oos ) {

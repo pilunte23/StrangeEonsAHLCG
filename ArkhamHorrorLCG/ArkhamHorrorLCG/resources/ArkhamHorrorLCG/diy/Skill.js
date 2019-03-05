@@ -23,7 +23,7 @@ function create( diy ) {
 	createPortraits( diy, PortraitTypeList );
 	setDefaultCollection();
 
-	diy.version = 5;
+	diy.version = 8;
 }
 
 function setDefaults() {
@@ -138,12 +138,10 @@ function paintFront( g, diy, sheet ) {
 	drawName( g, diy, sheet, Name_box );
 
 	if ($CardClass == 'Weakness' ) {	
-		Subtype_box.markupText = #AHLCG-Label-Weakness.toUpperCase();
-		Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
+		drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-Weakness );
 	}
 	else if ($CardClass == 'BasicWeakness' ) {	
-		Subtype_box.markupText = #AHLCG-Label-BasicWeakness.toUpperCase();
-		Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
+		drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-BasicWeakness );
 	}
 //	if ( $CardClass != 'Weakness' ) {
 	else {
@@ -152,7 +150,9 @@ function paintFront( g, diy, sheet ) {
 
 	drawSkillIcons( g, diy, sheet, $CardClass );
 	
-	drawBody( g, diy, sheet, Body_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ) );
+	var regionName = 'Body';
+	if ( $CardClass == 'Weakness' || $CardClass == 'BasicWeakness') regionName = 'WeaknessBody';
+	drawBodyWithRegionName( g, diy, sheet, Body_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ), regionName );
 
 	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
 	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
@@ -217,7 +217,7 @@ function onRead(diy, oos) {
 
 	updateCollection();
 	
-	diy.version = 5;
+	diy.version = 8;
 }
 
 function onWrite( diy, oos ) {

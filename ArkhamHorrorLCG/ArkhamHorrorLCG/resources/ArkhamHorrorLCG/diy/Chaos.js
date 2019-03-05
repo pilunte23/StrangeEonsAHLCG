@@ -24,7 +24,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 
-	diy.version = 6;
+	diy.version = 8;
 }
 
 function setDefaults() {
@@ -109,7 +109,9 @@ function createFrontPainter( diy, sheet ) {
 		Body_boxes[i] = markupBox(sheet);
 		Body_boxes[i].defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 		Body_boxes[i].alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
-		Body_boxes[i].setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
+//		Body_boxes[i].setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
+		Body_boxes[i].setLineTightness( $(getExpandedKey(FACE_BACK, 'Body', '-tightness') + '-tightness') * Eons.namedObjects.AHLCGObject.bodyFontTightness );	
+		Body_boxes[i].setTextFitting( FIT_SCALE_TEXT );
 
 		initBodyTags( diy, Body_boxes[i] );	
 	}
@@ -144,7 +146,9 @@ function createBackPainter( diy, sheet ) {
 		BackBody_boxes[i] = markupBox(sheet);
 		BackBody_boxes[i].defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Body-style'), null);
 		BackBody_boxes[i].alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Body-alignment'));
-		BackBody_boxes[i].setLineTightness( $(getExpandedKey(FACE_BACK, 'Body', '-tightness') + '-tightness') );	
+//		BackBody_boxes[i].setLineTightness( $(getExpandedKey(FACE_BACK, 'Body', '-tightness') + '-tightness') );	
+		BackBody_boxes[i].setLineTightness( $(getExpandedKey(FACE_BACK, 'Body', '-tightness') + '-tightness') * Eons.namedObjects.AHLCGObject.bodyFontTightness );	
+		BackBody_boxes[i].setTextFitting( FIT_SCALE_TEXT );
 
 		initBodyTags( diy, BackBody_boxes[i] );	
 	}
@@ -225,7 +229,7 @@ function onRead(diy, oos) {
 		$MergeTabletBack = 'None';
 	}
 
-	diy.version = 6;
+	diy.version = 8;
 }
 
 function onWrite( diy, oos ) {

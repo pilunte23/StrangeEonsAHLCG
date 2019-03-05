@@ -710,11 +710,15 @@ function layoutGuideStats( bindings, faceIndex ) {
 	var StatPanel = new Grid();
 	StatPanel.setTitle( @AHLCG-BasicData );
 
-	var pageSpinner = new spinner( 0, 50, 1, 1 );
-	bindings.add( 'Page' + BindingSuffixes[faceIndex], pageSpinner, [0, 1] );
+	var pageSpinner = new spinner( 0, 100, 1, 1 );
+	bindings.add( 'Page' + BindingSuffixes[faceIndex], pageSpinner, [0] );
 		
+//	var columnSpinner = new spinner( 1, 2, 1, 1 );
+//	bindings.add( 'Columns' + BindingSuffixes[faceIndex], columnSpinner, [0] );
+
 	StatPanel.place(
 		@AHLCG-Page, 'align right, gapx 10', pageSpinner, 'wrap'
+//		@AHLCG-Columns, 'align right, gapx 10', columnSpinner, 'wrap'
 		);
 		
 	return StatPanel;
@@ -889,7 +893,16 @@ function layoutText( bindings, parts, suffix, faceIndex ) {
 			);
 		}
 	}
-			
+/*
+	var lineSpinner = new spinner( 25, 300, 1, 100 );
+	var paragraphSpinner = new spinner( 25, 300, 1, 100 );
+
+	bindings.add( 'LineSpacing' + BindingSuffixes[faceIndex], lineSpinner, [ faceIndex ] );
+
+	TextPanel.place(
+		@AHLCG-LineSpacing, 'align right', lineSpinner, 'split 2', '%', 'wrap'
+	);
+*/				
 	return TextPanel;
 }
 
@@ -1330,6 +1343,41 @@ function layoutEncounter( bindings, portraitPanel, useSpinner, selectFaces, icon
 			' / ', 'split', totalSpinner, 'split, wrap'
 		);
 	}
+
+	return EncounterPanel;
+}
+
+function layoutSimpleEncounter( bindings, portraitPanel, iconFaces, bindingFaceIndex ) {
+	var EncounterPanel = new Grid();
+	EncounterPanel.setTitle( @AHLCG-EncounterSet );
+
+	var EncounterList = new comboBox( Eons.namedObjects.AHLCGObject.comboEncounter, null );
+	bindings.add( 'Encounter' + BindingSuffixes[bindingFaceIndex], EncounterList, iconFaces );
+
+	// if we select a user set, load the portrait accordingly
+	EncounterList.addActionListener( function updateShape( actionEvent ) {
+		try {
+			var type = Eons.namedObjects.AHLCGObject.encounterTypes[EncounterList.getSelectedIndex()];
+			$EncounterType = type.toString();
+			
+			if ( type > 0 ) {
+				var icon = $( 'AHLCG-UserEncounterIcon' + type, '' );
+
+				PortraitList[ getPortraitIndex( 'Encounter' ) ].setSource( icon );
+				portraitPanel.updatePanel();
+				setPortraitPanelFileFieldEnabled( portraitPanel, false );				
+			}
+			else {
+				setPortraitPanelFileFieldEnabled( portraitPanel, true );
+			}
+		} catch (ex) {
+			Error.handleUncaught( ex );
+		}
+	});
+
+	EncounterPanel.place(
+		@AHLCG-Set, 'align right', EncounterList, 'wrap, pushx, growx'
+	);
 
 	return EncounterPanel;
 }

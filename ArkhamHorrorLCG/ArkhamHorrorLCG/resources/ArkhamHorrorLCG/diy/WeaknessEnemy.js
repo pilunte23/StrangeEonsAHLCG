@@ -23,7 +23,7 @@ function create( diy ) {
 	createPortraits( diy, PortraitTypeList );
 	setDefaultCollection();
 
-	diy.version = 5;
+	diy.version = 8;
 }
 
 function setDefaults() {
@@ -155,8 +155,9 @@ function paintFront( g, diy, sheet ) {
 		drawOverlay( g, diy, sheet, 'PersonalWeaknessEnemy' );
 	}
 
-	Subtype_box.markupText = subtypeText.toUpperCase();
-	Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
+//	Subtype_box.markupText = subtypeText.toUpperCase();
+//	Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
+	drawSubtype( g, diy, sheet, Subtype_box, subtypeText );
 
 	drawEnemyStats( g, diy, sheet, [ 'Attack', 'Evade' ] );
 	drawEnemyHealth( g, diy, sheet );
@@ -220,7 +221,7 @@ function onRead(diy, oos) {
 
 	updateCollection();
 	
-	diy.version = 5;
+	diy.version = 8;
 }
 
 function onWrite( diy, oos ) {

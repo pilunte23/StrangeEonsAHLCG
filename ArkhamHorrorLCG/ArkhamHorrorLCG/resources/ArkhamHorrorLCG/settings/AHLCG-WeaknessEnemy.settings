@@ -1,25 +1,26 @@
 AHLCG-WeaknessEnemy-Default-template = ArkhamHorrorLCG/templates/AHLCG-WeaknessEnemy.jp2
 AHLCG-WeaknessEnemyBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-PlayerBack.jp2
 
-AHLCG-WeaknessEnemy-Label-region = 158,303,58,15
+AHLCG-WeaknessEnemy-Label-region = 158,305,58,15
 AHLCG-WeaknessEnemy-Label-alignment = center, middle
-AHLCG-WeaknessEnemy-Label-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 6; WEIGHT: WEIGHT_BOLD; WIDTH: 1.0; FOREGROUND: #000000
+AHLCG-WeaknessEnemy-Label-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.largeLabelSize*0.95}; WEIGHT: WEIGHT_BOLD; WIDTH: 1.0; FOREGROUND: #000000
 
-AHLCG-WeaknessEnemy-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 10.5; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.05; FOREGROUND: #000000
+AHLCG-WeaknessEnemy-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 11.2; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.05; FOREGROUND: #000000
+AHLCG-WeaknessEnemy-Name-alignment = center, middle
 AHLCG-WeaknessEnemy-Name-region = 62,2,252,31
 
-AHLCG-WeaknessEnemy-Subtype-region = 40,29,293,20
-AHLCG-WeaknessEnemy-Subtype-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 5.5; WEIGHT: WEIGHT_BOLD; WIDTH: 0.94; FOREGROUND: #000000
+AHLCG-WeaknessEnemy-Subtype-region = 40,31,293,20
+AHLCG-WeaknessEnemy-Subtype-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.subtypeSize}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.94; FOREGROUND: #000000
 AHLCG-WeaknessEnemy-Subtype-alignment = center, middle
 
 AHLCG-WeaknessEnemy-BasicWeaknessEnemy-region = 155,264,64,40
 AHLCG-WeaknessEnemy-PersonalWeaknessEnemy-region = 155,264,64,40
 AHLCG-WeaknessEnemy-BasicWeaknessIcon-region = 173,274,28,28
 
-AHLCG-WeaknessEnemy-Body-region = 20,101,338,165
+AHLCG-WeaknessEnemy-Body-region = 20,103,338,165
 AHLCG-WeaknessEnemy-Body-alignment = left
-AHLCG-WeaknessEnemy-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 8.2; WEIGHT: WEIGHT_MEDIUM; WIDTH: 0.92; FOREGROUND: #000000
-AHLCG-WeaknessEnemy-Body-tightness = 0.70
+AHLCG-WeaknessEnemy-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize*1.05}; WEIGHT: WEIGHT_MEDIUM; WIDTH: 0.92; FOREGROUND: #000000
+AHLCG-WeaknessEnemy-Body-tightness = 1.0
 
 AHLCG-WeaknessEnemy-Portrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
 AHLCG-WeaknessEnemy-Portrait-portrait-pany = 0
@@ -46,4 +47,4 @@ AHLCG-WeaknessEnemy-Horror5-region = 310,238,27,24
 AHLCG-WeaknessEnemy-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-WeaknessEnemy-Collection-portrait-pany = 0
 
-AHLCG-WeaknessEnemy-Collection-portrait-clip-region = 320,510,13,13
+AHLCG-WeaknessEnemy-Collection-portrait-clip-region = 319,512,13,13

@@ -24,7 +24,7 @@ function create( diy ) {
 	createPortraits( diy, PortraitTypeList );
 	setDefaultCollection();
 
-	diy.version = 5;
+	diy.version = 8;
 }
 
 function setDefaults() {
@@ -116,8 +116,8 @@ function createFrontPainter( diy, sheet ) {
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
-	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
-
+//	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') * Eons.namedObjects.AHLCGObject.baseFontTightness );	
+	
 	initBodyTags( diy, Body_box );	
 	
 	Artist_box = markupBox(sheet);
@@ -151,18 +151,22 @@ function paintFront( g, diy, sheet ) {
 
 	PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
 	drawTemplate( g, sheet, $CardClass );
+//	drawTemplate( g, sheet, 'Test' );
+
 	drawLabel( g, diy, sheet, Label_box, #AHLCG-Label-Asset );
 	drawName( g, diy, sheet, Name_box );
 
 	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, Subtitle_box, $CardClass, true );
 
 	if ($CardClass == 'Weakness' ) {	
-		Subtype_box.markupText = #AHLCG-Label-Weakness.toUpperCase();
-		Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
+//		Subtype_box.markupText = #AHLCG-Label-Weakness.toUpperCase();
+//		Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
+		drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-Weakness );
 	}
 	else if ($CardClass == 'BasicWeakness' ) {	
-		Subtype_box.markupText = #AHLCG-Label-BasicWeakness.toUpperCase();
-		Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
+//		Subtype_box.markupText = #AHLCG-Label-BasicWeakness.toUpperCase();
+//		Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
+		drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-BasicWeakness );
 	}
 //	if ( $CardClass != 'Weakness' ) {
 	else {
@@ -202,7 +206,7 @@ function onRead(diy, oos) {
 
 	updateCollection();
 
-	diy.version = 5;
+	diy.version = 8;
 }
 
 function onWrite( diy, oos ) {

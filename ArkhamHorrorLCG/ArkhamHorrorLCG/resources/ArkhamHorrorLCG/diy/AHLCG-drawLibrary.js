@@ -149,23 +149,22 @@ function drawName( g, diy, sheet, nameBox ) {
 	
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Name-region') );
 	if ( $Orientation == 'Reversed' ) region = reverseRegion( region );
-
+	
 	if ( CardTypes[faceIndex] == 'Guide75' ) title = title.toUpperCase();	
+	else if ( CardTypes[faceIndex] == 'Event' && ( $CardClass == 'Weakness' || $CardClass == 'BasicWeakness' )) region.y -= 3;
 	
 	if ( title.length() >  0) {
 		unique = $( 'Unique' + BindingSuffixes[faceIndex] );
 		
 		if (unique == '1' || CardTypes[faceIndex] == 'Investigator' || CardTypes[faceIndex] == 'InvestigatorBack' ) {
-			nameBox.markupText = '<uni><b>' + title + '</b>';
+//			nameBox.markupText = '<uni><b>' + title + '</b>';
+			nameBox.markupText = '<uni>' + title;
 		}
 		else {
-			nameBox.markupText = '<b>' + title + '</b>';
+//			nameBox.markupText = '<b>' + title + '</b>';
+			nameBox.markupText = title;
 		}
 
-	if ($CardClass == 'Weakness' || $CardClass == 'BasicWeakness') {
-		region.y -= 2;
-	}
-	
 	nameBox.drawAsSingleLine( g, region );
 	}
 }
@@ -241,22 +240,31 @@ function drawSubtitle( g, diy, sheet, subtitleBox, className, drawBox ) {
 	var subtitle = $( 'Subtitle' + BindingSuffixes[faceIndex] );
 	if (subtitle == null) subtitle = $Subtitle;
 	
+	var textRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'SubtitleText' + getClassInitial( className ) + '-region' ) );
+	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) textRegion.y -= 2;
+	
 	subtitleBox.markupText = subtitle;
-	subtitleBox.draw( g, diy.settings.getRegion( getExpandedKey( faceIndex, 'SubtitleText' + getClassInitial( className ) + '-region' ) ) );
+	subtitleBox.draw( g, textRegion );
 }
 
 function drawDifficulty( g, diy, sheet, textBox, text ) {
 	var faceIndex = sheet.getSheetIndex();
 
+	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Difficulty-region') );
+	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 2;
+
 	textBox.markupText = text;
-	textBox.drawAsSingleLine( g, diy.settings.getRegion( getExpandedKey( faceIndex, 'Difficulty-region') ) );
+	textBox.drawAsSingleLine( g, region );
 }
 
 function drawLabel( g, diy, sheet, textBox, text ) {
 	var faceIndex = sheet.getSheetIndex();
 
+	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Label-region') );
+	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 2;
+
 	textBox.markupText = text.toUpperCase();
-	textBox.drawAsSingleLine( g, diy.settings.getRegion( getExpandedKey( faceIndex, 'Label-region') ) );
+	textBox.drawAsSingleLine( g, region );
 }
 
 function drawScenarioResolutionHeader( g, diy, sheet, headerBox ) {	
@@ -269,7 +277,7 @@ function drawScenarioResolutionHeader( g, diy, sheet, headerBox ) {
 	var height = headerBox.measure( g, headerRegion );
 	var width1 = headerBox.drawAsSingleLine( g, headerRegion ) + 4.0;
 							
-	headerRegion.y += height - 3.0;
+	headerRegion.y += height - 0.0;
 							
 	headerBox.markupText = '<size 80%>' + #AHLCG-Scenario-Header2 + '<size 125%>';
 
@@ -286,12 +294,18 @@ function drawBody( g, diy, sheet, bodyBox, partsArray ) {
 	var faceIndex = sheet.getSheetIndex();
 	var Text = '';
 
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region') );
-
 	if ( $Orientation == 'Reversed' ) region = reverseRegion( region );
-
+	if ( AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 2;
+	
+	bodyBox.setLineTightness( $(getExpandedKey(faceIndex, 'Body', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
+	bodyBox.	setTextFitting( FIT_SCALE_TEXT );	
+	
 	// if there is no trait text, add a little spacing
 	var traitText = $( 'Traits' + BindingSuffixes[faceIndex] );
+
 	// null if it doesn't exist
 	if ( traitText == '' ) {
 		Text = Text + '<image res://ArkhamHorrorLCG/images/empty1x1.png 1pt 6pt>';
@@ -312,6 +326,14 @@ function drawBodyWithRegionName( g, diy, sheet, bodyBox, partsArray, regionName 
 	var faceIndex = sheet.getSheetIndex();
 	var Text = '';
 
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	var region = diy.settings.getRegion( getExpandedKey( faceIndex, regionName + '-region') );
+	if ( AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 2;
+	
+	bodyBox.setLineTightness( $(getExpandedKey(faceIndex, 'Body', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
+	bodyBox.setTextFitting( FIT_SCALE_TEXT );	
+
 	// if there is no trait text, add a little spacing
 	var traitText = $( 'Traits' + BindingSuffixes[faceIndex] );
 	// null if it doesn't exist
@@ -327,18 +349,41 @@ function drawBodyWithRegionName( g, diy, sheet, bodyBox, partsArray, regionName 
 	bodyBox.markupText = Text;
 
 	updateNameTags( bodyBox, diy );
-	bodyBox.draw( g, diy.settings.getRegion( getExpandedKey( faceIndex, regionName + '-region') ) );
+	bodyBox.draw( g, region );
 }
 
 function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 	var faceIndex = sheet.getSheetIndex();
 
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+	
 	var fullRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region' ) );
 	var headerRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region' ) );
 	var bodyRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region' ) );
 	var fullStoryRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Story-region' ) );
 	var storyRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Story-region' ) );
+
+	var horizLineSpace1 = 0;
+	var horizLineSpace2 = 16;
+
+	if ( AHLCGObject.bodyFamily == 'Times New Roman' ) {
+		fullRegion.y -= 2;
+		headerRegion.y -= 2;
+		bodyRegion.y -= 2;
+		fullStoryRegion.y -= 2;
+		storyRegion.y -= 2;
+
+		horizLineSpace1 = 2;
+		horizLineSpace2 = 14;
+	}
 	
+	headerBox.setLineTightness( $(getExpandedKey(faceIndex, 'Header', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
+	headerBox.setTextFitting( FIT_SCALE_TEXT );	
+	storyBox.setLineTightness( $(getExpandedKey(faceIndex, 'Story', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
+	storyBox.setTextFitting( FIT_SCALE_TEXT );	
+	bodyBox.setLineTightness( $(getExpandedKey(faceIndex, 'Body', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
+	bodyBox.setTextFitting( FIT_SCALE_TEXT );	
+
 	var defaultSpacing = 8;
 	
 	var suffixArray = [ 'A', 'B', 'C' ];
@@ -356,11 +401,11 @@ function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 	
 	for ( let i = 0; i < 3; i++ ) {		
 //		if ( i > 0 ) {
-			headerSpacing[i] = parseInt( $( 'Header' + suffixArray[i] + BindingSuffixes[faceIndex] + 'Spacing' ), 10 ) + 2;
+			headerSpacing[i] = parseInt( $( 'Header' + suffixArray[i] + BindingSuffixes[faceIndex] + 'Spacing' ), 10 ) + 4;
 			headerText[i] = $( 'Header' + suffixArray[i] + BindingSuffixes[faceIndex] );
 //		}
 
-		storySpacing[i] = parseInt( $( 'AccentedStory' + suffixArray[i] + BindingSuffixes[faceIndex] + 'Spacing' ), 10 ) + 2;
+		storySpacing[i] = parseInt( $( 'AccentedStory' + suffixArray[i] + BindingSuffixes[faceIndex] + 'Spacing' ), 10 ) + 4;
 		storyText[i] = $( 'AccentedStory' + suffixArray[i] + BindingSuffixes[faceIndex] );
 		let textExists = false;
 				
@@ -418,7 +463,7 @@ function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 	var headerTextSize = 1.0;
 	
 	// this is more or less a guess that works so far
-	var textScale = Math.sqrt( scale ) * 0.92;
+	var textScale = Math.sqrt( scale ) * 0.93;
 
 	bodyTextSize = textScale * $ScaleModifier;
 	storyTextSize = textScale * $ScaleModifier;
@@ -428,9 +473,11 @@ function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 		if ( i > 0 ) {
 			if ( headerHeight[i] > 0 || storyHeight[i] > 0 || bodyHeight[i] > 0) {
 				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HRLine.png'), 
-					new Region( headerRegion.x, headerRegion.y + ( 3 * scale), headerRegion.width, 10) );
+//					new Region( headerRegion.x, headerRegion.y + ( 3 * scale), headerRegion.width, 10) );
+					new Region( headerRegion.x, headerRegion.y + ( horizLineSpace1 * scale * $ScaleModifier / 100.0 ), headerRegion.width, 7) );
 					
-				headerRegion.y += Math.ceil( 18 * scale );
+//				headerRegion.y += Math.ceil( 18 * scale );
+				headerRegion.y += Math.ceil( horizLineSpace2 * scale * $ScaleModifier / 100.0 );
 			}
 		}
 		
@@ -454,7 +501,7 @@ function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 			storyBox.markupText = '<size ' + storyTextSize + '%>' + storyText[i];
 
 			storyHeight[i] = storyBox.measure( g, fullStoryRegion );
-			storyRegion.height = Math.ceil( storyHeight[i] );
+			storyRegion.height = Math.ceil( storyHeight[i] ) + 2;
 		}
  
 		bodyRegion.y = storyRegion.y + storyRegion.height + Math.ceil( storySpacing[i]  * scale );
@@ -478,7 +525,8 @@ function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 			storyBox.draw( g, storyRegion );
 		
 			sheet.paintImage( g, createDarkenedImage( ImageUtils.get('ArkhamHorrorLCG/images/Lines.png') ), 
-				new Region( storyRegion.x - 18, storyRegion.y + 2, 6, storyRegion.height - 4) );
+//				new Region( storyRegion.x - 18, storyRegion.y + 2, 6, storyRegion.height - 4) );
+				new Region( storyRegion.x - 18, storyRegion.y, 6, storyRegion.height - 2) );
 		}
 	
 		if (bodyHeight[i] > 0) {
@@ -494,6 +542,14 @@ function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 
 function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 	var faceIndex = sheet.getSheetIndex();
+
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+	var tightness = AHLCGObject.bodyFontTightness;
+	
+	if ( AHLCGObject.bodyFamily == 'Times New Roman' ) {
+		bodyRegion.y -= 2;
+		tightness = tightness * 1.2;
+	}
 
 	while (text.length > 0) {
 		let startMatch = /<section>|<header>|<box(?:res|sa|int)(?:\sbracket|\sheader)*>/.exec( text );
@@ -515,10 +571,10 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 					if ( startMatch.index > 0) {
 						preSpecialText = text.slice( 0, startMatch.index );
 					
-						if ( /\S/.test( preSpecialText ) ) preSpecialText = preSpecialText + '<br>';
+						if ( /\S/.test( preSpecialText ) ) preSpecialText = preSpecialText + '<lvs>';
 							
 						bodyBox.markupText = preSpecialText;
-						bodyBox.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );
+						bodyBox.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') * tightness );
 						sectionHeight = bodyBox.measure( g, bodyRegion );
 
 						bodyBox.draw( g, bodyRegion );
@@ -537,19 +593,21 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 					}
 
 					bodyBox.markupText = specialText;
-					bodyBox.setLineTightness( $(getExpandedKey(FACE_FRONT, 'BodySection', '-tightness') + '-tightness') );
+					bodyBox.setLineTightness( $(getExpandedKey(FACE_FRONT, 'BodySection', '-tightness') + '-tightness')  * tightness );
 					sectionHeight = bodyBox.measure( g, bodyRegion );
 
 					bodyBox.draw( g, bodyRegion );
 					bodyBox.markupText = '';
 
 					sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HorizLines.png'), 
-						new Region( bodyRegion.x, bodyRegion.y + sectionHeight - 2, bodyRegion.width + 10, 6) );
+						new Region( bodyRegion.x, bodyRegion.y + sectionHeight - 2, bodyRegion.width + 2, 6) );
 
-					bodyRegion.y += sectionHeight - 8;
-					bodyRegion.height -= (sectionHeight - 8);
+//					bodyRegion.y += sectionHeight - 8;
+//					bodyRegion.height -= (sectionHeight - 8);
+					bodyRegion.y += sectionHeight - 4;
+					bodyRegion.height -= (sectionHeight - 4);
 
-					bodyBox.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );
+					bodyBox.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') * tightness );
 
 					text = postSpecialText;
 					break;
@@ -559,10 +617,10 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 					if ( startMatch.index > 0) {
 						preSpecialText = text.slice( 0, startMatch.index );
 					
-						if ( /\S/.test( preSpecialText ) ) preSpecialText = preSpecialText + '<br>';
+						if ( /\S/.test( preSpecialText ) ) preSpecialText = preSpecialText + '<lvs>';
 							
 						bodyBox.markupText = preSpecialText;
-						bodyBox.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );
+						bodyBox.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') * tightness );
 						sectionHeight = bodyBox.measure( g, bodyRegion );
 
 						bodyBox.draw( g, bodyRegion );
@@ -580,20 +638,20 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 						specialText = text.slice( startMatch.index );
 					}
 
-//					bodyRegion.y += 14;
-//					bodyRegion.height -= 14;
+					bodyRegion.y += 8;
+					bodyRegion.height -= 8;
 
 					bodyBox.markupText = specialText;
-					bodyBox.setLineTightness( $(getExpandedKey(FACE_FRONT, 'BodySection', '-tightness') + '-tightness') );
+					bodyBox.setLineTightness( $(getExpandedKey(FACE_FRONT, 'BodySection', '-tightness') + '-tightness') * tightness );
 					sectionHeight = bodyBox.measure( g, bodyRegion );
 
 					bodyBox.draw( g, bodyRegion );
 					bodyBox.markupText = '';
 
-					bodyRegion.y += sectionHeight - 10;
-					bodyRegion.height -= (sectionHeight - 10);
+					bodyRegion.y += sectionHeight - 12;
+					bodyRegion.height -= (sectionHeight - 12);
 
-					bodyBox.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );
+					bodyBox.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') * tightness );
 
 					text = postSpecialText;
 					break;
@@ -617,7 +675,7 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 						if ( /\S/.test( preSpecialText ) ) preSpecialText = preSpecialText + '<br>';
 
 						bodyBox.markupText = preSpecialText;
-						bodyBox.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );
+						bodyBox.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') * tightness );
 						sectionHeight = bodyBox.measure( g, bodyRegion );
 
 						bodyBox.draw( g, bodyRegion );
@@ -854,6 +912,8 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region' ) );
 	var iconRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'BodyIcon-region' ) );
 
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
 	var tokenRegion = [];
 	var tokenText = [];
 	var tokenHeight = [];
@@ -862,7 +922,8 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 	var tokenGroup = [ 1, 2, 3, 4 ];
 	var tokensInGroup = [ 0, 0, 0, 0 ];
 	var minHeight = [ 48, 100, 152, 204 ];
-	var minCenterSpacing = [ 115, 115, 85, 62 ];
+	var minCenterSpacing = [ 115, 102, 85, 65 ];
+	var startingOffset = [ 40, 40, 0, 0 ];
 	
 	var minSpacing = 15;
 	var maxSpacing = 62;
@@ -957,7 +1018,8 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 		let Test_box = markupBox(sheet);
 		Test_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(faceIndex, 'Body-style'), null);
 		Test_box.alignment = diy.settings.getTextAlignment(getExpandedKey(faceIndex, 'Body-alignment'));
-		Test_box.setLineTightness( $(getExpandedKey(faceIndex, 'Body', '-tightness') + '-tightness') );	
+		Test_box.setLineTightness( $(getExpandedKey(faceIndex, 'Body', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
+		Test_box.setTextFitting( FIT_SCALE_TEXT );	
 
 		Test_box.markupText = tokenText[i];
 		tokenHeight[i] = Test_box.measure( g, tokenRegion[i] );
@@ -972,7 +1034,7 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 		let spacing = (tokenHeight[i] + tokenHeight[i+1]) / 2;
 		
 		if (spacing > maxEqualCenterSpacing) maxEqualCenterSpacing = spacing;
-	} 
+	}
 	
 	if (maxEqualCenterSpacing < minCenterSpacing[groupCount-1]) maxEqualCenterSpacing = minCenterSpacing[groupCount-1];
 	totalEqualHeight = (maxEqualCenterSpacing + minSpacing)*(groupCount-1) + (tokenHeight[0] + tokenHeight[groupCount-1]) / 2;
@@ -982,6 +1044,9 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 	if (totalEqualHeight <= region.height) {
 		spacingType = 0;
 		totalHeight = totalEqualHeight;
+		
+		if (totalHeight + startingOffset[groupCount-1] <= region.height*0.75)
+			region.y += startingOffset[groupCount-1];
 	}
 	else {
 		totalHeight += minSpacing * (groupCount-1);
@@ -989,11 +1054,11 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 	
 	var scale = 1.0;	
 
-	// if rescaling needed, we're going to keep decresaing scale until it fits
+	// if rescaling needed, we're going to keep decreasing scale until it fits
 	// just calculating a ratio and using that significantly overestimated the reduction of scale needed
 	if (region.height < totalHeight) {
-		region.y -= 10;
-		region.height += 10;
+		region.y -= 5;
+		region.height += 5;
 		
 		do {
 			scale -= 0.05;
@@ -1003,7 +1068,8 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 				let Test_box = markupBox(sheet);
 				Test_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(faceIndex, 'Body-style'), null);
 				Test_box.alignment = diy.settings.getTextAlignment(getExpandedKey(faceIndex, 'Body-alignment'));
-				Test_box.setLineTightness( $(getExpandedKey(faceIndex, 'Body', '-tightness') + '-tightness') );	
+				Test_box.setLineTightness( $(getExpandedKey(faceIndex, 'Body', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
+				Test_box.setTextFitting( FIT_SCALE_TEXT );	
 
 				Test_box.markupText = Test_box.markupText = '<size ' + scale*100 + '%>' + tokenText[i] + '<size ' + (1/scale)*100 + '%>';
 				tokenHeight[i] = Test_box.measure( g, tokenRegion[i] );
@@ -1043,17 +1109,30 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 			if (scale < 1) textBoxes[i].markupText = '<size ' + scale*100 + '%>' + tokenText[i] + '<size ' + (1/scale)*100 + '%>';
 			else textBoxes[i].markupText = tokenText[i];
 		
-			textBoxes[i].draw( g, tokenRegion[i] );
+//g.setPaint(Color.RED);
+//g.drawRect(tokenRegion[i].x, tokenRegion[i].y, 250, tokenRegion[i].height);
+			modifiedRegion = new Region( tokenRegion[i].x, tokenRegion[i].y, tokenRegion[i].width, tokenRegion[i].height );
+//			modifiedRegion.y -= (tokenRegion[i].height - 48.0) / 12.0;
+			if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) modifiedRegion.y -= 2;
+//			else modifiedRegion.y += 2;
+			
+			textBoxes[i].draw( g, modifiedRegion );
 
 			let tokenIndex = 0;
 			for ( let j = 0; j < 4; j++ ) {				// token				
 				if ( tokenGroup[j] == i+1 ) {
-					let iconY = tokenRegion[i].y + tokenRegion[i].height/2 - iconRegion.height*tokensInGroup[i]/2 + tokenIndex*iconRegion.height;
+					let iconY = tokenRegion[i].y + tokenRegion[i].height/2 - iconRegion.height*tokensInGroup[i]/2 + tokenIndex*iconRegion.height + 1;
+//					let iconY = tokenRegion[i].y + tokenRegion[i].height/2 - iconRegion.height/2 + 1;					
 					
-					if (iconY < yIconMin) yIconMin = iconY;
-					if (iconY + iconRegion.height > yIconMax) yIconMax = iconY + iconRegion.height;
+					if (iconY + 1 < yIconMin) yIconMin = iconY + 1;
+					if (tokenRegion[i].y + 5 < yIconMin) yIconMin = tokenRegion[i].y + 5;
+					if (iconY + iconRegion.height - 1 > yIconMax) yIconMax = iconY + iconRegion.height - 1;
+					if (tokenRegion[i].y + tokenRegion[i].height - 3 > yIconMax) yIconMax = tokenRegion[i].y + tokenRegion[i].height - 3;
 					
+//g.setPaint(Color.BLUE);
+//g.drawRect(iconRegion.x, iconY, iconRegion.width, iconRegion.height);
 					sheet.paintImage( g, tokenIcon[j], 
+//						 new Region( iconRegion.x, iconY, iconRegion.width, iconRegion.height ) );
 						 new Region( iconRegion.x, iconY, iconRegion.width, iconRegion.height ) );
 					 
 					tokenIndex++;
@@ -1092,17 +1171,27 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 
 			if (scale < 1) textBoxes[i].markupText = '<size ' + scale*100 + '%>' + tokenText[i] + '<size ' + (1/scale)*100 + '%>';
 			else textBoxes[i].markupText = tokenText[i];
+//g.setPaint(Color.RED);
+//g.drawRect(tokenRegion[i].x, tokenRegion[i].y, tokenRegion[i].width, tokenRegion[i].height);
+//			modifiedRegion = new Region( tokenRegion[i].x, tokenRegion[i].y, tokenRegion[i].width, tokenRegion[i].height );
+//			modifiedRegion.y -= (tokenRegion[i].height - 48.0) / 12.0;
 
 			textBoxes[i].draw( g, tokenRegion[i] );
 
 			let tokenIndex = 0;
 			for ( let j = 0; j < 4; j++ ) {				// token
 				if ( tokenGroup[j] == i+1 ) {
-					let iconY = tokenRegion[i].y + tokenRegion[i].height/2 - iconRegion.height*tokensInGroup[i]/2 + tokenIndex*iconRegion.height;
+					let iconY = tokenRegion[i].y + tokenRegion[i].height/2 - iconRegion.height*tokensInGroup[i]/2 + tokenIndex*iconRegion.height + 1;
 					
-					if (iconY < yIconMin) yIconMin = iconY;
-					if (iconY + iconRegion.height > yIconMax) yIconMax = iconY + iconRegion.height;
+//					if (iconY < yIconMin) yIconMin = iconY;
+//					if (iconY + iconRegion.height > yIconMax) yIconMax = iconY + iconRegion.height;
+					if (iconY + 1 < yIconMin) yIconMin = iconY + 1;
+					if (tokenRegion[i].y + 5 < yIconMin) yIconMin = tokenRegion[i].y + 5;
+					if (iconY + iconRegion.height - 1 > yIconMax) yIconMax = iconY + iconRegion.height - 1;
+					if (tokenRegion[i].y + tokenRegion[i].height - 3 > yIconMax) yIconMax = tokenRegion[i].y + tokenRegion[i].height - 3;
 					
+//g.setPaint(Color.BLUE);
+//g.drawRect(iconRegion.x, iconY, 350, iconRegion.height);
 					sheet.paintImage( g, tokenIcon[j], 
 						 new Region( iconRegion.x, iconY, iconRegion.width, iconRegion.height ) );
 					 
@@ -1126,7 +1215,12 @@ function drawScenarioBody( g, diy, sheet, bodyBox ) {
 
 	var showTitle = false;
 	var region;
-		
+			
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+	
+	bodyBox.setLineTightness( $(getExpandedKey(faceIndex, 'Body', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
+	bodyBox.setTextFitting( FIT_SCALE_TEXT );	
+
 	var pageType = $( 'PageType' + BindingSuffixes[faceIndex] );
 		
 	if ( pageType == 'Title' ) {
@@ -1147,6 +1241,8 @@ function drawScenarioBody( g, diy, sheet, bodyBox ) {
 		region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region') );
 	}
 		
+	if ( AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 2;
+
 	bodyBox.markupText = $( 'Rules' + BindingSuffixes[faceIndex] );
 
 	updateNameTags( bodyBox, diy );
@@ -1165,20 +1261,20 @@ function drawArtist( g, diy, sheet ) {
 	
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Artist-region' ) );
 	if ( $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );
+	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 1;
 
-	Artist_box.markupText = #AHLCG-IllustratorShort + $( 'Artist' + BindingSuffixes[faceIndex] );
+	Artist_box.markupText = #AHLCG-IllustratorShort + ' ' + $( 'Artist' + BindingSuffixes[faceIndex] );
 	Artist_box.drawAsSingleLine( g, region );
 }
 
 function drawCopyright( g, diy, sheet ) {
 	var faceIndex = sheet.getSheetIndex();
 	
-//	var copyright = $( 'Copyright' + BindingSuffixes[faceIndex] );
-//	if (copyright == null) copyright = $Copyright;
 	var copyright = $Copyright;
 
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Copyright-region' ) );
 	if ( $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );
+	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 1;
 
 	Copyright_box.markupText = copyright;
 	Copyright_box.drawAsSingleLine( g, region );
@@ -1192,6 +1288,7 @@ function drawCollectionNumber ( g, diy, sheet, drawSuffix ) {
 
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'CollectionNumber-region' ) );
 	if ( $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );
+	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 1;
 
 	Collection_box.markupText = collectionNumber;
 	
@@ -1203,28 +1300,27 @@ function drawCollectionNumber ( g, diy, sheet, drawSuffix ) {
 	Collection_box.drawAsSingleLine( g, region );
 }
 
+function drawSubtype( g, diy, sheet, box, text ) {
+	var faceIndex = sheet.getSheetIndex();
+
+	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Subtype-region' ) );
+	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 2;
+	
+	box.markupText = text.toUpperCase();
+	box.draw( g, region );
+}
+
 function drawCost( g, diy, sheet ) {
 	var faceIndex = sheet.getSheetIndex();
 
 	var cost = $( 'ResourceCost' + BindingSuffixes[faceIndex] );
 	var costRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Cost-region' ) );
-/*
-	if ( $CardClass == 'Investigator-specific' ) {
-		sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-CostNoLevel.png'), 
-			diy.settings.getRegion( getExpandedKey( faceIndex, 'CostNoLevel-region' ) ) );
 
-		costRegion.y += 2.0;
-	}
-*/
 	if ( cost == '-' ) {
 		if ( CardTypes[ faceIndex ] == 'AssetStory' )
 			drawDash( g, diy, sheet, costRegion, 0, -2 );
 		else if ( $CardClass == 'Weakness' || $CardClass == 'BasicWeakness' )
 			drawDash( g, diy, sheet, costRegion, 0, 0 );
-/*
-		else if ( $CardClass == 'Investigator-specific' )
-			drawDash( g, diy, sheet, costRegion, 0, -1 );	
-*/		
 		else
 			drawDash( g, diy, sheet, costRegion, 2, 0 );		
 	}
@@ -1446,6 +1542,7 @@ function drawEncounterInfo( g, diy, sheet ) {
 
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'EncounterNumber-region' ) );
 	if ( $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );	
+	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 1;
 
 	var encounterNumber = $( 'EncounterNumber' + BindingSuffixes[faceIndex] );
 	if (encounterNumber == null) encounterNumber = $EncounterNumber;
@@ -1540,7 +1637,11 @@ function drawClues( g, diy, sheet ) {
 
 		var fontSize = 14.0;
 
-		if ( clues.length() > 1 ) {
+		if ( clues == 1 ) {
+			region.x += 4;
+			perInvRegion.x -= 4;
+		}
+		else if ( clues.length() > 1 ) {
 			region.x -= 1;
 			perInvRegion.x += 1;
 			fontSize = 11.0;
@@ -1608,62 +1709,53 @@ function drawScenarioIndexFront( g, diy, sheet, typeText, textBox ) {
 	var text = typeText + ' ' + $ScenarioIndex;
 
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'ScenarioIndex-region' ) );
-	
-//	if ( faceIndex == FACE_FRONT ) {
-		if ( $Orientation == 'Reversed' ) {
-			region = reverseRegion( region );
-			region.x -= 1;
-		}
+	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 2;
+
+	if ( $Orientation == 'Reversed' ) {
+		region = reverseRegion( region );
+		region.x -= 1;
+	}
 
 		text = text + $ScenarioDeckID;
-//	}
-//	else {
-//		text = text.toUpperCase() + String.fromCharCode( $ScenarioDeckID.charCodeAt(0) + 1 );
-//	}
 			
 	textBox.markupText = text;
-//	textBox.draw( g, region );	
 	textBox.drawAsSingleLine( g, region );
-
 }
 
 function drawScenarioIndexBack( g, diy, sheet, typeText, textBox ) {
 	var faceIndex = sheet.getSheetIndex();
-//	var text = typeText + ' ' + $ScenarioIndex;
 	var text = $ScenarioIndex;
 
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'ScenarioIndex-region' ) );
+	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 2;
 
-	var lineHeight = region.height / 2;
-	
-	// first line
-	region.height -= lineHeight;
-	
-//	if ( faceIndex == FACE_FRONT ) {
-//		if ( $Orientation == 'Reversed' ) {
-//			region = reverseRegion( region );
-//			region.x -= 1;
-//		}
-
-//		text = text + $ScenarioDeckID;
-//	}
-//	else {
-//		text = text.toUpperCase() + String.fromCharCode( $ScenarioDeckID.charCodeAt(0) + 1 );
-		text = text + String.fromCharCode( $ScenarioDeckID.charCodeAt(0) + 1 );
-//	}
-			
-	textBox.markupText = typeText.toUpperCase();
-	textBox.drawAsSingleLine( g, region );
-
-	// second line
-	region.y += lineHeight;
-
+	text = typeText.toUpperCase() + ' ' + $ScenarioIndex + String.fromCharCode( $ScenarioDeckID.charCodeAt(0) + 1 );
+	textBox.markupText = '';
 	textBox.markupText = text;
-	textBox.drawAsSingleLine( g, region );
+	var height = textBox.measure(g, region);
+	textBox.markupText = '';
+
+	if ( height < 15 ) {	// fits on one line
+		textBox.markupText = text;
+		textBox.draw( g, region );	
+	}
+	else {
+		var lineHeight = region.height / 2;
 	
-//	text = typeText.toUpperCase() + ' ' + $ScenarioIndex + String.fromCharCode( $ScenarioDeckID.charCodeAt(0) + 1 );
-//	textBox.markupText = text;
-//	textBox.draw( g, diy.settings.getRegion( getExpandedKey( faceIndex, 'ScenarioIndex-region' ) ) );	
+		// first line
+		region.height -= lineHeight;
+	
+		text = $ScenarioIndex + String.fromCharCode( $ScenarioDeckID.charCodeAt(0) + 1 );
+			
+		textBox.markupText = typeText.toUpperCase();
+		textBox.drawAsSingleLine( g, region );
+
+		// second line
+		region.y += lineHeight;
+
+		textBox.markupText = text;
+		textBox.drawAsSingleLine( g, region );
+	}
 }
 
 function drawDash( g, diy, sheet, region, offsetX, offsetY ) {
@@ -1701,3 +1793,24 @@ function drawPageNumber ( g, diy, sheet, pageBox ) {
 	pageBox.markupText = pageNumber;
 	pageBox.drawAsSingleLine( g, region );
 }
+
+function drawWatermark( g, diy, sheet ) {
+	var faceIndex = sheet.getSheetIndex();
+
+	var image = null;	
+	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Watermark-portrait-clip-region' ) );
+
+	if ( $EncounterType == '0' ) {
+		image = ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-' + $Encounter + '.png');
+		}
+	// custom
+	else {
+		image = PortraitList[getPortraitIndex( 'Encounter' )].getImage();
+	}
+
+	var sizedImage = ImageUtils.resize( image, region.width, region.height );
+
+	g.setComposite( AlphaComposite.SrcOver.derive(0.06) );
+	g.drawImage( sizedImage, region.x, region.y, null );
+}
+

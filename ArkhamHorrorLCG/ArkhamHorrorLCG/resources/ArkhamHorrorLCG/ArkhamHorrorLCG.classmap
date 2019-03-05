@@ -1,6 +1,9 @@
+@cat-markers
+	@AHLCG-MiniInvestigator = diy:ArkhamHorrorLCG/diy/MiniInvestigator.js | ArkhamHorrorLCG/icons/AHLCG-MiniInvestigator.png | AHLCG
+	@AHLCG-Divider = diy:ArkhamHorrorLCG/diy/Divider.js | ArkhamHorrorLCG/icons/AHLCG-Divider.png | AHLCG
+
 @cat-characters
 	@AHLCG-Investigator = diy:ArkhamHorrorLCG/diy/Investigator.js | ArkhamHorrorLCG/icons/AHLCG-Investigator.png | AHLCG
-	@AHLCG-MiniInvestigator = diy:ArkhamHorrorLCG/diy/MiniInvestigator.js | ArkhamHorrorLCG/icons/AHLCG-MiniInvestigator.png | AHLCG
 
 @cat-inventory
     @AHLCG-Asset = diy:ArkhamHorrorLCG/diy/Asset.js | ArkhamHorrorLCG/icons/AHLCG-Asset.png | AHLCG

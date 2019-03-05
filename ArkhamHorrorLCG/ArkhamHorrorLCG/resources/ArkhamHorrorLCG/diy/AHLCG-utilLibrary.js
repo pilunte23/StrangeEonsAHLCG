@@ -47,31 +47,34 @@ function image( resource, folder, ext ) {
 }
 
 function readPortraits( diy, oos, typeList ) {
-	for ( let index = 0; index < typeList.length; index++) {
+	for ( let index = 0; index < typeList.length; index++ ) {
 		PortraitList[index] = oos.readObject();
 
 		// update base keys for newer versions...	
 		let key = PortraitList[index].getBaseKey();
+
 		let searchKey = '';
 		let replaceKey = '';
 		
-		if ( key.indexOf( 'EncounterPortrait' ) >= 0 ) {
-			searchKey = 'EncounterPortrait';
-			replaceKey = 'Encounter';
+		if ( key ) {
+			if ( key.indexOf( 'EncounterPortrait' ) >= 0 ) {
+				searchKey = 'EncounterPortrait';
+				replaceKey = 'Encounter';
+			}
+			else if ( key.indexOf( 'CollectionPortrait' ) >= 0 ) {
+				searchKey = 'CollectionPortrait';
+				replaceKey = 'Collection';
+			}
+			else if ( key.indexOf( '-Investigator-PortraitPortrait' ) >= 0 ) {
+				searchKey = '-Investigator-PortraitPortrait';
+				replaceKey = '-InvestigatorBack-Portrait';
+			}
+			else if ( key.indexOf( 'PortraitPortrait' ) >= 0 ) {
+				searchKey = 'PortraitPortrait';
+				replaceKey = 'Portrait';
+			}
 		}
-		else if ( key.indexOf( 'CollectionPortrait' ) >= 0 ) {
-			searchKey = 'CollectionPortrait';
-			replaceKey = 'Collection';
-		}
-		else if ( key.indexOf( '-Investigator-PortraitPortrait' ) >= 0 ) {
-			searchKey = '-Investigator-PortraitPortrait';
-			replaceKey = '-InvestigatorBack-Portrait';
-		}
-		else if ( key.indexOf( 'PortraitPortrait' ) >= 0 ) {
-			searchKey = 'PortraitPortrait';
-			replaceKey = 'Portrait';
-		}
-				
+			
 		if ( searchKey != '' ) {
 			let splitArr = key.split( searchKey );
 			
@@ -97,7 +100,11 @@ function readPortraits( diy, oos, typeList ) {
 
 function writePortraits( oos, typeList ) {
 	for ( let index = 0; index < typeList.length; index++) {
-		oos.writeObject( getPortrait( index ) );
+//	for ( let index = 0; index < PortraitList.length; index++) {
+		let portrait = getPortrait( index );
+//		let portrait = PortraitList[index];
+		
+		oos.writeObject( portrait );
 	}
 }
 
@@ -499,7 +506,7 @@ function addTextPart( faceIndex, text, key, diy ) {
 				formatEnd = diy.settings.get('AHLCG-Victory-formatEnd','</b>');
 				alignment = diy.settings.get('AHLCG-Victory-alignment','<center>');
 				break;
-			case 'DeckSize': 
+			case 'DeckSize':
 				format = diy.settings.get('AHLCG-DeckSize-format',#AHLCG-DeckSize-format);
 				formatEnd = diy.settings.get('AHLCG-DeckSize-formatEnd',#AHLCG-DeckSize-formatEnd);
 				alignment = diy.settings.get('AHLCG-DeckSize-alignment','');
@@ -562,7 +569,9 @@ function addTextPart( faceIndex, text, key, diy ) {
 				alignment = diy.settings.get('AHLCG-SmallStory-alignment','<left>');
 				break;
 			}
-			
+//println(key);
+//println(text + ' / ' + alignment + ' / ' + format + ' / ' + entryText + ' / ' + formatEnd);
+//println('End');
 		return text + alignment + format + entryText + formatEnd;
 	}
 	else {
@@ -581,12 +590,25 @@ function getExpandedKey( faceIndex, key, appendix ) {
 	return fullKey;	
 }
 
+function adjustFont() {
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	for ( let i = 0; i < arguments.length; i++ ) {
+		let box = arguments[i];
+		let style = box.getDefaultStyle();
+
+		style.add( SIZE, style.get(SIZE) * AHLCGObject.baseFontSize );
+		box.setDefaultStyle( style );
+	}
+}
+
 function initBodyTags( diy, textBox ) {
 	var AHLCGObject = Eons.namedObjects.AHLCGObject;
 
 	for( let index = 0; index < AHLCGObject.TagList.length; index++ ){
 		let item = AHLCGObject.TagList[index];
-		var repl = $(item+'-tag-replacement');
+		let repl = $(item+'-tag-replacement');
+		
 		if (repl != null && repl.startsWith('#'))
 		{
 			textBox.setReplacementForTag($(item+'-tag'), #(repl.substr(1)));
@@ -597,7 +619,7 @@ function initBodyTags( diy, textBox ) {
 		}
 	}
 	
-	for( let index = 0; index < AHLCGObject.StyleList.length; index++ ){
+	for( let index = 0; index < AHLCGObject.StyleList.length; index++ ) {
 		let item = AHLCGObject.StyleList[index];
 		textBox.setStyleForTag($(item+'-tag'), diy.settings.getTextStyle(item+'-style',null));
 	}
@@ -610,9 +632,9 @@ function initBodyTags( diy, textBox ) {
 		let used = loadUsedValue( 'Encounter', entry[3] );
 
 		if ( used ) {				
-			textBox.setReplacementForTag( entry[2] + 's', '<image res://ArkhamHorrorLCG/icons/AHLCG-' + entry[0] + '.png 0.14in center>' );
-			textBox.setReplacementForTag( entry[2] + 'm', '<image res://ArkhamHorrorLCG/icons/AHLCG-' + entry[0] + '.png 0.35in center>' );
-			textBox.setReplacementForTag( entry[2] + 'l', '<image res://ArkhamHorrorLCG/icons/AHLCG-' + entry[0] + '.png 0.60in center>' );
+			textBox.setReplacementForTag( entry[2] + 's', '<image res://ArkhamHorrorLCG/icons/AHLCG-' + entry[0] + '.png 0.14in baseline>' );
+			textBox.setReplacementForTag( entry[2] + 'm', '<image res://ArkhamHorrorLCG/icons/AHLCG-' + entry[0] + '.png 0.35in baseline>' );
+			textBox.setReplacementForTag( entry[2] + 'l', '<image res://ArkhamHorrorLCG/icons/AHLCG-' + entry[0] + '.png 0.60in baseline>' );
 		}
 	}
 
@@ -656,6 +678,12 @@ function initBodyTags( diy, textBox ) {
 			textBox.setReplacementForTag( tag + 'l', '<image "' + icon + '" 0.60in center>' );
 		}
 	} 
+
+	for( let index = 0; index < AHLCGObject.locationIcons.length; index++ ){
+		let item = AHLCGObject.locationIcons[index];
+
+		textBox.setReplacementForTag( $('Loc'+item+'-tag'), '<image res://ArkhamHorrorLCG/icons/AHLCG-Loc' + item + '.png 0.14in center>' );
+	}
 }
 
 function initCopyrightTags( diy, textBox ) {

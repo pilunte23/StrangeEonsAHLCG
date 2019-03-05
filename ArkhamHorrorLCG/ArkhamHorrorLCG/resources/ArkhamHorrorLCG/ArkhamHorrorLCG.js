@@ -48,6 +48,7 @@ function() initialize {
 	ahlcgGame.masterSettings.addSettingsFrom('ArkhamHorrorLCG/settings/AHLCG-BackPortrait.settings');
 	ahlcgGame.masterSettings.addSettingsFrom('ArkhamHorrorLCG/settings/AHLCG-Story.settings');
 	ahlcgGame.masterSettings.addSettingsFrom('ArkhamHorrorLCG/settings/AHLCG-Guide75.settings');
+	ahlcgGame.masterSettings.addSettingsFrom('ArkhamHorrorLCG/settings/AHLCG-Divider.settings');
 
 	Eons.namedObjects.AHLCGObject = new gameObject( ahlcgGame.masterSettings );
 
@@ -83,9 +84,48 @@ function gameObject( masterSettings ) {
 	if ( titleFontFamily == 'Teutonic' ) this.titleFamily = registerTTFont( 'Teutonic' );
 	else this.titleFamily = titleFontFamily;
 
-	var fontFamily = ResourceKit.findAvailableFontFamily( 'Times New Roman', 'NimbusRomNo9L' );
+	var fontFamily = ResourceKit.findAvailableFontFamily( 'Arno Pro, Times New Roman', 'NimbusRomNo9L' );
+//	var fontFamily = ResourceKit.findAvailableFontFamily( 'Times New Roman', 'NimbusRomNo9L' );
 
-	if (fontFamily == 'Times New Roman') this.bodyFamily = 'Times New Roman';
+	this.bodyFontTightness = 0.64;
+	this.bodyFontSize = 7.8;
+	this.bodyFontSpacing = 0.97;
+	this.bodyTraitSize = 7;
+	this.bodyTraitSpacing = 0.97;
+	this.bodyFlavorSize = 7.0;
+	this.bodyFlavorSpacing = 0.92;
+	this.bodyStorySize = 7.8;
+	this.bodyStorySpacing = 0.92;
+	this.collectionSize = 4.5;
+	this.subtitleSize = 6.0;
+	this.smallLabelSize = 4.7;
+	this.largeLabelSize = 6.2;
+	this.subtypeSize = 5.5;
+	this.subtitleFontSpacing = 1.0;
+	this.scenarioIndexSize = 6.5;
+	this.scenarioIndexBackSize = 4.4;
+	this.difficultySize = 5.8;
+	
+	if (fontFamily == 'Arno Pro') {
+		this.bodyFamily = 'Arno Pro';
+
+		this.bodyFontTightness = 0.57;
+		this.bodyFontSize = this.bodyFontSize * 1.08;
+		this.bodyTraitSize = this.bodyTraitSize * 1.12;
+		this.bodyFlavorSize = this.bodyFlavorSize * 1.12;
+		this.bodyStorySize = this.bodyStorySize * 1.12;
+		this.subtitleSize = this.subtitleSize * 1.08;
+		this.smallLabelSize = this.smallLabelSize * 1.08;
+		this.largeLabelSize = this.largeLabelSize * 1.08;
+		this.subtypeSize = this.subtypeSize * 1.08;
+		this.collectionSize = this.collectionSize * 1.12;
+		this.bodyFlavorSpacing = 0.96;
+		this.subtitleFontSpacing = 0.97;
+		this.scenarioIndexSize = this.scenarioIndexSize * 1.08;
+		this.scenarioIndexBackSize = this.scenarioIndexBackSize * 1.08;
+		this.difficultySize = this.difficultySize * 1.08;		
+	}
+	else if (fontFamily == 'Times New Roman') this.bodyFamily = 'Times New Roman';
 	else this.bodyFamily = registerOTFont( 'NimbusRomNo9L-Med', 'NimbusRomNo9L-MedIta', 'NimbusRomNo9L-Reg', 'NimbusRomNo9L-RegIta' );
 
 	this.skillFamily = registerTTFont( 'Bolton', 'BoltonBold' );
@@ -150,11 +190,7 @@ function gameObject( masterSettings ) {
 		ListItem( 'BasicWeakness', @AHLCG-WknType-BasicWeakness ), 
 		ListItem( 'Weakness', @AHLCG-WknType-Weakness ),
 		ListItem( 'InvestigatorWeakness', @AHLCG-WknType-InvestigatorWeakness ) );
-/*
-	this.comboEnemyClasses = new Array( 
-		ListItem( 'Encounter', @AHLCG-Class-Encounter ),
-		ListItem( 'Weakness', @AHLCG-Class-Weakness ) );
-*/				
+
 	this.comboScenario = new Array( 
 		ListItem( 'Portrait', @AHLCG-Scenario-Portrait ),
 		ListItem( 'Title', @AHLCG-Scenario-Title ),
@@ -266,31 +302,13 @@ function gameObject( masterSettings ) {
 	for( let index = 0; index <= 20; index++ ){
 		this.combo020[index] = ListItem( index, String(index) );
 	}
-/*
-	this.CollectionList = new Array(
-		'CustomCollection',
-		'StrangeEons',
-		'CoreSet',
-		'TheDunwichLegacy'		
-	);
-		
-	this.comboCollection = [];
-	this.comboCollection = this.comboCollection.concat( this.CollectionList );
-	for( let index = 0; index < this.comboCollection.length; index++ ) {
-		let item = this.comboCollection[index];
 
-		this.comboCollection[index] = ListItem(
-			item, @('AHLCG-' + item),
-			ImageUtils.createIcon(ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-' + item + '.png'), 12, 12)
-		);
-	}
-*/
 	this.basicEncounterList = new Array(
 		'CustomEncounterSet',
 		'StrangeEons'
 	);
 
-	// Highest = 73
+	// Highest = 74
 	// NameKey, CollectionID, Tag, Index into select keys
 	this.standardEncounterList = new Array(
 		[ 'APhantomOfTruth', 4, 'phntm', 50 ],
@@ -348,6 +366,7 @@ function gameObject( masterSettings ) {
 		[ 'TheBayou', 2, 'bayou', 22 ],
 		[ 'TheBeyond', 1, 'beyond', 23 ],
 		[ 'TheBoundaryBeyond', 5, 'bndry', 70 ],
+		[ 'TheDepthsOfYoth', 5, 'tdoy', 74 ],
 		[ 'TheDevourerBelow', 0, 'devbel', 24 ],
 		[ 'TheDoomOfEztli', 5, 'dmeztli', 66 ],
 		[ 'TheEssexCountyExpress', 1, 'esxexp', 25 ],
@@ -390,7 +409,7 @@ function gameObject( masterSettings ) {
 	updateUsedCollections( this );
 						
 	this.TagList = new Array (
-		'Fast', 'Name', 'HorizontalSpacer', 'VerticalSpacer', 
+		'Fast', 'Name', 'HorizontalSpacer', 'LargeVerticalSpacer', 'VerticalSpacer', 
 		'SmallVerticalSpacer', 'Action', 'Reaction', 'Fast',
 		'Guardian', 'Seeker', 'Rogue', 'Mystic', 'Survivor',
 		'Willpower', 'Intellect', 'Combat', 'Agility', 'Wild',

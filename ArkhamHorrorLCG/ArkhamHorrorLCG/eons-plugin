@@ -1,7 +1,7 @@
 #
 #
 
-id = CATALOGUEID{0b899f3c-78ae-40b8-bcfc-b06479b1f136:2018-8-6-16-1-8-405}
+id = CATALOGUEID{0b899f3c-78ae-40b8-bcfc-b06479b1f136:2019-2-5-18-24-49-909}
 
 priority = GAME
 ui-languages = en_US,it_IT,es,fr_FR,de_DE
@@ -23,10 +23,28 @@ catalog-description = <p>This plug-in allows the creation of components for \
     owners.</p>\n<h2>Credits and thanks:</h2>\n<p>Developed by Tim Bennett \
     (jaqenZann).  Templates developed with the help of templates by GeckoTH and card \
     scans by Will Fuqua. Italian translation by Stefano Cardinale.  French \
-    translation by David Violeau.  German translation by Magnus Upmann.</p>\n<p>Thanks \
-    to Christopher G. Jennings for Strange Eons, and to Nate French, Matt Newman, and \
-    FFG for this great game.</p>\n<p>Thanks also to karagh, whose Lord of the Rings: \
-    The Card Game plugin was instrumental in making this possible.</p>
+    translation by David Violeau.  German translation by Magnus \
+    Upmann.</p>\n<p>Thanks to Christopher G. Jennings for Strange Eons, and to Nate \
+    French, Matt Newman, and FFG for this great game.</p>\n<p>Thanks also to karagh, \
+    whose Lord of the Rings: The Card Game plugin was instrumental in making this \
+    possible.</p>
+catalog-description_de_DE = <p>Mit diesem Plug-in lassen sich Komponenten fï¿½r \
+    <i><b>Arkham Horror: Das Kartenspiel</b></i> von Fantasy Flight Games \
+    erstellen.</p>\n<p>Dieses Plug-in ist fï¿½r Freunde des Spiels gedacht; \
+    <b>jegliche kommerzielle Nutzung ist untersagt</b>. Beachte, dass dieses Plug-in \
+    von FFG weder entwickelt noch genehmigt wurde, und dass FFG auch keine \
+    Hilfestellung bei Problemen damit leistet. <i><b>LCG</b></i> und <i><b>Arkham \
+    Horror: Das Kartenspiel</b></i> sind eingetragene Markenzeichen von \
+    <i><b>Fantasy Flight Publishing, Inc.</b></i> bzw. <i><b>Asmodee Deutschland \
+    GmbH</b></i>. Alle Rechte sind den jeweiligen Rechteinhabern \
+    vorbehalten.\n<h2>Entwickler und Danksagungen:</h2>\n<p>Entwickelt von Tim \
+    Bennett (jaqenZann).  Die Kartenvorlagen wurden mithilfe von Kartenvorlagen von \
+    GeckoTH und Kartenscans von Will Fuqua entwickelt.  Deutsche ï¿½bersetzung von \
+    Magnus Upmann.  Italienische ï¿½bersetzung von Stefano Cardinale.  Franzï¿½sische \
+    ï¿½bersetzung von David Violeau.</p>\n<p>Danke an Christopher G. Jennings fï¿½r \
+    Strange Eons, und an Nate French, Matt Newman und FFG fï¿½r dieses groï¿½artige \
+    Spiel.</p>\n<p>Auï¿½erdem Danke an karagh, ohne dessen Plug-in fï¿½r Der Herr der \
+    Ringe: Das Kartenspiel die Entwicklung dieses Plug-ins nicht mï¿½glich gewesen wï¿½re.</p>
 catalog-description_en_US = catalog-description = <p>This plug-in allows the \
     creation of components for <i><b>Arkham Horror: The Card Game</b></i> by Fantasy \
     Flight Games.</p>\n<p>This plug-in is intended to be used by fans of the game, \
@@ -36,12 +54,12 @@ catalog-description_en_US = catalog-description = <p>This plug-in allows the \
     trademarks of <i><b>Fantasy Flight Publishing, Inc.</b></i> All rights reserved \
     to their respective owners.</p>\n<h2>Credits and thanks:</h2>\n<p>Developed by \
     Tim Bennett (jaqenZann).  Templates developed with the help of templates by \
-    GeckoTH and card scans by Will Fuqua. Italian translation by Stefano \
-    Cardinale. French translation by David Violeau. German translation by Magnus \
-    Upmann.</p>\n<p>Thanks to Christopher G. Jennings for Strange Eons, and to \
-    Nate French, Matt Newman, and FFG for this great game.</p>\n<p>Thanks also to \
-    karagh, whose Lord of the Rings: The Card Game plugin was instrumental in making \
-    this possible.</p>
+    GeckoTH and card scans by Will Fuqua. Italian translation by Stefano Cardinale. \
+    French translation by David Violeau. German translation by Magnus \
+    Upmann.</p>\n<p>Thanks to Christopher G. Jennings for Strange Eons, and to Nate \
+    French, Matt Newman, and FFG for this great game.</p>\n<p>Thanks also to karagh, \
+    whose Lord of the Rings: The Card Game plugin was instrumental in making this \
+    possible.</p>
 catalog-description_it_IT = <p>Questa plug-in permette la creazione di \
     componenti per <i><b>Arkham Horror: Il Gioco di Carte</b></i> della Fantasy \
     Flight Games.</p>\n<p>Questa plug-in &egrave; pensata per essere usata da \
@@ -58,23 +76,6 @@ catalog-description_it_IT = <p>Questa plug-in permette la creazione di \
     grande gioco.</p>\n<p>Grazie anche a karagh, per la sua plugin Lord of the \
     Rings: The Card Game che &egrave; stata indispensabile nel rendere tutto questo \
     possibile.</p>
-catalog-description_de_DE = <p>Mit diesem Plug-in lassen sich Komponenten für \
-	<i><b>Arkham Horror: Das Kartenspiel</b></i> von Fantasy Flight Games \
-	erstellen.</p>\n<p>Dieses Plug-in ist für Freunde des Spiels gedacht; <b>jegliche \
-	kommerzielle Nutzung ist untersagt</b>. Beachte, dass dieses Plug-in von FFG \
-	weder entwickelt noch genehmigt wurde, und dass FFG auch keine Hilfestellung bei \
-	Problemen damit leistet. <i><b>LCG</b></i> und <i><b>Arkham Horror: Das \
-	Kartenspiel</b></i> sind eingetragene Markenzeichen von <i><b>Fantasy Flight \
-	Publishing, Inc.</b></i> bzw. <i><b>Asmodee Deutschland GmbH</b></i>. Alle \
-	Rechte sind den jeweiligen Rechteinhabern vorbehalten.\n<h2>Entwickler und \
-	Danksagungen:</h2>\n<p>Entwickelt von Tim Bennett (jaqenZann).  Die Kartenvorlagen \
-	wurden mithilfe von Kartenvorlagen von GeckoTH und Kartenscans von Will Fuqua \
-	entwickelt.  Deutsche Übersetzung von Magnus Upmann.  Italienische Übersetzung von \
-	Stefano Cardinale.  Französische Übersetzung von David Violeau.</p>\n<p>Danke \
-	an Christopher G. Jennings für Strange Eons, und an Nate French, Matt Newman und FFG \
-	für dieses großartige Spiel.</p>\n<p>Außerdem Danke an karagh, ohne dessen Plug-in \
-	für Der Herr der Ringe: Das Kartenspiel die Entwicklung dieses Plug-ins nicht \
-	möglich gewesen wäre.</p>
 
 catalog-tags = game
 

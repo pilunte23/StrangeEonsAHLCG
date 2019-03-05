@@ -24,7 +24,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 	
-	diy.version = 5;
+	diy.version = 8;
 }
 
 function setDefaults() {
@@ -146,10 +146,11 @@ function paintFront( g, diy, sheet ) {
 	drawLabel( g, diy, sheet, Label_box, #AHLCG-Label-Treachery );
 	drawName( g, diy, sheet, Name_box );
 
-	var subtypeText = #AHLCG-Label-Weakness;
+//	var subtypeText = #AHLCG-Label-Weakness;
 
-	Subtype_box.markupText = subtypeText.toUpperCase();
-	Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
+//	Subtype_box.markupText = subtypeText.toUpperCase();
+//	Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
+	drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-Weakness );
 
 	drawOverlay( g, diy, sheet, 'BasicWeakness' );
 
@@ -183,7 +184,7 @@ function onRead(diy, oos) {
 	updateCollection();
 	updateEncounter();
 
-	diy.version = 5;
+	diy.version = 8;
 }
 
 function onWrite( diy, oos ) {

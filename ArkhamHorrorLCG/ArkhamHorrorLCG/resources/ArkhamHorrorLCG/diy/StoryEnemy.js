@@ -25,7 +25,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 	
-	diy.version = 7;
+	diy.version = 8;
 }
 
 function setDefaults() {
@@ -324,7 +324,7 @@ function onRead(diy, oos) {
 		$HeaderASpacing = '0';
 	}
 
-	diy.version = 7;
+	diy.version = 8;
 }
 
 function onWrite( diy, oos ) {

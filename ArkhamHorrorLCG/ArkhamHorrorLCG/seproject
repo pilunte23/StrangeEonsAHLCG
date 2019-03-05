@@ -1,7 +1,7 @@
 #WARNING:
 #If this file is deleted then this folder will no
 #longer appear to be a project/task in Strange Eons.
-#Thu Sep 06 12:26:13 EDT 2018
+#Sat Mar 02 22:36:13 EST 2019
 type=PLUGIN
 bundle-file=ArkhamHorrorLCG.seext
 clean-ext=class

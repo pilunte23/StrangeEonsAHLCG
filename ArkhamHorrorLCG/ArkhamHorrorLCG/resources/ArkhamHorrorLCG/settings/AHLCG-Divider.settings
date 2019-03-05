@@ -1,0 +1,14 @@
+AHLCG-Divider-Default-template = ArkhamHorrorLCG/templates/AHLCG-Divider.jp2
+AHLCG-DividerBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-Divider.jp2
+
+AHLCG-Divider-Name-region = 123,20,286,25
+AHLCG-Divider-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 12.5; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.05; FOREGROUND: #000000
+
+AHLCG-DividerBack-Name-region = 28,90,307,30
+
+AHLCG-Divider-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-Divider-Encounter-portrait-pany = 0
+
+AHLCG-Divider-Encounter-portrait-clip-region = 476,11,40,40
+
+AHLCG-Divider-Watermark-portrait-clip-region = 80,46,380,380

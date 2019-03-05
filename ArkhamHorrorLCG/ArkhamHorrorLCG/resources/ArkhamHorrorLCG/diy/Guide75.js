@@ -21,13 +21,14 @@ function create( diy ) {
 	setDefaults();
 	createPortraits( diy, PortraitTypeList );
 
-	diy.version = 6;	
+	diy.version = 8;
 }
 
 function setDefaults() {
 	$PageType = 'Empty';
 
 	$Page = '1';
+//	$Columns = '2';
 	
 	$RulesLeft = '';
 	$RulesRight = '';
@@ -40,22 +41,22 @@ function createInterface( diy, editor ) {
 	var AHLCGObject = Eons.namedObjects.AHLCGObject;
 	
 	var bindings = new Bindings( editor, diy );
-	
+
 	// do this first, we need the portrait panels for the title listener
 	var PortraitTabArray = layoutGuidePortraits( diy, bindings, 'Portrait1', 'Portrait2', true );
 	var PortraitTab = PortraitTabArray[0];
 	PortraitTabArray.splice( 0, 1 );
 
-	var TitlePanel = layoutTitleGuide( diy, bindings, [0, 1], FACE_FRONT, PortraitTabArray );
+	var TitlePanel = layoutTitleGuide( diy, bindings, [0], FACE_FRONT, PortraitTabArray );
 	var StatPanel = layoutGuideStats( bindings, FACE_FRONT );
-	StatPanel.setTitle( @AHLCG-BasicData + ': ' + @AHLCG-Front );
-	var BackTitlePanel = layoutTitleScenario( diy, bindings, [1], FACE_BACK );
+	StatPanel.setTitle( @AHLCG-BasicData );
 
 	var StatisticsTab = new Grid();
 	StatisticsTab.editorTabScrolling = true;
 	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', StatPanel, 'wrap, pushx, growx' );
+//	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx' );
 	StatisticsTab.addToEditor( editor , @AHLCG-General );
-	
+
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
 
 	var LeftTextTab = layoutText( bindings, [ 'Rules' ], 'Left', FACE_FRONT );
@@ -82,7 +83,7 @@ function createFrontPainter( diy, sheet ) {
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
-	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
+//	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
 	Body_box.setTextFitting( FIT_NONE );
 	initBodyTags( diy, Body_box );	
 	initGuideTags( diy, Body_box );
@@ -138,7 +139,7 @@ function onRead(diy, oos) {
 		readPortraits( diy, oos, PortraitTypeList );
 	}
 
-	diy.version = 6;
+	diy.version = 8;
 }
 
 function onWrite( diy, oos ) {

@@ -22,7 +22,7 @@ function create( diy ) {
 	setDefaults();
 	createPortraits( diy, PortraitTypeList );
 
-	diy.version = 5;
+	diy.version = 8;
 }
 
 function setDefaults() {
@@ -89,7 +89,7 @@ function onClear() {
 function onRead(diy, oos) {
 	readPortraits( diy, oos, PortraitTypeList );
 	
-	diy.version = 5;
+	diy.version = 8;
 }
 
 function onWrite( diy, oos ) {
