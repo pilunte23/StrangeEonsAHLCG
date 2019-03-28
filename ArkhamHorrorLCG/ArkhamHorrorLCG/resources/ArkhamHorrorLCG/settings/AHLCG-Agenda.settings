@@ -1,0 +1,69 @@
+AHLCG-Agenda-Default-template = ArkhamHorrorLCG/templates/AHLCG-Agenda.jp2
+AHLCG-AgendaBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-AgendaBack.jp2
+
+AHLCG-Agenda-Name-region = 255,64,250,22
+AHLCG-Agenda-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 11.5; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.05; FOREGROUND: #000000
+
+AHLCG-AgendaBack-Name-region = 21,110,48,226
+AHLCG-AgendaBack-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 11.5; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.05; FOREGROUND: #000000
+AHLCG-AgendaBack-Name-alignment = center, middle
+
+AHLCG-Agenda-Body-region = 255,100,259,237
+AHLCG-Agenda-Body-alignment = left
+AHLCG-Agenda-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WEIGHT: WEIGHT_MEDIUM; WIDTH: {Eons.namedObjects.AHLCGObject.bodyFontSpacing}; FOREGROUND: #000000
+AHLCG-Agenda-Body-tightness = 1.0
+
+AHLCG-AgendaBack-Header-alignment = left
+AHLCG-AgendaBack-Header-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WIDTH: {Eons.namedObjects.AHLCGObject.bodyFontSpacing}; WEIGHT: WEIGHT_BOLD; FOREGROUND: #000000
+AHLCG-AgendaBack-Header-tightness = 1.0
+
+AHLCG-AgendaBack-Story-region = 128,34,355,310
+AHLCG-AgendaBack-Story-alignment = left
+AHLCG-AgendaBack-Story-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WEIGHT: WEIGHT_MEDIUM; WIDTH: {Eons.namedObjects.AHLCGObject.bodyFontSpacing}; FOREGROUND: #000000; POSTURE: OBLIQUE
+AHLCG-AgendaBack-Story-tightness = 1.0
+
+AHLCG-AgendaBack-Body-region = 113,34,370,310
+AHLCG-AgendaBack-Body-alignment = left
+AHLCG-AgendaBack-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WEIGHT: WEIGHT_MEDIUM; WIDTH: {Eons.namedObjects.AHLCGObject.bodyFontSpacing}; FOREGROUND: #000000
+AHLCG-AgendaBack-Body-tightness = 1.0
+
+AHLCG-Agenda-Portrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+AHLCG-Agenda-Portrait-portrait-pany = 0
+AHLCG-Agenda-Portrait-portrait-clip-region = 0,0,305,375
+AHLCG-Agenda-DefaultPortrait-portrait-clip-region = 0,0,305,375
+
+AHLCG-Agenda-Doom-region = 233,291,50,49
+AHLCG-Agenda-DoomPerInv-region = 227,291,50,48
+AHLCG-Agenda-PerInv-region = 254,293,30,48
+
+AHLCG-Agenda-Dash-tint = 38.0, 0.14, 1.0
+
+AHLCG-Agenda-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-Agenda-Encounter-portrait-pany = 0
+
+AHLCG-Agenda-Encounter-portrait-clip-region = 368,27,28,28
+AHLCG-Agenda-DefaultEncounter-portrait-clip-region = 368,27,28,28
+AHLCG-AgendaBack-Encounter-portrait-clip-region = 27,57,36,36
+
+AHLCG-Agenda-Artist-region = 220,365,120,10
+AHLCG-Agenda-Copyright-region = 343,365,89,10
+
+AHLCG-Agenda-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-Agenda-Collection-portrait-pany = 0
+
+AHLCG-Agenda-Collection-portrait-clip-region = 476,362,13,13
+AHLCG-Agenda-DefaultCollection-portrait-clip-region = 476,362,13,13
+
+AHLCG-Agenda-CollectionNumber-region = 499,365,21,10
+
+AHLCG-Agenda-ScenarioIndex-region = 314,8,134,21
+AHLCG-Agenda-ScenarioIndex-alignment = center, middle
+AHLCG-Agenda-ScenarioIndex-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.scenarioIndexSize}; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
+
+AHLCG-AgendaBack-ScenarioIndex-region = 24,32,41,16
+AHLCG-AgendaBack-ScenarioIndex-alignment = center, middle
+AHLCG-AgendaBack-ScenarioIndex-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.scenarioIndexBackSize}; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
+
+AHLCG-Agenda-EncounterNumber-region = 432,365,35,10
+AHLCG-Agenda-EncounterNumber-alignment = center, middle
+AHLCG-Agenda-EncounterNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF

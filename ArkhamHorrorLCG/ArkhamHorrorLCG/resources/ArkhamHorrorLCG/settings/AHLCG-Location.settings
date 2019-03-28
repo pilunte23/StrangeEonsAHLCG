@@ -1,0 +1,74 @@
+AHLCG-Location-Default-template = ArkhamHorrorLCG/templates/AHLCG-Location.jp2
+AHLCG-LocationBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-LocationBack.jp2
+
+AHLCG-Location-Label-region = 138,278,100,14
+AHLCG-Location-Label-alignment = center, middle
+AHLCG-Location-Label-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.largeLabelSize*0.9}; WEIGHT: WEIGHT_BOLD; WIDTH: 1.05; FOREGROUND: #000000
+AHLCG-LocationBack-Label-region = 138,276,100,14
+AHLCG-LocationBack-Label-alignment = center, middle
+AHLCG-LocationBack-Label-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.largeLabelSize*0.9}; WEIGHT: WEIGHT_BOLD; WIDTH: 1.05; FOREGROUND: #000000
+
+AHLCG-Location-Name-region = 65,3,242,29
+AHLCG-Location-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 12.5; WEIGHT: WEIGHT_REGULAR; WIDTH: 0.99; FOREGROUND: #000000
+AHLCG-LocationBack-Name-region = 65,4,242,29
+AHLCG-LocationBack-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 12.5; WEIGHT: WEIGHT_REGULAR; WIDTH: 0.99; FOREGROUND: #000000
+
+AHLCG-Location-SubtitleText-region = 95,36,191,21
+AHLCG-Location-Subtitle-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.subtitleSize}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.95; FOREGROUND: #000000
+AHLCG-Location-Subtitle-alignment = center, middle
+
+AHLCG-LocationBack-SubtitleText-region = 95,36,191,21
+AHLCG-LocationBack-Subtitle-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.subtitleSize}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.95; FOREGROUND: #000000
+AHLCG-LocationBack-Subtitle-alignment = center, middle
+
+AHLCG-Location-Body-region = 20,300,336,143
+AHLCG-Location-Body-alignment = left
+AHLCG-Location-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WEIGHT: WEIGHT_MEDIUM; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
+AHLCG-LocationBack-Body-region = 20,300,336,143
+AHLCG-LocationBack-Body-alignment = left
+AHLCG-LocationBack-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WEIGHT: WEIGHT_MEDIUM; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
+
+AHLCG-BaseIcon-region = 9,1,47,46
+
+AHLCG-Location-Portrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+AHLCG-Location-Portrait-portrait-pany = 0
+AHLCG-Location-Portrait-portrait-clip-region = 0,42,375,275
+
+AHLCG-LocationBack-BackPortrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+AHLCG-LocationBack-BackPortrait-portrait-pany = 0
+AHLCG-LocationBack-BackPortrait-portrait-clip-region = 0,42,375,275
+
+AHLCG-Location-BackPortrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+AHLCG-Location-BackPortrait-portrait-pany = 0
+AHLCG-Location-BackPortrait-portrait-clip-region = 0,42,375,275
+
+AHLCG-LocationIcon-region = 14,6,36,35
+AHLCG-Connection1Icon-region = 67,467,35,35
+AHLCG-Connection2Icon-region = 108,459,35,35
+AHLCG-Connection3Icon-region = 150,456,34,34
+AHLCG-Connection4Icon-region = 191,456,34,34
+AHLCG-Connection5Icon-region = 232,459,35,35
+AHLCG-Connection6Icon-region = 273,467,35,35
+
+AHLCG-Location-Shroud-region = 9,251,49,49
+AHLCG-Location-Clues-region = 318,251,49,50
+AHLCG-Location-CluesPerInv-region = 309,251,49,49
+AHLCG-Location-PerInv-region = 338, 254, 30, 49
+
+AHLCG-Location-Victory-region = 293,441,74,17
+AHLCG-Location-Victory-alignment = center
+
+AHLCG-Location-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-Location-Collection-portrait-pany = 0
+
+AHLCG-Location-Collection-portrait-clip-region = 319,512,13,13
+AHLCG-LocationBack-Collection-portrait-clip-region = 319,512,13,13
+
+AHLCG-Location-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-Location-Encounter-portrait-pany = 0
+
+AHLCG-Location-Encounter-portrait-clip-region = 174,245,28,28
+AHLCG-LocationBack-Encounter-portrait-clip-region = 174,245,28,28
+
+AHLCG-Location-Copyright-region = 165,515,86,10
+AHLCG-LocationBack-Copyright-region = 165,511,86,10

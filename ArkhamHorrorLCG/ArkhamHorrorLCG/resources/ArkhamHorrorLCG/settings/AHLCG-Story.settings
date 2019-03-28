@@ -1,0 +1,36 @@
+AHLCG-Story-Default-template = ArkhamHorrorLCG/templates/AHLCG-Enemy.jp2
+AHLCG-StoryBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-AssetStory.jp2
+
+AHLCG-Story-Label-region = 138,508,100,14
+AHLCG-Story-Label-alignment = center, middle
+AHLCG-Story-Label-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.largeLabelSize*0.92}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.95; FOREGROUND: #000000
+
+AHLCG-Story-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 11.2; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.09; FOREGROUND: #000000
+AHLCG-Story-Name-region = 38,31,254,31
+AHLCG-Story-Name-alignment = center, middle
+
+AHLCG-Story-Header-alignment = left
+AHLCG-Story-Header-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize*1.02}; WIDTH: 0.93; WEIGHT: WEIGHT_BOLD; FOREGROUND: #000000
+AHLCG-Story-Header-tightness = 1.15
+
+AHLCG-Story-Story-region = 51,107,290,389
+AHLCG-Story-Story-alignment = left
+AHLCG-Story-Story-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize*1.02}; WIDTH: 0.88; POSTURE: OBLIQUE; FOREGROUND: #000000
+AHLCG-Story-Story-tightness = 1.15
+
+AHLCG-Story-Body-region = 36,107,305,400
+AHLCG-Story-Body-alignment = left
+AHLCG-Story-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize*1.02}; WEIGHT: WEIGHT_MEDIUM; WIDTH: 1.05; FOREGROUND: #000000
+AHLCG-Story-Body-tightness = 1.15
+
+AHLCG-Story-BackPortrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+AHLCG-Story-BackPortrait-portrait-pany = 0
+AHLCG-Story-BackPortrait-portrait-clip-region = 0,241,375,284
+
+AHLCG-Story-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-Story-Encounter-portrait-pany = 0
+
+AHLCG-Story-Encounter-portrait-clip-region = 308,27,36,36
+AHLCG-Story-DefaultEncounter-portrait-clip-region = 308,27,36,36
+
+AHLCG-Story-Dash-tint = 38.0, 0.14, 1.0

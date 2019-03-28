@@ -1,0 +1,38 @@
+AHLCG-Guide75-Default-template = ArkhamHorrorLCG/templates/AHLCG-Guide75Empty.jp2
+
+AHLCG-Guide75-Name-region = 340,283,445,42
+AHLCG-Guide75-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 20.0; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #FFFFFF
+
+AHLCG-Guide75-ResHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #492925
+AHLCG-Guide75-SAHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #3d534e
+AHLCG-Guide75-Header-alignment = center
+
+AHLCG-Guide75-Body-region = 65,65,993,1012
+AHLCG-Guide75-BodyLeftTitle-region = 65,378,472,701
+AHLCG-Guide75-BodyRightTitle-region = 572,378,472,701
+AHLCG-Guide75-BodyLeftEmpty-region = 65,65,472,1012
+AHLCG-Guide75-BodyRightEmpty-region = 572,65,472,1012
+AHLCG-Guide75-Body-alignment = left, top
+AHLCG-Guide75-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize*1.06}; WEIGHT: WEIGHT_MEDIUM; WIDTH: 1.00; FOREGROUND: #000000
+AHLCG-Guide75-Body-tightness = 1.65
+AHLCG-Guide75-BodySection-tightness = 1.0
+AHLCG-Guide75-BodyName-region = 56,83,268,390
+AHLCG-Guide75-BodyResolution-region = 56,98,268,375
+
+AHLCG-Guide75-ResBullet-style = FOREGROUND: #492925
+AHLCG-Guide75-SABullet-style = FOREGROUND: #3d534e
+
+AHLCG-Guide75-PageOdd-region = 546,1075,30,32
+AHLCG-Guide75-PageEven-region = 548,1075,30,32
+AHLCG-Guide75-Page-alignment = center, middle
+AHLCG-Guide75-Page-style = FAMILY: {Eons.namedObjects.AHLCGObject.skillFamily}; SIZE: 12.0; WEIGHT: WEIGHT_MEDIUM; WIDTH: 0.98; FOREGROUND: #000000
+
+AHLCG-Guide75-Portrait1-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+AHLCG-Guide75-Portrait1-portrait-panx = 0
+AHLCG-Guide75-Portrait1-portrait-pany = 0
+AHLCG-Guide75-Portrait1-portrait-clip-region = 65,65,993,1000
+
+AHLCG-Guide75-Portrait2-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+AHLCG-Guide75-Portrait2-portrait-panx = 0
+AHLCG-Guide75-Portrait2-portrait-pany = 0
+AHLCG-Guide75-Portrait2-portrait-clip-region = 65,65,993,1000

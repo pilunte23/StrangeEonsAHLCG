@@ -1,0 +1,34 @@
+AHLCG-Treachery-Default-template = ArkhamHorrorLCG/templates/AHLCG-Treachery.jp2
+AHLCG-TreacheryBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-EncounterBack.jp2
+AHLCG-TreacheryStoryBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-PlayerBack.jp2
+
+AHLCG-Treachery-Label-region = 137,286,104,14
+AHLCG-Treachery-Label-alignment = center, middle
+AHLCG-Treachery-Label-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.largeLabelSize*0.95}; WEIGHT: WEIGHT_BOLD; WIDTH: 1.02; FOREGROUND: #000000
+
+AHLCG-Treachery-Name-region = 39,307,299,29
+AHLCG-Treachery-Name-alignment = center, middle
+AHLCG-Treachery-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 11.0; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.10; FOREGROUND: #000000
+
+AHLCG-Treachery-Body-region = 30,340,318,160
+AHLCG-Treachery-Body-alignment = left
+AHLCG-Treachery-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WEIGHT: WEIGHT_MEDIUM; WIDTH: 0.98; FOREGROUND: #000000
+AHLCG-Treachery-Body-tightness = 1.0
+
+AHLCG-Treachery-Portrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+AHLCG-Treachery-Portrait-portrait-pany = 0
+AHLCG-Treachery-Portrait-portrait-clip-region = 17,0,344,298
+
+AHLCG-Treachery-BackPortrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+AHLCG-Treachery-BackPortrait-portrait-pany = 0
+AHLCG-Treachery-BackPortrait-portrait-clip-region = 17,0,344,298
+
+AHLCG-Treachery-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-Treachery-Encounter-portrait-pany = 0
+
+AHLCG-Treachery-Encounter-portrait-clip-region = 175,254,28,28
+
+AHLCG-Treachery-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-Treachery-Collection-portrait-pany = 0
+
+AHLCG-Treachery-Collection-portrait-clip-region = 319,512,13,13
