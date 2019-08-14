@@ -1,7 +1,7 @@
 #
 #
 
-id = CATALOGUEID{0b899f3c-78ae-40b8-bcfc-b06479b1f136:2019-2-5-18-24-49-909}
+id = CATALOGUEID{0b899f3c-78ae-40b8-bcfc-b06479b1f136:2019-7-14-1-23-6-182}
 
 priority = GAME
 ui-languages = en_US,it_IT,es,fr_FR,de_DE
@@ -12,7 +12,7 @@ catalog-name_de_DE = Arkham Horror: Das Kartenspiel
 catalog-name_en_US = Arkham Horror: The Card Game
 catalog-name_it_IT = Arkham Horror: Il Gioco di Carte
 
-catalog-credit = jaqenZann, GeckoTH
+catalog-credit = jaqenZann
 catalog-description = <p>This plug-in allows the creation of components for \
     <i><b>Arkham Horror: The Card Game</b></i> by Fantasy Flight Games.</p>\n<p>This \
     plug-in is intended to be used by fans of the game, and <b>any commercial use is \

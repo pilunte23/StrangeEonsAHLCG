@@ -24,7 +24,7 @@ function create( diy ) {
 	createPortraits( diy, PortraitTypeList );
 	setDefaultCollection();
 
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function setDefaults() {
@@ -37,6 +37,7 @@ function setDefaults() {
 	$Skill2 = 'None';
 	$Skill3 = 'None';
 	$Skill4 = 'None';
+	$Skill5 = 'None';
 	
 	$Slot = 'None';
 	$Stamina = 'None';
@@ -56,6 +57,9 @@ function setDefaults() {
 	$Artist = '';
 	$Copyright = '';
 	
+	$ShowCollectionNumberFront = '1';
+	$ShowCollectionNumberBack = '1';
+	
 	//Back
 	$UniqueBack = '0';
 	$SubtitleBack = '';
@@ -66,6 +70,7 @@ function setDefaults() {
 	$Skill2Back = 'None';
 	$Skill3Back = 'None';
 	$Skill4Back = 'None';
+	$Skill5Back = 'None';
 	
 	$SlotBack = 'None';
 	$StaminaBack = 'None';
@@ -117,7 +122,7 @@ function createInterface( diy, editor ) {
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
 
 	var CollectionImagePanel = new portraitPanel( diy, getPortraitIndex( 'Collection' ), @AHLCG-CustomCollection );
-	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, [0, 1], FACE_FRONT );
+	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, true, [0, 1], FACE_FRONT );
 		
 	var CollectionTab = new Grid();
 	CollectionTab.editorTabScrolling = true;
@@ -247,11 +252,16 @@ function paintFront( g, diy, sheet ) {
 	
 	drawBody( g, diy, sheet, Body_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ) );
 
-	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
+//	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
+//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
 	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, true );
+	var collectionSuffix = false;
+	if ( $ShowCollectionNumberFront == '1' && $ShowCollectionNumberBack == '1' ) collectionSuffix = true;
+
+//	drawCollectionIcon( g, diy, sheet );
+//	drawCollectionNumber (g, diy, sheet, true );
+
+	drawCollectorInfo( g, diy, sheet, $ShowCollectionNumberFront == '1', collectionSuffix, false, false, true );
 }
 
 function paintBack( g, diy, sheet ) {
@@ -284,11 +294,16 @@ function paintBack( g, diy, sheet ) {
 	
 	drawBody( g, diy, sheet, BackBody_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ) );
 
-	if ( $ArtistBack.length > 0 ) drawArtist( g, diy, sheet );
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
+//	if ( $ArtistBack.length > 0 ) drawArtist( g, diy, sheet );
+//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
 	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, true );
+	var collectionSuffix = false;
+	if ( $ShowCollectionNumberFront == '1' && $ShowCollectionNumberBack == '1' ) collectionSuffix = true;
+
+//	drawCollectionIcon( g, diy, sheet );
+//	drawCollectionNumber (g, diy, sheet, true );
+
+	drawCollectorInfo( g, diy, sheet, $ShowCollectionNumberBack == '1', collectionSuffix, false, false, true );
 }
 
 function onClear() {
@@ -301,9 +316,18 @@ function onClear() {
 function onRead(diy, oos) {
 	readPortraits( diy, oos, PortraitTypeList );
 
+	if ( diy.version < 9 ) {
+		$Skill5 = 'None';
+		$Skill5Back = 'None';
+	}
+	if ( diy.version < 10 ) {
+		$ShowCollectionNumberFront = '1';
+		$ShowCollectionNumberBack = '1';
+	}
+	
 	updateCollection();
 
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function onWrite( diy, oos ) {

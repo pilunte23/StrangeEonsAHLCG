@@ -59,13 +59,14 @@ AHLCG-InvestigatorBack-Portrait-portrait-scale = 0.65
 
 AHLCG-InvestigatorBack-Portrait-portrait-clip-region = 1,-2,188,206
 
-AHLCG-Investigator-Artist-region = 288,365,102,10
-AHLCG-Investigator-Copyright-region = 397,365,71,10
+AHLCG-Investigator-Artist-region = 288,363,102,10
+AHLCG-Investigator-Copyright-region = 376,363,80,10
 AHLCG-Investigator-Copyright-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 
 AHLCG-Investigator-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Investigator-Collection-portrait-pany = 0
 
-AHLCG-Investigator-Collection-portrait-clip-region = 474,365,13,13
+AHLCG-Investigator-DefaultCollection-portrait-clip-region = 476,360,13,13
+AHLCG-Investigator-Collection-portrait-clip-region = 476,360,13,13
 
-AHLCG-Investigator-CollectionNumber-region = 499,365,21,10
+AHLCG-Investigator-CollectionNumber-region = 472,363,37,10

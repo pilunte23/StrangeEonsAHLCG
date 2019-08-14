@@ -53,20 +53,23 @@ AHLCG-Act-PerInv-region = 261, 292, 30, 49
 
 AHLCG-Act-Dash-tint = 38.0, 0.14, 1.0
 
-AHLCG-Act-EncounterNumber-region = 223,365,35,10
-AHLCG-Act-EncounterNumber-alignment = center, middle
+#AHLCG-Act-EncounterNumber-region = 223,363,35,10
+AHLCG-Act-EncounterNumber-region = 195,363,55,10
+AHLCG-Act-EncounterNumber-alignment = right, middle
 AHLCG-Act-EncounterNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 
-AHLCG-Act-Artist-region = 11,365,129,10
-AHLCG-Act-Copyright-region = 139,365,80,10
+AHLCG-Act-Artist-region = 11,363,129,10
+AHLCG-Act-Copyright-region = 125,363,80,10
 
 AHLCG-Act-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Act-Collection-portrait-pany = 0
 
-AHLCG-Act-Collection-portrait-clip-region = 270,362,13,13
-AHLCG-Act-DefaultCollection-portrait-clip-region = 270,362,13,13
+AHLCG-Act-Collection-portrait-clip-region = 270,360,13,13
+AHLCG-Act-DefaultCollection-portrait-clip-region = 270,360,13,13
 
-AHLCG-Act-CollectionNumber-region = 290,365,21,10
+#AHLCG-Act-CollectionNumber-region = 290,363,21,10
+#AHLCG-Act-CollectionNumber-region = 274,365,37,10
+AHLCG-Act-CollectionNumber-region = 266,363,37,10
 
 AHLCG-Act-ScenarioIndex-region = 67,8,134,21
 AHLCG-Act-ScenarioIndex-alignment = center, middle

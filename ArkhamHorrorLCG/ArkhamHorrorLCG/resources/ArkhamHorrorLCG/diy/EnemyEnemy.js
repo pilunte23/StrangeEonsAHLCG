@@ -24,7 +24,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function setDefaults() {
@@ -54,6 +54,12 @@ function setDefaults() {
 	$Artist = '';
 	$Copyright = '';
 
+	$ShowCollectionNumberFront = '1';
+	$ShowCollectionNumberBack = '1';
+	
+	$ShowEncounterNumberFront = '1';
+	$ShowEncounterNumberBack = '1';
+
 	// back
 	$UniqueBack = '0';
 	$SubtitleBack = '';
@@ -79,7 +85,7 @@ function setDefaults() {
 	
 	$ArtistBack = '';
 
-	$PortraitShare = '1';
+	$PortraitShare = '1';	
 }
 
 function createInterface( diy, editor ) {
@@ -114,7 +120,7 @@ function createInterface( diy, editor ) {
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
 
 	var CollectionImagePanel = new portraitPanel( diy, getPortraitIndex( 'Collection' ), @AHLCG-CustomCollection );
-	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, [0], FACE_FRONT );
+	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, true, [0, 1], FACE_FRONT );
 	
 	var CollectionTab = new Grid();
 	CollectionTab.editorTabScrolling = true;
@@ -122,7 +128,7 @@ function createInterface( diy, editor ) {
 	CollectionTab.addToEditor(editor, @AHLCG-Collection);
 
 	var EncounterImagePanel = new portraitPanel( diy, getPortraitIndex( 'Encounter' ), @AHLCG-CustomEncounterSet );
-	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, true, false, [0], [0], FACE_FRONT );
+	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, true, [0, 1], [0, 1], FACE_FRONT );
 
 	var EncounterTab = new Grid();
 	EncounterTab.editorTabScrolling = true;
@@ -230,14 +236,19 @@ function paintFront( g, diy, sheet ) {
 	if ( $Damage > 0 )  drawDamage( g, diy, sheet );
 	if ( $Horror > 0 )	drawHorror( g, diy, sheet );
 
-	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
+//	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
+//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
 	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, true );
+	var collectionSuffix = false;
+	if ( $ShowCollectionNumberFront == '1' && $ShowCollectionNumberBack == '1' ) collectionSuffix = true;
+
+//	drawCollectionIcon( g, diy, sheet );
+//	drawCollectionNumber (g, diy, sheet, true );
 	
-	drawEncounterIcon( g, diy, sheet );	
-	drawEncounterInfo( g, diy, sheet );
+//	drawEncounterIcon( g, diy, sheet );	
+//	drawEncounterInfo( g, diy, sheet );
+
+	drawCollectorInfo( g, diy, sheet, $ShowCollectionNumberFront == '1', collectionSuffix, $ShowEncounterNumberFront == '1', true, true );
 }
 
 function paintBack( g, diy, sheet ) {
@@ -265,13 +276,18 @@ function paintBack( g, diy, sheet ) {
 	if ( $DamageBack > 0 )  drawDamage( g, diy, sheet );
 	if ( $HorrorBack > 0 )	drawHorror( g, diy, sheet );
 
-	if ( $ArtistBack.length > 0 ) drawArtist( g, diy, sheet );
+//	if ( $ArtistBack.length > 0 ) drawArtist( g, diy, sheet );
 	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, true );
+	var collectionSuffix = false;
+	if ( $ShowCollectionNumberFront == '1' && $ShowCollectionNumberBack == '1' ) collectionSuffix = true;
+
+//	drawCollectionIcon( g, diy, sheet );
+//	drawCollectionNumber (g, diy, sheet, true );
 	
-	drawEncounterIcon( g, diy, sheet );	
-	drawEncounterInfo( g, diy, sheet );
+//	drawEncounterIcon( g, diy, sheet );	
+//	drawEncounterInfo( g, diy, sheet );
+
+	drawCollectorInfo( g, diy, sheet, $ShowCollectionNumberBack == '1', collectionSuffix, $ShowEncounterNumberBack == '1', true, true );
 }
 
 function onClear() {
@@ -314,10 +330,18 @@ function createTextShape( textBox, textRegion ) {
 function onRead(diy, oos) {
 	readPortraits( diy, oos, PortraitTypeList );
 
+	if ( diy.version < 10 ) {
+		$ShowCollectionNumberFront = '1';
+		$ShowCollectionNumberBack = '1';
+
+		$ShowEncounterNumberFront = '1';
+		$ShowEncounterNumberBack = '1';
+	}
+
 	updateCollection();
 	updateEncounter();
 	
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function onWrite( diy, oos ) {

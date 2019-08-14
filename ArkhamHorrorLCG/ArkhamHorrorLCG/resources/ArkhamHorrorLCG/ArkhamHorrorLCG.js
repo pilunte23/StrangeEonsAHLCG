@@ -96,7 +96,7 @@ function gameObject( masterSettings ) {
 	this.bodyFlavorSpacing = 0.92;
 	this.bodyStorySize = 7.8;
 	this.bodyStorySpacing = 0.92;
-	this.collectionSize = 4.5;
+	this.collectionSize = 4.0;
 	this.subtitleSize = 6.0;
 	this.smallLabelSize = 4.7;
 	this.largeLabelSize = 6.2;

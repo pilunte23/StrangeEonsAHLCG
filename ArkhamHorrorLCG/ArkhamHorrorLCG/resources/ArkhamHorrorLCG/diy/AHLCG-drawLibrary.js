@@ -106,11 +106,22 @@ function drawFadedPortrait( g, diy, sheet, portrait, mask ) {
 	var s = imageScale;
 
 	var imageScaled = ImageUtils.resize( image, image.width * s + 0.5, image.height * s + 0.5, true );	
-	var cx = imageScaled.getWidth() / 2 - imagePanX;
-	var cy = imageScaled.getHeight() / 2 - imagePanY;
+//	var imageScaled = ImageUtils.resize( image, image.width * s + 2, image.height * s + 2, true );	
+//	var cx = imageScaled.getWidth() / 2 - imagePanX;
+//	var cy = imageScaled.getHeight() / 2 - imagePanY;
 
-	imageCropped = ImageUtils.crop( imageScaled, cx - region.width/2, cy - region.height/2, region.width, region.height );
+	// portrait center
+	var cx = image.getWidth() / 2 - imagePanX;
+	var cy = image.getHeight() / 2 - imagePanY;
+
+	var sx = region.width / imageScale;
+	var sy = region.height / imageScale;
+
+//	imageCropped = ImageUtils.crop( imageScaled, cx - region.width/2, cy - region.height/2, region.width, region.height );
+//	imageCropped = ImageUtils.crop( image, cx - region.width/2, cy - region.height/2, region.width, region.height );
+	imageCropped = ImageUtils.crop( image, cx - sx/2, cy - sy/2, sx, sy );
 	imageCropped = createStencilImage( imageCropped, mask );
+//	imageCropped = createStencilImage( image, mask );
 
 	sheet.paintImage(g, imageCropped, region );
 }
@@ -1258,46 +1269,67 @@ function drawVictory( g, diy, sheet ) {
 
 function drawArtist( g, diy, sheet ) {
 	var faceIndex = sheet.getSheetIndex();
-	
-	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Artist-region' ) );
-	if ( $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );
-	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 1;
 
-	Artist_box.markupText = #AHLCG-IllustratorShort + ' ' + $( 'Artist' + BindingSuffixes[faceIndex] );
-	Artist_box.drawAsSingleLine( g, region );
+	var artistText = $( 'Artist' + BindingSuffixes[faceIndex] );
+
+	if ( artistText.length() > 0 ) {
+		var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Artist-region' ) );
+		if ( $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );
+		if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 1;
+
+		Artist_box.markupText = #AHLCG-IllustratorShort + ' ' + artistText;
+		Artist_box.drawAsSingleLine( g, region );
+	}
 }
 
-function drawCopyright( g, diy, sheet ) {
+function drawCopyright( g, diy, sheet, collectorX ) {
 	var faceIndex = sheet.getSheetIndex();
 	
 	var copyright = $Copyright;
 
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Copyright-region' ) );
 	if ( $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );
+
+	// x = left edge of region, using collectorX
+	var x = collectorX - region.width;
+
+	// we want the leftmost (if more space is being taken up because of Threads-like numbers)
+	if (x < region.x) region.x = collectorX - region.width;	
+
 	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 1;
 
 	Copyright_box.markupText = copyright;
-	Copyright_box.drawAsSingleLine( g, region );
+	var width = Copyright_box.drawAsSingleLine( g, region );
+	
+	return region.x - width;
 }
 
-function drawCollectionNumber ( g, diy, sheet, drawSuffix ) {
+// draws collection, encounter, and copyright info, keeps track of offset because of Threads of Fate style regions
+function drawCollectorInfo( g, diy, sheet, collectionNumber, collectionSuffix, encounterNumber, encounterIcon, artistName ) {	
 	var faceIndex = sheet.getSheetIndex();
 
-	var collectionNumber = $( 'CollectionNumber' + BindingSuffixes[faceIndex] );
-	if (collectionNumber == null) collectionNumber = $CollectionNumber;
-
-	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'CollectionNumber-region' ) );
-	if ( $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );
-	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 1;
-
-	Collection_box.markupText = collectionNumber;
+	var collectorX = sheet.getTemplateWidth();
 	
-	if (drawSuffix) {
-		if (faceIndex == FACE_FRONT) Collection_box.markupText += 'a';
-		else Collection_box.markupText += 'b';
+	if ( collectionNumber ) {
+		collectorX = drawCollectionNumber( g, diy, sheet, collectionSuffix );
+		collectorX -= 3;
+	}
+
+	collectorX = drawCollectionIcon( g, diy, sheet, collectorX );
+	collectorX -= 11;
+	
+	if ( encounterIcon ) {
+		drawEncounterIcon( g, diy, sheet );
 	}
 	
-	Collection_box.drawAsSingleLine( g, region );
+	if ( encounterNumber ) {
+		collectorX = drawEncounterInfo( g, diy, sheet, collectorX );
+		collectorX -= 20;
+	}
+	
+	collectorX = drawCopyright( g, diy, sheet, collectorX );
+	
+	if ( artistName ) drawArtist( g, diy, sheet );
 }
 
 function drawSubtype( g, diy, sheet, box, text ) {
@@ -1355,7 +1387,7 @@ function drawLevel( g, diy, sheet, className ) {
 function drawSkillIcons( g, diy, sheet, className ) {
 	var faceIndex = sheet.getSheetIndex();
 
-	for ( let index = 1; index <= 4; index++ ) {
+	for ( let index = 1; index <= 5; index++ ) {
 		let skillName = $( 'Skill' + index + BindingSuffixes[faceIndex] );
 
 		if ( skillName != 'None' ) {
@@ -1416,6 +1448,93 @@ function drawSanity( g, diy, sheet ) {
 	}
 }
 
+function drawCollectionNumber( g, diy, sheet, drawSuffix ) {
+	var faceIndex = sheet.getSheetIndex();
+
+	var collectionNumber = $( 'CollectionNumber' + BindingSuffixes[faceIndex] );
+	if (collectionNumber == null) collectionNumber = $CollectionNumber;
+
+	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'CollectionNumber-region' ) );
+	if ( $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );
+	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 1;
+
+	Collection_box.markupText = collectionNumber;
+	
+	if (drawSuffix) {
+		if (faceIndex == FACE_FRONT) Collection_box.markupText += 'a';
+		else Collection_box.markupText += 'b';
+	}
+	
+	var width = Collection_box.drawAsSingleLine( g, region );
+//	if ( width < 19) width = 19;
+	
+	return region.x + region.width - width;	// return left edge
+}
+
+function drawCollectionIcon( g, diy, sheet, collectorX ) {
+	var faceIndex = sheet.getSheetIndex();
+	
+	var iconName = $Collection;
+	var icon;
+
+	let region = diy.settings.getRegion( getExpandedKey( faceIndex, 'DefaultCollection-portrait-clip-region' ),
+		// default - if no DefaultCollection defined, use normal Collection
+		diy.settings.getRegion( getExpandedKey( faceIndex, 'Collection-portrait-clip-region' ) ) );
+
+	if ( faceIndex == FACE_FRONT && $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );	
+	
+	// x = left edge of region, using collectorX
+	var x = collectorX - region.width;
+	
+	// we want the leftmost (if more space is being taken up because of Threads-like numbers)
+	if (x < region.x) region.x = collectorX - region.width;	
+
+	// resource
+	if ( $CollectionType == '0' ) {
+		icon = createInvertedImage( ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-' + iconName + '.png') );
+				
+		sheet.paintImage( g, icon, region );		
+	}
+	// custom
+	else {
+		// [0] because that is the type the portrait is reading its setting from
+		// [1] if it is a Story card, because the front side doesn't have a portrait... this was poorly planned
+		let typeIndex = 0;
+		if ( CardTypes[0] == 'Story' ) typeIndex = 1;
+		
+		diy.settings.setRegion( 'AHLCG-' + CardTypes[typeIndex] + '-Collection-portrait-clip-region', region );
+		PortraitList[getPortraitIndex( 'Collection' )].paint( g, sheet.getRenderTarget() );
+	}
+	
+	return region.x;
+}
+
+function drawEncounterInfo( g, diy, sheet, collectorX ) {
+	var faceIndex = sheet.getSheetIndex();
+
+	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'EncounterNumber-region' ) );
+	if ( $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );	
+
+	// x = left edge of region, using collectorX
+	var x = collectorX - region.width;
+
+	// we want the leftmost (if more space is being taken up because of Threads-like numbers)
+	if (x < region.x) region.x = collectorX - region.width;	
+
+	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 1;
+
+	var encounterNumber = $( 'EncounterNumber' + BindingSuffixes[faceIndex] );
+	if (encounterNumber == null) encounterNumber = $EncounterNumber;
+
+	var encounterTotal = $( 'EncounterTotal' + BindingSuffixes[faceIndex] );
+	if (encounterTotal == null) encounterTotal = $EncounterTotal;
+
+	Encounter_box.markupText = encounterNumber + '\u200a/\u200a' + encounterTotal;
+	var width = Encounter_box.drawAsSingleLine( g, region );
+
+	return region.x + region.width - width;		// return left edge
+}
+
 function drawEncounterIcon( g, diy, sheet ) {
 	var faceIndex = sheet.getSheetIndex();
 	
@@ -1424,7 +1543,7 @@ function drawEncounterIcon( g, diy, sheet ) {
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'DefaultEncounter-portrait-clip-region' ),
 		// default - if no DefaultEncounter defined, use normal Encounter
 		diy.settings.getRegion( getExpandedKey( faceIndex, 'Encounter-portrait-clip-region' ) ) );
-
+	
 	if ( faceIndex == FACE_FRONT && $Orientation == 'Reversed' ) {
 		region = reverseRegion( region );
 		region.x += 1;
@@ -1439,32 +1558,6 @@ function drawEncounterIcon( g, diy, sheet ) {
 		// [0] because that is the type the portrait is reading its setting from
 		diy.settings.setRegion( 'AHLCG-' + CardTypes[0] + '-Encounter-portrait-clip-region', region );
 		PortraitList[getPortraitIndex( 'Encounter' )].paint( g, sheet.getRenderTarget() );
-	}
-}
-
-function drawCollectionIcon( g, diy, sheet ) {
-	var faceIndex = sheet.getSheetIndex();
-	
-	var iconName = $Collection;
-	var icon;
-
-	let region = diy.settings.getRegion( getExpandedKey( faceIndex, 'DefaultCollection-portrait-clip-region' ),
-		// default - if no DefaultCollection defined, use normal Collection
-		diy.settings.getRegion( getExpandedKey( faceIndex, 'Collection-portrait-clip-region' ) ) );
-
-	if ( faceIndex == FACE_FRONT && $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );	
-	
-	// resource
-	if ( $CollectionType == '0' ) {
-		icon = createInvertedImage( ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-' + iconName + '.png') );
-				
-		sheet.paintImage( g, icon, region );		
-	}
-	// custom
-	else {
-		// [0] because that is the type the portrait is reading its setting from
-		diy.settings.setRegion( 'AHLCG-' + CardTypes[0] + '-Collection-portrait-clip-region', region );
-		PortraitList[getPortraitIndex( 'Collection' )].paint( g, sheet.getRenderTarget() );
 	}
 }
 
@@ -1535,23 +1628,6 @@ function drawHorror( g, diy, sheet ) {
 		sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Horror.png'), 
 			diy.settings.getRegion( getExpandedKey(faceIndex, 'Horror' + i + '-region' ) ) );		
 	}
-}
-
-function drawEncounterInfo( g, diy, sheet ) {
-	var faceIndex = sheet.getSheetIndex();
-
-	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'EncounterNumber-region' ) );
-	if ( $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );	
-	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 1;
-
-	var encounterNumber = $( 'EncounterNumber' + BindingSuffixes[faceIndex] );
-	if (encounterNumber == null) encounterNumber = $EncounterNumber;
-
-	var encounterTotal = $( 'EncounterTotal' + BindingSuffixes[faceIndex] );
-	if (encounterTotal == null) encounterTotal = $EncounterTotal;
-
-	Encounter_box.markupText = encounterNumber + '\u200a/\u200a' + encounterTotal;
-	Encounter_box.drawAsSingleLine( g, region );
 }
 
 function drawLocationIcon( g, diy, sheet, locationIconName, drawBaseCircle )

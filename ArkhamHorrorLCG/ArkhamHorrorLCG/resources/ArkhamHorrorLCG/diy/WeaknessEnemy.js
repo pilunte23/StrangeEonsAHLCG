@@ -75,7 +75,7 @@ function createInterface( diy, editor ) {
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
 
 	var CollectionImagePanel = new portraitPanel( diy, getPortraitIndex( 'Collection' ), @AHLCG-CustomCollection );
-	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, [0], FACE_FRONT );
+	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, false, [0], FACE_FRONT );
 	
 	var CollectionTab = new Grid();
 	CollectionTab.editorTabScrolling = true;
@@ -167,11 +167,13 @@ function paintFront( g, diy, sheet ) {
 	if ( $Damage > 0)  drawDamage( g, diy, sheet );
 	if ( $Horror > 0 )	drawHorror( g, diy, sheet );
 
-	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
+//	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
+//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
 	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, false );
+//	drawCollectionIcon( g, diy, sheet );
+//	drawCollectionNumber (g, diy, sheet, false );
+
+	drawCollectorInfo( g, diy, sheet, true, false, false, false, true );
 }
 
 function paintBack( g, diy, sheet ) {

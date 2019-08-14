@@ -8,35 +8,38 @@ AHLCG-Skill1-region = 0,82,54,44
 AHLCG-Skill2-region = 0,124,54,44
 AHLCG-Skill3-region = 0,166,54,44
 AHLCG-Skill4-region = 0,208,54,44
+AHLCG-Skill5-region = 0,250,54,44
 AHLCG-SkillIcon1-region = 13,89,25,26
 AHLCG-SkillIcon2-region = 13,131,25,26
 AHLCG-SkillIcon3-region = 13,173,25,26
 AHLCG-SkillIcon4-region = 13,215,25,26
+AHLCG-SkillIcon5-region = 13,257,25,26
 AHLCG-Slot-region = 309,454,51,52
 
 AHLCG-Artist-region = 14,515,121,10
 AHLCG-Artist-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 AHLCG-Artist-alignment = left, middle
-AHLCG-Copyright-region = 142,515,86,10
+AHLCG-Copyright-region = 124,515,86,10
 AHLCG-Copyright-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
-AHLCG-Copyright-alignment = center, middle
+#AHLCG-Copyright-alignment = center, middle
+AHLCG-Copyright-alignment = right, middle
 
 AHLCG-Stamina-region = 148,465,33,41
 AHLCG-Sanity-region = 197,469,43,36
 
-AHLCG-Body-tightness = 0.75
+AHLCG-Body-tightness = 1.0
 
 AHLCG-Clues-region = 239,296,51,48
 
-AHLCG-CollectionNumber-region = 338,515,19,10
+AHLCG-CollectionNumber-region = 318,515,37,10
 AHLCG-CollectionNumber-alignment = right, middle
 AHLCG-CollectionNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 
-AHLCG-EncounterNumber-region = 274,515,38,10
-AHLCG-EncounterNumber-alignment = center, middle
+AHLCG-EncounterNumber-region = 247,515,55,10
+AHLCG-EncounterNumber-alignment = right, middle
 AHLCG-EncounterNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 4.5; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 
-AHLCG-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 11.0; WEIGHT: WEIGHT_BOLD; WIDTH: 1.0; FOREGROUND: #000000
+AHLCG-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 11.0; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.0; FOREGROUND: #000000
 AHLCG-Name-alignment = center, bottom
 
 AHLCG-BackName-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 13; WEIGHT: WEIGHT_REGULAR; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000

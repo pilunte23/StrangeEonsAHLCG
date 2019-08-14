@@ -113,7 +113,7 @@ function createInterface( diy, editor ) {
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
 
 	var CollectionImagePanel = new portraitPanel( diy, getPortraitIndex( 'Collection' ), @AHLCG-CustomCollection );
-	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, [0, 1], FACE_FRONT );
+	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, false, [0, 1], FACE_FRONT );
 	
 	var CollectionTab = new Grid();	
 	CollectionTab.editorTabScrolling = true;
@@ -209,15 +209,17 @@ function paintFront( g, diy, sheet ) {
 
 	drawDoom( g, diy, sheet );
 
-	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
+//	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
+//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
 	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, true );
+//	drawCollectionIcon( g, diy, sheet );
+//	drawCollectionNumber (g, diy, sheet, true );
 
-	drawEncounterIcon( g, diy, sheet );	
-	drawEncounterInfo( g, diy, sheet );
-	
+//	drawEncounterIcon( g, diy, sheet );	
+//	drawEncounterInfo( g, diy, sheet );
+
+	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+			
 	drawScenarioIndexFront( g, diy, sheet, #AHLCG-Label-Agenda, Index_box );
 }
 
@@ -237,8 +239,8 @@ function paintBack( g, diy, sheet ) {
 
 	drawVictory( g, diy, sheet );
 
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, true );
+//	drawCollectionIcon( g, diy, sheet );
+//	drawCollectionNumber (g, diy, sheet, true );
 
 	if ( $LocationIconBack != 'None' ) drawLocationIcon( g, diy, sheet, 'LocationIcon', true );
 
@@ -249,11 +251,13 @@ function paintBack( g, diy, sheet ) {
 		drawLocationIcon( g, diy, sheet, 'Connection' + index + 'Icon', false );
 	}
 
-	drawEncounterIcon( g, diy, sheet );	
-	drawEncounterInfo( g, diy, sheet );
+//	drawEncounterIcon( g, diy, sheet );	
+//	drawEncounterInfo( g, diy, sheet );
 
-	if ( $ArtistBack.length > 0 ) drawArtist( g, diy, sheet );
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );	
+//	if ( $ArtistBack.length > 0 ) drawArtist( g, diy, sheet );
+//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );	
+	
+	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
 } 
 
 function onClear() {

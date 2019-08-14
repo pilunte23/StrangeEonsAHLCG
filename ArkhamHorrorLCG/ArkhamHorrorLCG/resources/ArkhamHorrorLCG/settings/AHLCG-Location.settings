@@ -4,13 +4,13 @@ AHLCG-LocationBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-LocationBa
 AHLCG-Location-Label-region = 138,278,100,14
 AHLCG-Location-Label-alignment = center, middle
 AHLCG-Location-Label-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.largeLabelSize*0.9}; WEIGHT: WEIGHT_BOLD; WIDTH: 1.05; FOREGROUND: #000000
-AHLCG-LocationBack-Label-region = 138,276,100,14
+AHLCG-LocationBack-Label-region = 138,278,100,14
 AHLCG-LocationBack-Label-alignment = center, middle
 AHLCG-LocationBack-Label-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.largeLabelSize*0.9}; WEIGHT: WEIGHT_BOLD; WIDTH: 1.05; FOREGROUND: #000000
 
 AHLCG-Location-Name-region = 65,3,242,29
 AHLCG-Location-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 12.5; WEIGHT: WEIGHT_REGULAR; WIDTH: 0.99; FOREGROUND: #000000
-AHLCG-LocationBack-Name-region = 65,4,242,29
+AHLCG-LocationBack-Name-region = 65,3,242,29
 AHLCG-LocationBack-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 12.5; WEIGHT: WEIGHT_REGULAR; WIDTH: 0.99; FOREGROUND: #000000
 
 AHLCG-Location-SubtitleText-region = 95,36,191,21
@@ -24,6 +24,7 @@ AHLCG-LocationBack-Subtitle-alignment = center, middle
 AHLCG-Location-Body-region = 20,300,336,143
 AHLCG-Location-Body-alignment = left
 AHLCG-Location-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WEIGHT: WEIGHT_MEDIUM; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
+AHLCG-Location-Body-tightness = 1.0
 AHLCG-LocationBack-Body-region = 20,300,336,143
 AHLCG-LocationBack-Body-alignment = left
 AHLCG-LocationBack-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WEIGHT: WEIGHT_MEDIUM; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
@@ -61,8 +62,10 @@ AHLCG-Location-Victory-alignment = center
 AHLCG-Location-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Location-Collection-portrait-pany = 0
 
-AHLCG-Location-Collection-portrait-clip-region = 319,512,13,13
-AHLCG-LocationBack-Collection-portrait-clip-region = 319,512,13,13
+AHLCG-Location-DefaultCollection-portrait-clip-region = 320,510,13,13
+AHLCG-Location-Collection-portrait-clip-region = 320,510,13,13
+AHLCG-LocationBack-DefaultCollection-portrait-clip-region = 320,510,13,13
+AHLCG-LocationBack-Collection-portrait-clip-region = 320,510,13,13
 
 AHLCG-Location-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Location-Encounter-portrait-pany = 0
@@ -70,5 +73,5 @@ AHLCG-Location-Encounter-portrait-pany = 0
 AHLCG-Location-Encounter-portrait-clip-region = 174,245,28,28
 AHLCG-LocationBack-Encounter-portrait-clip-region = 174,245,28,28
 
-AHLCG-Location-Copyright-region = 165,515,86,10
-AHLCG-LocationBack-Copyright-region = 165,511,86,10
+AHLCG-Location-Copyright-region = 143,515,86,10
+AHLCG-LocationBack-Copyright-region = 128,515,86,10

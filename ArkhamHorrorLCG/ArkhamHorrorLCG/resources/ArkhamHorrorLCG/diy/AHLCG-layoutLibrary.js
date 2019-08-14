@@ -289,6 +289,9 @@ function layoutAssetStats( bindings, faceIndex ) {
 	var SkillList4 = new comboBox( AHLCGObject.comboSkills, null );
 	bindings.add( 'Skill4' + BindingSuffixes[faceIndex], SkillList4, [faceIndex] );
 	
+	var SkillList5 = new comboBox( AHLCGObject.comboSkills, null );
+	bindings.add( 'Skill5' + BindingSuffixes[faceIndex], SkillList5, [faceIndex] );
+	
 	var CostList = new comboBox( AHLCGObject.comboCost, null );
 	bindings.add( 'ResourceCost' + BindingSuffixes[faceIndex], CostList, [faceIndex] );
 
@@ -314,7 +317,8 @@ function layoutAssetStats( bindings, faceIndex ) {
 		@AHLCG-Icon + ' 3', 'align right', SkillList3, 'pushx, growx, sizegroup sp',
 		@AHLCG-Stamina, 'align right, gapx 10', StaminaList, 'wrap, pushx, growx, sizegroup sp',
 		@AHLCG-Icon + ' 4', 'align right', SkillList4, 'pushx, growx, sizegroup sp',
-		@AHLCG-Sanity, 'align right, gapx 10', SanityList, 'wrap, pushx, growx, sizegroup sp'
+		@AHLCG-Sanity, 'align right, gapx 10', SanityList, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Icon + ' 5', 'align right', SkillList5, 'pushx, growx, sizegroup sp'
 		);
 		
 	return StatsPanel;
@@ -1219,7 +1223,7 @@ function layoutGuidePortraits( diy, bindings, leftPortrait, rightPortrait, mirro
 	return [ PortraitTab, leftPortraitImagePanel, rightPortraitImagePanel ];
 }
 
-function layoutCollection( bindings, portraitPanel, selectFaces, faces, bindingFaceIndex ) {
+function layoutCollection( bindings, portraitPanel, useSpinner, selectFaces, faces, bindingFaceIndex ) {
 	var CollectionPanel = new Grid();
 	CollectionPanel.setTitle( @AHLCG-Collection );
 
@@ -1249,8 +1253,15 @@ function layoutCollection( bindings, portraitPanel, selectFaces, faces, bindingF
 		}
 	});
 
-	var collectionSpinner = new spinner(1, 999, 1, 1);
-	bindings.add( 'CollectionNumber' + BindingSuffixes[bindingFaceIndex], collectionSpinner, faces );
+	var collectionNumber;
+	if ( useSpinner ) {
+		collectionNumber = new spinner(1, 999, 1, 1);
+	}
+	else {
+		collectionNumber = new textField( '', 8 );
+		collectionNumber.setHorizontalAlignment(JTextField.RIGHT);
+	}
+	bindings.add( 'CollectionNumber' + BindingSuffixes[bindingFaceIndex], collectionNumber, faces );
 
 	CollectionPanel.place(
 		@AHLCG-Collection, 'align right', CollectionList, 'wrap, pushx, growx, span 3'
@@ -1264,13 +1275,13 @@ function layoutCollection( bindings, portraitPanel, selectFaces, faces, bindingF
 		bindings.add( 'ShowCollectionNumberBack' + BindingSuffixes[bindingFaceIndex], backBox, [0, 1] );
 								
 		CollectionPanel.place(
-			@AHLCG-CollectionNumber, 'align right', collectionSpinner, 'align left',
+			@AHLCG-CollectionNumber, 'align right', collectionNumber, 'align left',
 			frontBox, 'align right', backBox, 'align right, gapx 10'
 		);
 	}
 	else {
 		CollectionPanel.place(
-			@AHLCG-CollectionNumber, 'align right', collectionSpinner, 'wrap'
+			@AHLCG-CollectionNumber, 'align right', collectionNumber, 'wrap'
 		);
 	}
 
@@ -1306,12 +1317,11 @@ function layoutEncounter( bindings, portraitPanel, useSpinner, selectFaces, icon
 	});
 
 	var encounterNumber;
-
 	if ( useSpinner ) {
 		encounterNumber = new spinner(1, 99, 1, 1);
 	}
 	else {
-		encounterNumber = new textField( '', 6 );
+		encounterNumber = new textField( '', 8 );
 		encounterNumber.setHorizontalAlignment(JTextField.RIGHT);
 	}
 	

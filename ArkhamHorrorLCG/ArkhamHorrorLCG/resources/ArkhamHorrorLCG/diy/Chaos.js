@@ -76,7 +76,7 @@ function createInterface( diy, editor ) {
 	BackTextTab.addToEditor( editor, @AHLCG-Rules + ': ' + @AHLCG-Back );
 
 	var CollectionImagePanel = new portraitPanel( diy, getPortraitIndex( 'Collection' ), @AHLCG-CustomCollection );
-	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, [0, 1], FACE_FRONT );
+	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, false, [0, 1], FACE_FRONT );
 	
 	var CollectionTab = new Grid();
 	CollectionTab.editorTabScrolling = true;
@@ -84,7 +84,7 @@ function createInterface( diy, editor ) {
 	CollectionTab.addToEditor(editor, @AHLCG-Collection);
 
 	var EncounterImagePanel = new portraitPanel( diy, getPortraitIndex( 'Encounter' ), @AHLCG-CustomEncounterSet );
-	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, true, false, [0, 1], [0, 1], FACE_FRONT );
+	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, false, [0, 1], [0, 1], FACE_FRONT );
 	
 	var EncounterTab = new Grid();
 	EncounterTab.editorTabScrolling = true;
@@ -179,13 +179,15 @@ function paintFront( g, diy, sheet ) {
 
 	drawChaosBody( g, diy, sheet, Body_boxes );
 
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
+//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
 	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber ( g, diy, sheet, true );
+//	drawCollectionIcon( g, diy, sheet );
+//	drawCollectionNumber ( g, diy, sheet, true );
 
-	drawEncounterIcon( g, diy, sheet );		
-	drawEncounterInfo( g, diy, sheet );
+//	drawEncounterIcon( g, diy, sheet );		
+//	drawEncounterInfo( g, diy, sheet );
+
+	drawCollectorInfo( g, diy, sheet, true, true, true, true, false );
 }
 
 function paintBack( g, diy, sheet ) {
@@ -198,13 +200,15 @@ function paintBack( g, diy, sheet ) {
 	
 	drawChaosBody( g, diy, sheet, BackBody_boxes );
 
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
+//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
 	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber ( g, diy, sheet, true );
+//	drawCollectionIcon( g, diy, sheet );
+//	drawCollectionNumber ( g, diy, sheet, true );
 
-	drawEncounterIcon( g, diy, sheet );		
-	drawEncounterInfo( g, diy, sheet );
+//	drawEncounterIcon( g, diy, sheet );		
+//	drawEncounterInfo( g, diy, sheet );
+
+	drawCollectorInfo( g, diy, sheet, true, true, true, true, false );
 } 
 
 function onClear() {
