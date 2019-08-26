@@ -158,6 +158,7 @@ AHLCG-Moon-tint = -25.0, 0.51, 0.51
 AHLCG-DoubleSlash-tint = 131.0, 0.34, 0.24
 AHLCG-Heart-tint = 24.0, 0.72, 0.73
 AHLCG-Star-tint = -71.0, 0.36, 0.23
+AHLCG-Quote-tint = 23.0, 0.64, 0.47
 
 LocCircle-tag = lcir
 LocSquare-tag = lsqu

@@ -9,7 +9,7 @@ importClass( arkham.component.DefaultPortrait );
 const CardTypes = [ 'WeaknessTreachery', 'WeaknessTreacheryBack' ];
 const BindingSuffixes = [ '' ];
 
-const PortraitTypeList = [ 'Portrait-Front', 'Collection-Front' ];
+const PortraitTypeList = [ 'Portrait-Front', 'Collection-Front', 'Encounter-Front' ];
 
 function create( diy ) {
 	diy.frontTemplateKey = getExpandedKey(FACE_FRONT, 'Default', '-template');	// not used, set card size
@@ -21,9 +21,10 @@ function create( diy ) {
 
 	setDefaults();
 	createPortraits( diy, PortraitTypeList );
+	setDefaultEncounter();
 	setDefaultCollection();
 
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function setDefaults() {
@@ -73,6 +74,14 @@ function createInterface( diy, editor ) {
 	CollectionTab.place( CollectionPanel, 'wrap, pushx, growx', CollectionImagePanel, 'wrap, pushx, growx' );
 	CollectionTab.addToEditor(editor, @AHLCG-Collection);
 
+	var EncounterImagePanel = new portraitPanel( diy, getPortraitIndex( 'Encounter' ), @AHLCG-CustomEncounterSet );
+	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, false, [0, 1], [0], FACE_FRONT );
+	
+	var EncounterTab = new Grid();
+	EncounterTab.editorTabScrolling = true;
+	EncounterTab.place( EncounterPanel, 'wrap, pushx, growx', EncounterImagePanel, 'wrap, pushx, growx' );
+	EncounterTab.addToEditor(editor, @AHLCG-EncounterSet);
+
 	bindings.bind();
 }
 
@@ -109,6 +118,10 @@ function createFrontPainter( diy, sheet ) {
 	Collection_box = markupBox(sheet);
 	Collection_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'CollectionNumber-style'), null);
 	Collection_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'CollectionNumber-alignment'));
+
+	Encounter_box = markupBox(sheet);
+	Encounter_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'EncounterNumber-style'), null);
+	Encounter_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'EncounterNumber-alignment'));
 }
 
 function createBackPainter( diy, sheet ) {
@@ -139,6 +152,9 @@ function paintFront( g, diy, sheet ) {
 		
 		subtypeText = #AHLCG-Label-BasicWeakness;
 	}
+	else if ( $Subtype == 'StoryWeakness' ) {
+		drawOverlay( g, diy, sheet, 'BasicWeakness' );
+	}
 
 	drawSubtype( g, diy, sheet, Subtype_box, subtypeText );
 
@@ -150,7 +166,7 @@ function paintFront( g, diy, sheet ) {
 //	drawCollectionIcon( g, diy, sheet );
 //	drawCollectionNumber (g, diy, sheet, false );
 
-	drawCollectorInfo( g, diy, sheet, true, false, false, false, true );
+	drawCollectorInfo( g, diy, sheet, true, false, $Subtype == 'StoryWeakness', $Subtype == 'StoryWeakness', true );
 }
 
 function paintBack( g, diy, sheet ) {
@@ -166,11 +182,15 @@ function onClear() {
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	readPortraits( diy, oos, PortraitTypeList );
+	readPortraits( diy, oos, PortraitTypeList, diy.version >= 10 );
+
+	if ( diy.version < 10 ) {
+		setDefaultEncounter();
+	}
 
 	updateCollection();
 	
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function onWrite( diy, oos ) {

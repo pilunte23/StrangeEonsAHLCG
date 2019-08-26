@@ -167,7 +167,8 @@ function drawName( g, diy, sheet, nameBox ) {
 	if ( title.length() >  0) {
 		unique = $( 'Unique' + BindingSuffixes[faceIndex] );
 		
-		if (unique == '1' || CardTypes[faceIndex] == 'Investigator' || CardTypes[faceIndex] == 'InvestigatorBack' ) {
+//		if (unique == '1' || CardTypes[faceIndex] == 'Investigator' || CardTypes[faceIndex] == 'InvestigatorBack' ) {
+		if ( unique == '1' ) {
 //			nameBox.markupText = '<uni><b>' + title + '</b>';
 			nameBox.markupText = '<uni>' + title;
 		}
@@ -222,7 +223,8 @@ function drawRotatedName (g, diy, sheet ){
 function drawChaosName( g, diy, sheet, nameBox ) {
 	var faceIndex = sheet.getSheetIndex();
 
-	nameBox.markupText = '<b>' + diy.name + '</b>';
+//	nameBox.markupText = '<b>' + diy.name + '</b>';
+	nameBox.markupText = diy.name;
 
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Name-region') );
 
@@ -923,6 +925,8 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region' ) );
 	var iconRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'BodyIcon-region' ) );
 
+	if ( $TrackerBox.length > 0 ) region.height = 210;
+
 	var AHLCGObject = Eons.namedObjects.AHLCGObject;
 
 	var tokenRegion = [];
@@ -932,14 +936,33 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 	var tokenIcon = [];
 	var tokenGroup = [ 1, 2, 3, 4 ];
 	var tokensInGroup = [ 0, 0, 0, 0 ];
-	var minHeight = [ 48, 100, 152, 204 ];
-	var minCenterSpacing = [ 115, 102, 85, 65 ];
-	var startingOffset = [ 40, 40, 0, 0 ];
+
+	var minHeight;
+	var minCenterSpacing;
+	var minSpacing;
+	var maxSpacing;
+	var useOffsetPct;
 	
-	var minSpacing = 15;
-	var maxSpacing = 62;
+	if ( $TrackerBox.length > 0 ) {
+		minHeight = [ 48, 100, 152, 204 ];
+		minCenterSpacing = [ 115, 82, 68, 52 ];
+//		var startingOffset = [ 50, 15, 0, 0 ];
+		minSpacing = 7;
+		maxSpacing = 62;
+		useOffsetPct = 0.6;
+	}
+	else {
+		minHeight = [ 48, 100, 152, 204 ];
+		minCenterSpacing = [ 115, 102, 85, 65 ];
+//		var startingOffset = [ 40, 40, 0, 0 ];	
+		minSpacing = 15;
+		maxSpacing = 62;
+		useOffsetPct = 0.6;
+	}
+	
 	var index = 0;
 	var mergeIndex = 0;
+	var startingOffset = 0;
 
 	// eliminate tokens with no text
 	for ( let i = 0; i < 4; i++ ) {
@@ -1012,7 +1035,7 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 					tokenText[i-1] = text;
 					
 					if (spacing != null && spacing.length() > 0) {
-						tokenSpacing[i-1] = parseInt($( fieldName + 'Spacing'), 10);
+						tokenSpacing[i-1] = parseInt($( fieldName + 'Spacing'), 0);
 					}
 				}
 
@@ -1024,6 +1047,7 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 	var totalHeight = 0;
 	var totalEqualSpacingHeight = 0;
 	var maxEqualCenterSpacing = 0;
+	var firstBlockOffset = 0;
 	
 	for (let i = 0; i < groupCount; i++) {
 		let Test_box = markupBox(sheet);
@@ -1035,29 +1059,43 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 		Test_box.markupText = tokenText[i];
 		tokenHeight[i] = Test_box.measure( g, tokenRegion[i] );
 
+		// if there's a tracking box, this lets the icon extend up above the normal region top, so the text is at the top of the region, to save space
+		if ( i == 0 && tokenHeight[i] < iconRegion.height ) firstBlockOffset = (iconRegion.height - tokenHeight[i]) / 2;
+
 		if (tokenHeight[i] < minHeight[tokensInGroup[i]-1]) tokenHeight[i] = minHeight[tokensInGroup[i]-1];
-		
+
 		totalHeight += tokenHeight[i];
 	}
 
 	// calculate the maximum spacing between box centers
-	for (let i = 0; i < groupCount-1; i++) {
-		let spacing = (tokenHeight[i] + tokenHeight[i+1]) / 2;
+	if ( groupCount > 1 ) {
+		for ( let i = 0; i < groupCount-1; i++ ) {
+			let spacing = (tokenHeight[i] + tokenHeight[i+1]) / 2;
 		
-		if (spacing > maxEqualCenterSpacing) maxEqualCenterSpacing = spacing;
+			if ( spacing > maxEqualCenterSpacing ) maxEqualCenterSpacing = spacing;
+		}
+
+		if ( maxEqualCenterSpacing < minCenterSpacing[groupCount-1] ) maxEqualCenterSpacing = minCenterSpacing[groupCount-1];
+		totalEqualHeight = (maxEqualCenterSpacing + minSpacing)*(groupCount-1) + (tokenHeight[0] + tokenHeight[groupCount-1]) / 2;
 	}
-	
-	if (maxEqualCenterSpacing < minCenterSpacing[groupCount-1]) maxEqualCenterSpacing = minCenterSpacing[groupCount-1];
-	totalEqualHeight = (maxEqualCenterSpacing + minSpacing)*(groupCount-1) + (tokenHeight[0] + tokenHeight[groupCount-1]) / 2;
-
+	else {
+		maxEqualCenterSpacing = tokenHeight[0];
+		totalEqualHeight = tokenHeight[0];
+	}
+//println('MaxECS Final ' + maxEqualCenterSpacing);
+//println('TotalEqualHeight ' + totalEqualHeight);
 	var spacingType = 1;	// 0 = center, 1 = top/bottom
+//println('RegionHeight ' + region.height);
+//println('RegionHeightLimit ' + (region.height*useOffsetPct));
 
-	if (totalEqualHeight <= region.height) {
+	if ( totalEqualHeight <= region.height ) {
 		spacingType = 0;
 		totalHeight = totalEqualHeight;
 		
-		if (totalHeight + startingOffset[groupCount-1] <= region.height*0.75)
-			region.y += startingOffset[groupCount-1];
+//		if (totalHeight + startingOffset[groupCount-1] <= region.height*useOffsetPct)
+		if (totalHeight <= region.height*useOffsetPct)
+//			region.y += startingOffset[groupCount-1];
+			region.y += (region.height - totalEqualHeight) * 0.35;
 	}
 	else {
 		totalHeight += minSpacing * (groupCount-1);
@@ -1070,7 +1108,9 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 	if (region.height < totalHeight) {
 		region.y -= 5;
 		region.height += 5;
-		
+		region.y -= firstBlockOffset;
+		region.height += firstBlockOffset;
+
 		do {
 			scale -= 0.05;
 			
@@ -1090,9 +1130,9 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 			}
 			
 			totalHeight += minSpacing * (groupCount-1);			
-		} while (region.height < totalHeight);
+		} while (region.height < totalHeight && scale > 0.1);
 	}
-	
+
 	if (scale > 1) scale = 1;
 	else if (scale < 0.1) scale = 0.1;
 	
@@ -1120,12 +1160,11 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 			if (scale < 1) textBoxes[i].markupText = '<size ' + scale*100 + '%>' + tokenText[i] + '<size ' + (1/scale)*100 + '%>';
 			else textBoxes[i].markupText = tokenText[i];
 		
-//g.setPaint(Color.RED);
+//g.setPaint(Color.BLUE);
 //g.drawRect(tokenRegion[i].x, tokenRegion[i].y, 250, tokenRegion[i].height);
 			modifiedRegion = new Region( tokenRegion[i].x, tokenRegion[i].y, tokenRegion[i].width, tokenRegion[i].height );
 //			modifiedRegion.y -= (tokenRegion[i].height - 48.0) / 12.0;
 			if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) modifiedRegion.y -= 2;
-//			else modifiedRegion.y += 2;
 			
 			textBoxes[i].draw( g, modifiedRegion );
 
@@ -1140,10 +1179,9 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 					if (iconY + iconRegion.height - 1 > yIconMax) yIconMax = iconY + iconRegion.height - 1;
 					if (tokenRegion[i].y + tokenRegion[i].height - 3 > yIconMax) yIconMax = tokenRegion[i].y + tokenRegion[i].height - 3;
 					
-//g.setPaint(Color.BLUE);
+//g.setPaint(Color.GREEN);
 //g.drawRect(iconRegion.x, iconY, iconRegion.width, iconRegion.height);
 					sheet.paintImage( g, tokenIcon[j], 
-//						 new Region( iconRegion.x, iconY, iconRegion.width, iconRegion.height ) );
 						 new Region( iconRegion.x, iconY, iconRegion.width, iconRegion.height ) );
 					 
 					tokenIndex++;
@@ -1178,8 +1216,6 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 				tokenRegion[i].width = region.width;
 			}
 
-//	 		g.draw( tokenRegion[i]);
-
 			if (scale < 1) textBoxes[i].markupText = '<size ' + scale*100 + '%>' + tokenText[i] + '<size ' + (1/scale)*100 + '%>';
 			else textBoxes[i].markupText = tokenText[i];
 //g.setPaint(Color.RED);
@@ -1201,8 +1237,8 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 					if (iconY + iconRegion.height - 1 > yIconMax) yIconMax = iconY + iconRegion.height - 1;
 					if (tokenRegion[i].y + tokenRegion[i].height - 3 > yIconMax) yIconMax = tokenRegion[i].y + tokenRegion[i].height - 3;
 					
-//g.setPaint(Color.BLUE);
-//g.drawRect(iconRegion.x, iconY, 350, iconRegion.height);
+//g.setPaint(Color.GREEN);
+//g.drawRect(iconRegion.x, iconY, iconRegion.width, iconRegion.height);
 					sheet.paintImage( g, tokenIcon[j], 
 						 new Region( iconRegion.x, iconY, iconRegion.width, iconRegion.height ) );
 					 
@@ -1219,6 +1255,21 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 			yOffset += minSpacing + tokenHeight[i];
 		}
 	}
+}
+
+function drawChaosTrackerBox( g, diy, sheet, box ) {
+	var faceIndex = sheet.getSheetIndex();
+
+	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'TrackerBox-region') );
+	var image = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-ChaosTrackerBox.png');
+	
+	var w = image.getWidth();
+	var h = image.getHeight();
+	
+	sheet.paintImage( g, image, region );
+	
+	box.markupText = $TrackerBox;
+	box.drawAsSingleLine( g, diy.settings.getRegion( getExpandedKey( faceIndex, 'TrackerName-region') ) );
 }
 
 function drawScenarioBody( g, diy, sheet, bodyBox ) {
@@ -1264,7 +1315,8 @@ function drawVictory( g, diy, sheet ) {
 	var faceIndex = sheet.getSheetIndex();
 
 	Victory_box.markupText = '<b>' + $( 'Victory' + BindingSuffixes[faceIndex] ) + '</b>';
-	Victory_box.drawAsSingleLine( g, diy.settings.getRegion( getExpandedKey( faceIndex, 'Victory-region') ) );
+//	Victory_box.drawAsSingleLine( g, diy.settings.getRegion( getExpandedKey( faceIndex, 'Victory-region') ) );
+	Victory_box.draw( g, diy.settings.getRegion( getExpandedKey( faceIndex, 'Victory-region') ) );
 }
 
 function drawArtist( g, diy, sheet ) {
@@ -1600,8 +1652,16 @@ function drawEnemyHealth( g, diy, sheet ) {
 	var health = $( 'Health' + BindingSuffixes[faceIndex] );
 	
 	if (perInvestigator == '1') {
-		sheet.drawOutlinedTitle( g, health, diy.settings.getRegion( getExpandedKey(faceIndex, 'HealthPerInv-region' ) ), Eons.namedObjects.AHLCGObject.enemyFont, 13.5, 0.8, new Color(1, 1, 1), new Color(0, 0, 0), 0, true );	
-		sheet.drawOutlinedTitle( g, 'p', diy.settings.getRegion( getExpandedKey(faceIndex, 'PerInv-region' ) ), Eons.namedObjects.AHLCGObject.symbolFont, 6.0, 0.8, new Color(1, 1, 1), new Color(0, 0, 0), 0, true );
+		var healthRegion = diy.settings.getRegion( getExpandedKey(faceIndex, 'HealthPerInv-region' ) );
+		var healthPerInvRegion = diy.settings.getRegion( getExpandedKey(faceIndex, 'PerInv-region' ) );
+		
+		if ( health == 'X' ) {
+			healthRegion.x += 2;
+			healthPerInvRegion.x += 2;
+		}
+		
+		sheet.drawOutlinedTitle( g, health, healthRegion, Eons.namedObjects.AHLCGObject.enemyFont, 13.5, 0.8, new Color(1, 1, 1), new Color(0, 0, 0), 0, true );	
+		sheet.drawOutlinedTitle( g, 'p', healthPerInvRegion, Eons.namedObjects.AHLCGObject.symbolFont, 6.0, 0.8, new Color(1, 1, 1), new Color(0, 0, 0), 0, true );
 	}
 	else {
 		sheet.drawOutlinedTitle( g, health, diy.settings.getRegion( getExpandedKey(faceIndex, 'Health-region' ) ), Eons.namedObjects.AHLCGObject.enemyFont, 13.5, 0.8, new Color(1, 1, 1), new Color(0, 0, 0), 0, true );	
@@ -1665,7 +1725,14 @@ function drawLocationIcon( g, diy, sheet, locationIconName, drawBaseCircle )
 function drawShroud( g, diy, sheet ) {
 	var faceIndex = sheet.getSheetIndex();
 
-	sheet.drawOutlinedTitle( g, $( 'Shroud' + BindingSuffixes[faceIndex] ), diy.settings.getRegion( getExpandedKey( faceIndex, 'Shroud-region' ) ), Eons.namedObjects.AHLCGObject.enemyFont, 14.0, 0.8, new Color(0.996, 0.945, 0.859 ), new Color(0, 0, 0), 0, true );
+	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Shroud-region' ) );
+	var shroud = $( 'Shroud' + BindingSuffixes[faceIndex] );
+		
+	if ( shroud == 1 || shroud == 4 ) {
+		region.x -= 2;
+	}
+	
+	sheet.drawOutlinedTitle( g, $( 'Shroud' + BindingSuffixes[faceIndex] ), region, Eons.namedObjects.AHLCGObject.enemyFont, 14.0, 0.8, new Color(0.996, 0.945, 0.859 ), new Color(0, 0, 0), 0, true );
 }
 
 function drawClues( g, diy, sheet ) {
@@ -1690,6 +1757,7 @@ function drawClues( g, diy, sheet ) {
 	}
 	
 	var perInvestigator = $( 'PerInvestigator' + BindingSuffixes[faceIndex] );
+	var asterisk = $( 'Asterisk' + BindingSuffixes[faceIndex] );
 	var clues = $( 'Clues' + BindingSuffixes[faceIndex] );
 
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Clues-region' ) );
@@ -1698,7 +1766,7 @@ function drawClues( g, diy, sheet ) {
 	if ( clues == '-' ) {
 		drawDash( g, diy, sheet, region, 0, 6 );
 	}
-	else if (perInvestigator == '1') {
+	else if ( perInvestigator == '1' ) {
 		var perInvCluesRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'CluesPerInv-region' ) );
 		var perInvRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'PerInv-region' ) );
 
@@ -1711,20 +1779,46 @@ function drawClues( g, diy, sheet ) {
 			perInvRegion.x = region.x + ( (region.x + region.width) - (perInvRegion.x + perInvRegion.width) );
 		}
 
-		var fontSize = 14.0;
+		let fontSize = 14.0;
 
-		if ( clues == 1 ) {
-			region.x += 4;
+		if ( clues == 'X' ) {
+			perInvCluesRegion.x += 3;
+			perInvRegion.x += 3;
+		}
+		else if ( clues == 1 ) {
 			perInvRegion.x -= 4;
 		}
 		else if ( clues.length() > 1 ) {
-			region.x -= 1;
 			perInvRegion.x += 1;
 			fontSize = 11.0;
-		}
+		}	
 
 		sheet.drawOutlinedTitle( g, clues, perInvCluesRegion, Eons.namedObjects.AHLCGObject.enemyFont, fontSize, 0.8, textColor, borderColor, 0, true );
 		sheet.drawOutlinedTitle( g, 'p', perInvRegion, Eons.namedObjects.AHLCGObject.symbolFont, piIconSize, 0.8, textColor, borderColor, 0, true );
+	}
+	else if ( asterisk == '1' ) {
+		let fontSize = 14.0;
+		let regionXOffset = 7;
+		let regionYOffset = 7;
+		
+		if ( clues == 1 ) {
+			regionXOffset = 4;
+		}
+		if ( clues.length() > 1 ) {
+			region.x -= 1;
+			regionXOffset = 6;
+			regionYOffset = 7;
+			fontSize = 13.0;
+		}
+
+		region.x -= 4;
+		sheet.drawOutlinedTitle( g, clues, region, Eons.namedObjects.AHLCGObject.enemyFont, fontSize, 0.8, textColor, borderColor, 0, true );
+	
+		let asteriskFont = new Font( Eons.namedObjects.AHLCGObject.bodyFamily, Font.ITALIC, 12.0 );
+
+		region.x += regionXOffset + g.getFontMetrics(asteriskFont).stringWidth(clues);
+		region.y += regionYOffset;
+		sheet.drawOutlinedTitle( g, '*', region, asteriskFont, 12.0, 0.8, textColor, borderColor, 0, true );
 	}
 	else {
 		sheet.drawOutlinedTitle( g, clues, region, Eons.namedObjects.AHLCGObject.enemyFont, 14.0, 0.8, textColor, borderColor, 0, true );
@@ -1735,6 +1829,7 @@ function drawDoom( g, diy, sheet ) {
 	var faceIndex = sheet.getSheetIndex();
 	
 	var perInvestigator = $( 'PerInvestigator' + BindingSuffixes[faceIndex] );
+	var asterisk = $( 'Asterisk' + BindingSuffixes[faceIndex] );
 	var doom = $( 'Doom' + BindingSuffixes[faceIndex] );
 	
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Doom-region' ) );
@@ -1770,6 +1865,30 @@ function drawDoom( g, diy, sheet ) {
 
 		sheet.drawOutlinedTitle( g, doom, perInvDoomRegion, Eons.namedObjects.AHLCGObject.enemyFont, fontSize, 0.8, textColor, borderColor, 0, true );
 		sheet.drawOutlinedTitle( g, 'p', perInvRegion, Eons.namedObjects.AHLCGObject.symbolFont, piIconSize, 0.8, textColor, borderColor, 0, true );
+	}
+	else if ( asterisk == '1' ) {
+		let fontSize = 14.0;
+		let regionXOffset = 7;
+		let regionYOffset = 7;
+		
+		if ( doom == 1 ) {
+			regionXOffset = 4;
+		}
+		if ( doom.length() > 1 ) {
+			region.x -= 1;
+			regionXOffset = 7;
+			regionYOffset = 7;
+			fontSize = 13.0;
+		}
+
+		region.x -= 4;
+		sheet.drawOutlinedTitle( g, doom, region, Eons.namedObjects.AHLCGObject.enemyFont, fontSize, 0.8, textColor, borderColor, 0, true );
+	
+		let asteriskFont = new Font( Eons.namedObjects.AHLCGObject.bodyFamily, Font.ITALIC, 12.0 );
+
+		region.x += regionXOffset + g.getFontMetrics(asteriskFont).stringWidth(doom);
+		region.y += regionYOffset;
+		sheet.drawOutlinedTitle( g, '*', region, asteriskFont, 12.0, 0.8, textColor, borderColor, 0, true );
 	}
 	else {	
 		if ( $Orientation == 'Reversed' ) {

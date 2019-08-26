@@ -25,7 +25,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 
-	diy.version = 9;
+	diy.version = 10;
 }
 
 function setDefaults() {
@@ -38,6 +38,7 @@ function setDefaults() {
 	$Skill4 = 'None';
 	$Skill5 = 'None';
 	
+	$CardClass = 'Neutral';
 	$ResourceCost = '0';
 	$Slot = 'None';
 	$Stamina = 'None';
@@ -73,6 +74,7 @@ function setDefaults() {
 	$Skill4Back = 'None';
 	$Skill5Back = 'None';
 	
+	$CardClassBack = 'Neutral';
 	$ResourceCostBack = '0';
 	$SlotBack = 'None';
 	$StaminaBack = 'None';
@@ -157,6 +159,10 @@ function createFrontPainter( diy, sheet ) {
 	Subtitle_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Subtitle-style'), null);
 	Subtitle_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'Subtitle-alignment'));
 
+	Subtype_box = markupBox(sheet);
+	Subtype_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Subtype-style'), null);
+	Subtype_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Subtype-alignment'));
+
 	Cost_box = markupBox(sheet);
 	Cost_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Cost-style'), null);
 	Cost_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'Cost-alignment'));
@@ -202,6 +208,10 @@ function createBackPainter( diy, sheet ) {
 	BackSubtitle_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Subtitle-style'), null);
 	BackSubtitle_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'Subtitle-alignment'));
 
+	BackSubtype_box = markupBox(sheet);
+	BackSubtype_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Subtype-style'), null);
+	BackSubtype_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Subtype-alignment'));
+
 	BackCost_box = markupBox(sheet);
 	BackCost_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Cost-style'), null);
 	BackCost_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'Cost-alignment'));
@@ -229,12 +239,16 @@ function paintFront( g, diy, sheet ) {
 
 	PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
 
-	drawTemplate( g, sheet, '' );
+	drawTemplate( g, sheet, $CardClass );
 	drawLabel( g, diy, sheet, Label_box, #AHLCG-Label-Asset );
 	drawName( g, diy, sheet, Name_box );
 
 	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, Subtitle_box, 'Neutral', true );
 	
+	if ($CardClass == 'Weakness' ) {	
+		drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-Weakness );
+	}
+
 	drawCost( g, diy, sheet );
 
 	drawSkillIcons( g, diy, sheet, 'Neutral' );
@@ -265,12 +279,16 @@ function paintBack( g, diy, sheet ) {
 
 	PortraitList[getPortraitIndex( 'BackPortrait' )].paint( g, sheet.getRenderTarget() );
 
-	drawTemplate( g, sheet, '' );
+	drawTemplate( g, sheet, $CardClassBack );
 	drawLabel( g, diy, sheet, BackLabel_box, #AHLCG-Label-Asset );
 	drawName( g, diy, sheet, BackName_box );
 
 	if ( $SubtitleBack.length > 0 ) drawSubtitle( g, diy, sheet, BackSubtitle_box, 'Neutral', true );
 	
+	if ($CardClassBack == 'Weakness' ) {	
+		drawSubtype( g, diy, sheet, BackSubtype_box, #AHLCG-Label-Weakness );
+	}
+
 	drawCost( g, diy, sheet );
 
 	drawSkillIcons( g, diy, sheet, 'Neutral' );
@@ -304,17 +322,21 @@ function onClear() {
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	readPortraits( diy, oos, PortraitTypeList );	
+	readPortraits( diy, oos, PortraitTypeList, true );	
 
 	if ( diy.version < 9 ) {
 		$Skill5 = 'None';
 		$Skill5Back = 'None';
 	}
-
+	if ( diy.version < 10 ) {
+		$CardClass = 'Neutral';
+		$CardClassBack = 'Neutral';
+	}
+	
 	updateCollection();
 	updateEncounter();
 
-	diy.version = 9;
+	diy.version = 10;
 }
 
 function onWrite( diy, oos ) {

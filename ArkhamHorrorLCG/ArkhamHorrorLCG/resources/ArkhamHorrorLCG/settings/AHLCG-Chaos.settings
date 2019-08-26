@@ -1,9 +1,9 @@
 AHLCG-Chaos-Default-template = ArkhamHorrorLCG/templates/AHLCG-Chaos.jp2
 
 AHLCG-Chaos-Name-region = 28,92,307,25
-AHLCG-Chaos-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 14	; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.05; FOREGROUND: #000000
+AHLCG-Chaos-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 14; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.05; FOREGROUND: #000000
 
-AHLCG-Difficulty-region = 129,125,114,14
+AHLCG-Difficulty-region = 129,127,114,14
 AHLCG-Difficulty-alignment = center, top
 AHLCG-Difficulty-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.difficultySize}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.97; FOREGROUND: #000000
 
@@ -12,6 +12,11 @@ AHLCG-Chaos-Body-alignment = left, middle
 AHLCG-Chaos-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize*0.96}; WEIGHT: WEIGHT_MEDIUM; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
 AHLCG-Chaos-BodyIcon-region = 44,148,47,47
 AHLCG-Chaos-Body-tightness = 1.0
+
+AHLCG-Chaos-TrackerBox-region = 35,369,299,93
+AHLCG-Chaos-TrackerName-region = 45,375,279,20
+AHLCG-Chaos-TrackerName-alignment = center, middle
+AHLCG-Chaos-TrackerName-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 9.2; WEIGHT: WEIGHT_MEDIUM; WIDTH: 1.02; FOREGROUND: #000000
 
 AHLCG-Chaos-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Chaos-Encounter-portrait-pany = 0

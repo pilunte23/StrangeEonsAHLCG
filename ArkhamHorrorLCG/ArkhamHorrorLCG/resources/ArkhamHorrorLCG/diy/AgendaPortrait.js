@@ -23,7 +23,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function setDefaults() {
@@ -32,6 +32,7 @@ function setDefaults() {
 	$ScenarioDeckID = 'a';
 	$Doom = '3';
 	$PerInvestigator = '0';
+	$Asterisk = '0';
 	$Orientation = 'Standard';
 
 	$AgendaStory = '';
@@ -302,7 +303,7 @@ function createBackTextShape( textBox, textRegion ) {
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	readPortraits( diy, oos, PortraitTypeList );
+	readPortraits( diy, oos, PortraitTypeList, true );
 
 	if (diy.version < 4) {
 		$PerInvestigator = '0';
@@ -311,11 +312,14 @@ function onRead(diy, oos) {
 		$ScenarioDeckID = 'a';
 		$Orientation = 'Standard';
 	}
-
+	if ( diy.version < 10 ) {
+		$Asterisk = '0';
+	}
+	
 	updateCollection();
 	updateEncounter();
 
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function onWrite( diy, oos ) {

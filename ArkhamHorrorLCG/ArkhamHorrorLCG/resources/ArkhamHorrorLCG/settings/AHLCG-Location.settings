@@ -51,13 +51,14 @@ AHLCG-Connection4Icon-region = 191,456,34,34
 AHLCG-Connection5Icon-region = 232,459,35,35
 AHLCG-Connection6Icon-region = 273,467,35,35
 
-AHLCG-Location-Shroud-region = 9,251,49,49
+AHLCG-Location-Shroud-region = 11,251,49,49
 AHLCG-Location-Clues-region = 318,251,49,50
 AHLCG-Location-CluesPerInv-region = 309,251,49,49
 AHLCG-Location-PerInv-region = 338, 254, 30, 49
 
-AHLCG-Location-Victory-region = 293,441,74,17
-AHLCG-Location-Victory-alignment = center
+AHLCG-Location-Victory-region = 262,418,104,42
+AHLCG-Location-Victory-alignment = right, bottom
+AHLCG-Location-Victory-tightness = 0.7
 
 AHLCG-Location-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Location-Collection-portrait-pany = 0

@@ -70,3 +70,15 @@ AHLCG-Investigator-DefaultCollection-portrait-clip-region = 476,360,13,13
 AHLCG-Investigator-Collection-portrait-clip-region = 476,360,13,13
 
 AHLCG-Investigator-CollectionNumber-region = 472,363,37,10
+
+AHLCG-Investigator-EncounterPortrait-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-Investigator-EncounterPortrait-portrait-pany = 0
+
+AHLCG-Investigator-DefaultEncounter-portrait-clip-region = 11,12,28,28
+AHLCG-Investigator-Encounter-portrait-clip-region = 11,12,28,28
+
+AHLCG-InvestigatorBack-EncounterPortrait-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-InvestigatorBack-EncounterPortrait-portrait-pany = 0
+
+AHLCG-InvestigatorBack-DefaultEncounter-portrait-clip-region = 231,15,28,28
+AHLCG-InvestigatorBack-Encounter-portrait-clip-region = 231,15,28,28

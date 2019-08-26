@@ -165,6 +165,8 @@ function createFrontPainter( diy, sheet ) {
 	Victory_box = markupBox(sheet);
 	Victory_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Victory_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Victory-alignment'));
+	Victory_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Victory', '-tightness') + '-tightness') );	
+//	createVictoryTextShape( Victory_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Victory-region') ) );
 
 	Artist_box = markupBox(sheet);
 	Artist_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Artist-style'), null);
@@ -348,7 +350,33 @@ function createBackTextShape( textBox, textRegion ) {
 
 	path.moveTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
 
-	for (let i = 0; i < numPoints; i++) {
+	for (let i = 1; i < numPoints; i++) {
+		path.lineTo( x + w * xPathPoints[i], y + h * yPathPoints[i] );
+	}
+
+	path.lineTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+		
+	textBox.pageShape = PageShape.GeometricShape( path, textRegion );
+}
+
+function createVictoryTextShape( textBox, textRegion ) {
+	var x = textRegion.x;
+	var y = textRegion.y;
+	var w = textRegion.width;
+	var h = textRegion.height;
+
+	var xPathPoints = new Array( 0.000, 1.000, 1.000, 0.500, 0.000 );
+	var yPathPoints = new Array( 0.000, 0.000, 1.000, 1.000, 0.500 );
+//	var xPathPoints = new Array( 0.000, 1.000, 1.000 );
+//	var yPathPoints = new Array( 0.000, 0.000, 1.000 );
+	
+	var path = new java.awt.geom.Path2D.Double();
+
+	var numPoints = xPathPoints.length;
+
+	path.moveTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+
+	for (let i = 1; i < numPoints; i++) {
 		path.lineTo( x + w * xPathPoints[i], y + h * yPathPoints[i] );
 	}
 
@@ -361,7 +389,7 @@ function createBackTextShape( textBox, textRegion ) {
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	readPortraits( diy, oos, PortraitTypeList );
+	readPortraits( diy, oos, PortraitTypeList, true );
 
 	if ( diy.version < 3 ) {
 		$BackType = 'Standard';

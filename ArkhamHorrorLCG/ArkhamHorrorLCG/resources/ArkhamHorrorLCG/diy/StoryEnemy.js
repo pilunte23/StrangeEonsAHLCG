@@ -316,7 +316,7 @@ function createBackTextShape( textBox, textRegion ) {
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	readPortraits( diy, oos, PortraitTypeList );
+	readPortraits( diy, oos, PortraitTypeList, true );
 
 	updateCollection();
 	updateEncounter();

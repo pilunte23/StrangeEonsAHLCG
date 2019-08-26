@@ -1,4 +1,4 @@
-AHLCG-AssetStory-Default-template = ArkhamHorrorLCG/templates/AHLCG-AssetStory.jp2
+AHLCG-AssetStory-Default-template = ArkhamHorrorLCG/templates/AHLCG-AssetStory-N.jp2
 AHLCG-AssetStoryBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-PlayerBack.jp2
 
 AHLCG-AssetStory-Label-region = 20,62,38,14
@@ -11,6 +11,10 @@ AHLCG-AssetStory-SubtitleN-region = 68,41,240,22
 AHLCG-AssetStory-SubtitleTextN-region = 68,42,240,22
 AHLCG-AssetStory-Subtitle-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.subtitleSize}; WEIGHT: WEIGHT_BOLD; FOREGROUND: #000000
 AHLCG-AssetStory-Subtitle-alignment = center, middle
+
+AHLCG-AssetStory-Subtype-region = 86,301,203,15
+AHLCG-AssetStory-Subtype-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.subtypeSize}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.94; FOREGROUND: #000000
+AHLCG-AssetStory-Subtype-alignment = center, middle
 
 AHLCG-AssetStory-Body-region = 20,320,336,140
 AHLCG-AssetStory-Body-alignment = left
@@ -35,7 +39,7 @@ AHLCG-AssetStory-DefaultCollection-portrait-clip-region = 320,510,13,13
 AHLCG-AssetStory-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-AssetStory-Encounter-portrait-pany = 0
 
-AHLCG-AssetStory-Encounter-portrait-clip-region = 330,10,28,28
-AHLCG-AssetStory-DefaultEncounter-portrait-clip-region = 331,10,28,28
+AHLCG-AssetStory-Encounter-portrait-clip-region = 329,10,30,30
+AHLCG-AssetStory-DefaultEncounter-portrait-clip-region = 329,10,30,30
 
 AHLCG-AssetStory-Dash-tint = 0.0, 0.0, 1.0

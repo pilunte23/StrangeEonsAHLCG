@@ -181,7 +181,7 @@ function createTextShape( textBox, textRegion ) {
 	
 	var path = new java.awt.geom.Path2D.Double();
 	
-	var xPathPoints = new Array( 0.0, 0.025 );
+	var xPathPoints = new Array( 0.0, 0.015 );
 	var yPathPoints = new Array( 0.0, 1.000 );
 	
 	var xControlPoints = new Array( 0.053, 0.088 );
@@ -198,12 +198,12 @@ function createTextShape( textBox, textRegion ) {
 		);
 	}
 
-	path.lineTo( x + w * (1 - xPathPoints[numPoints-1]), y + h * yPathPoints[numPoints-1] );
+	path.lineTo( x + w * (1 + xPathPoints[numPoints-1]), y + h * yPathPoints[numPoints-1] );
 
 	for (let i = numPoints-2; i >= 0; i--) {
 		path.curveTo( x + w * (1.0 + xControlPoints[i*2 + 1]), y + h * yControlPoints[i*2 + 1],
 					  x + w * (1.0 + xControlPoints[i*2]), y + h * yControlPoints[i*2],
-					  x + w * (1.0 - xPathPoints[i]), y + h * yPathPoints[i]
+					  x + w * (1.0 + xPathPoints[i]), y + h * yPathPoints[i]
 		);
 	}
 
@@ -216,7 +216,7 @@ function createTextShape( textBox, textRegion ) {
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	readPortraits( diy, oos, PortraitTypeList );
+	readPortraits( diy, oos, PortraitTypeList, true );
 
 	if ( diy.version < 9 ) {
 		$Skill5 = 'None';

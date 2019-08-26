@@ -25,7 +25,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 	
-	diy.version = 9;
+	diy.version = 10;
 }
 
 function setDefaults() {
@@ -40,6 +40,7 @@ function setDefaults() {
 	$Skill4 = 'None';
 	$Skill5 = 'None';
 	
+	$CardClass = 'Neutral';
 	$ResourceCost = '0';
 	$Slot = 'None';
 	$Stamina = 'None';
@@ -117,6 +118,10 @@ function createFrontPainter( diy, sheet ) {
 	Subtitle_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Subtitle-style'), null);
 	Subtitle_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'Subtitle-alignment'));
 
+	Subtype_box = markupBox(sheet);
+	Subtype_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Subtype-style'), null);
+	Subtype_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Subtype-alignment'));
+
 	Cost_box = markupBox(sheet);
 	Cost_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Cost-style'), null);
 	Cost_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'Cost-alignment'));
@@ -155,12 +160,16 @@ function paintFront( g, diy, sheet ) {
 
 	PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
 
-	drawTemplate( g, sheet, '' );
+	drawTemplate( g, sheet, $CardClass );
 	drawLabel( g, diy, sheet, Label_box, #AHLCG-Label-Asset );
 	drawName( g, diy, sheet, Name_box );
 
 	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, Subtitle_box, 'Neutral', true );
 	
+	if ($CardClass == 'Weakness' ) {	
+		drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-Weakness );
+	}
+
 	drawCost( g, diy, sheet );
 
 	drawSkillIcons( g, diy, sheet, 'Neutral' );
@@ -197,7 +206,7 @@ function onClear() {
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	readPortraits( diy, oos, PortraitTypeList );
+	readPortraits( diy, oos, PortraitTypeList, true );
 
 	if (diy.version < 2) {
 		$BackTypeBack = 'Player';
@@ -207,11 +216,14 @@ function onRead(diy, oos) {
 	if ( diy.version < 9 ) {
 		$Skill5 = 'None';
 	}
-
+	if ( diy.version < 10 ) {
+		$CardClass = 'Neutral';
+	}
+	
 	updateCollection();
 	updateEncounter();
 
-	diy.version = 9;
+	diy.version = 10;
 }
 
 function onWrite( diy, oos ) {

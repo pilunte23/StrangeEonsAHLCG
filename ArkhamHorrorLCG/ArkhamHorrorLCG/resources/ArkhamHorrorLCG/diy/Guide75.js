@@ -136,7 +136,7 @@ function onRead(diy, oos) {
 		createPortraits( diy, PortraitTypeList );
 	}
 	else {
-		readPortraits( diy, oos, PortraitTypeList );
+		readPortraits( diy, oos, PortraitTypeList, true );
 	}
 
 	diy.version = 8;

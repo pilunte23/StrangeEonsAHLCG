@@ -24,7 +24,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function setDefaults() {
@@ -52,6 +52,8 @@ function setDefaults() {
 	$MergeSkullBack = 'None';
 	$MergeCultistBack = 'None';
 	$MergeTabletBack = 'None';
+	
+	$TrackerBox = '';
 }
 
 function createInterface( diy, editor ) {
@@ -60,11 +62,12 @@ function createInterface( diy, editor ) {
 	var bindings = new Bindings( editor, diy );
 
 	var TitlePanel = layoutTitle( diy, bindings, false, [0, 1], FACE_FRONT );
+	var StatPanel = layoutChaosStats( bindings, FACE_FRONT );
 	var CopyrightPanel = layoutCopyright( bindings, [0, 1], FACE_FRONT );
 
 	var StatisticsTab = new Grid();
 	StatisticsTab.editorTabScrolling = true;
-	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', CopyrightPanel, 'wrap, pushx, growx' );
+	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', StatPanel, 'wrap, pushx, growx', CopyrightPanel, 'wrap, pushx, growx' );
 	StatisticsTab.addToEditor( editor , @AHLCG-General );
 
 	var TextTab = layoutChaosText( bindings, FACE_FRONT );
@@ -100,7 +103,7 @@ function createFrontPainter( diy, sheet ) {
 	Name_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Name-alignment'));
 	initBodyTags( diy, Name_box );	
 
-	Difficulty_box  = markupBox(sheet);
+	Difficulty_box = markupBox(sheet);
 	Difficulty_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Difficulty-style'), null);
 	Difficulty_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Difficulty-alignment'));
 
@@ -116,7 +119,11 @@ function createFrontPainter( diy, sheet ) {
 		initBodyTags( diy, Body_boxes[i] );	
 	}
 
-	Copyright_box  = markupBox(sheet);
+	Tracker_box = markupBox(sheet);
+	Tracker_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'TrackerName-style'), null);
+	Tracker_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'TrackerName-alignment'));
+
+	Copyright_box = markupBox(sheet);
 	Copyright_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Copyright-style'), null);
 	Copyright_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Copyright-alignment'));
 
@@ -153,6 +160,10 @@ function createBackPainter( diy, sheet ) {
 		initBodyTags( diy, BackBody_boxes[i] );	
 	}
 
+	BackTracker_box = markupBox(sheet);
+	BackTracker_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'TrackerName-style'), null);
+	BackTracker_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'TrackerName-alignment'));
+
 	BackCopyright_box = markupBox(sheet);
 	BackCopyright_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Copyright-style'), null);
 	BackCopyright_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Copyright-alignment'));
@@ -176,6 +187,8 @@ function paintFront( g, diy, sheet ) {
 
 	if ( diy.name != '' ) drawChaosName( g, diy, sheet, Name_box );
 	drawDifficulty( g, diy, sheet, Difficulty_box, #AHLCG-Difficulty-Front );
+
+	if ( $TrackerBox.length > 0 ) drawChaosTrackerBox( g, diy, sheet, Tracker_box );
 
 	drawChaosBody( g, diy, sheet, Body_boxes );
 
@@ -219,7 +232,7 @@ function onClear() {
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	readPortraits( diy, oos, PortraitTypeList );
+	readPortraits( diy, oos, PortraitTypeList, true );
 
 	updateCollection();
 	updateEncounter();
@@ -233,7 +246,11 @@ function onRead(diy, oos) {
 		$MergeTabletBack = 'None';
 	}
 
-	diy.version = 8;
+	if ( diy.version < 10 ) {
+		$TrackerBox = '';
+	}
+
+	diy.version = 10;
 }
 
 function onWrite( diy, oos ) {

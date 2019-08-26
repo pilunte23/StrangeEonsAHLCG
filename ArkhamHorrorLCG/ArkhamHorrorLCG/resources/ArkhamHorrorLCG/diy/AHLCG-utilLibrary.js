@@ -46,54 +46,65 @@ function image( resource, folder, ext ) {
 	return ImageUtils.get( imageName );
 }
 
-function readPortraits( diy, oos, typeList ) {
+// readEncounter is for older versions of WeaknessEnemy and WeaknessTreachery that do not include an encounter portrait
+function readPortraits( diy, oos, typeList, readEncounter ) {
 	for ( let index = 0; index < typeList.length; index++ ) {
-		PortraitList[index] = oos.readObject();
+		// read portrait
+		let fullKey = typeList[index];
+		let partArray = fullKey.split('-');
+		let key = partArray[0];		
 
-		// update base keys for newer versions...	
-		let key = PortraitList[index].getBaseKey();
-
-		let searchKey = '';
-		let replaceKey = '';
-		
-		if ( key ) {
-			if ( key.indexOf( 'EncounterPortrait' ) >= 0 ) {
-				searchKey = 'EncounterPortrait';
-				replaceKey = 'Encounter';
-			}
-			else if ( key.indexOf( 'CollectionPortrait' ) >= 0 ) {
-				searchKey = 'CollectionPortrait';
-				replaceKey = 'Collection';
-			}
-			else if ( key.indexOf( '-Investigator-PortraitPortrait' ) >= 0 ) {
-				searchKey = '-Investigator-PortraitPortrait';
-				replaceKey = '-InvestigatorBack-Portrait';
-			}
-			else if ( key.indexOf( 'PortraitPortrait' ) >= 0 ) {
-				searchKey = 'PortraitPortrait';
-				replaceKey = 'Portrait';
-			}
+		if ( key == 'Encounter' && !readEncounter ) {
+			createPortrait( diy, fullKey );
 		}
+		else {
+			PortraitList[index] = oos.readObject();
+
+			// update base keys for newer versions...	
+			let key = PortraitList[index].getBaseKey();
+
+			let searchKey = '';
+			let replaceKey = '';
+		
+			if ( key ) {
+				if ( key.indexOf( 'EncounterPortrait' ) >= 0 ) {
+					searchKey = 'EncounterPortrait';
+					replaceKey = 'Encounter';
+				}
+				else if ( key.indexOf( 'CollectionPortrait' ) >= 0 ) {
+					searchKey = 'CollectionPortrait';
+					replaceKey = 'Collection';
+				}
+				else if ( key.indexOf( '-Investigator-PortraitPortrait' ) >= 0 ) {
+					searchKey = '-Investigator-PortraitPortrait';
+					replaceKey = '-InvestigatorBack-Portrait';
+				}
+				else if ( key.indexOf( 'PortraitPortrait' ) >= 0 ) {
+					searchKey = 'PortraitPortrait';
+					replaceKey = 'Portrait';
+				}
+			}
 			
-		if ( searchKey != '' ) {
-			let splitArr = key.split( searchKey );
+			if ( searchKey != '' ) {
+				let splitArr = key.split( searchKey );
 			
-			let newKey = key.replace( searchKey, replaceKey );
+				let newKey = key.replace( searchKey, replaceKey );
 			
-			diy.settings.set( splitArr[0] + replaceKey + '-portrait-template', $( splitArr[0] + searchKey + '-portrait-template' ) );
-			diy.settings.set( splitArr[0] + replaceKey + '-portrait-panx', $( splitArr[0] + searchKey + '-portrait-panx' ) );
-			diy.settings.set( splitArr[0] + replaceKey + '-portrait-pany', $( splitArr[0] + searchKey + '-portrait-pany' ) );
-			diy.settings.set( splitArr[0] + replaceKey + '-portrait-rotation', $( splitArr[0] + searchKey + '-portrait-rotation' ) );
-			diy.settings.set( splitArr[0] + replaceKey + '-portrait-scale', $( splitArr[0] + searchKey + '-portrait-scale' ) );
+				diy.settings.set( splitArr[0] + replaceKey + '-portrait-template', $( splitArr[0] + searchKey + '-portrait-template' ) );
+				diy.settings.set( splitArr[0] + replaceKey + '-portrait-panx', $( splitArr[0] + searchKey + '-portrait-panx' ) );
+				diy.settings.set( splitArr[0] + replaceKey + '-portrait-pany', $( splitArr[0] + searchKey + '-portrait-pany' ) );
+				diy.settings.set( splitArr[0] + replaceKey + '-portrait-rotation', $( splitArr[0] + searchKey + '-portrait-rotation' ) );
+				diy.settings.set( splitArr[0] + replaceKey + '-portrait-scale', $( splitArr[0] + searchKey + '-portrait-scale' ) );
+				
+				diy.settings.reset( splitArr[0] + searchKey + '-portrait-template' );
+				diy.settings.reset( splitArr[0] + searchKey + '-portrait-panx' );
+				diy.settings.reset( splitArr[0] + searchKey + '-portrait-pany' );
+				diy.settings.reset( splitArr[0] + searchKey + '-portrait-rotation' );
+				diy.settings.reset( splitArr[0] + searchKey + '-portrait-scale' );
 			
-			diy.settings.reset( splitArr[0] + searchKey + '-portrait-template' );
-			diy.settings.reset( splitArr[0] + searchKey + '-portrait-panx' );
-			diy.settings.reset( splitArr[0] + searchKey + '-portrait-pany' );
-			diy.settings.reset( splitArr[0] + searchKey + '-portrait-rotation' );
-			diy.settings.reset( splitArr[0] + searchKey + '-portrait-scale' );
-			
-			let newPortrait = new DefaultPortrait( newKey, PortraitList[index] );
-			PortraitList[index] = newPortrait;
+				let newPortrait = new DefaultPortrait( newKey, PortraitList[index] );
+				PortraitList[index] = newPortrait;
+			}
 		}
 	}
 }
@@ -1237,6 +1248,9 @@ function getClassInitial( className ) {
 		case 'Neutral':
 //		case 'Investigator-specific':
 			initial = 'N';
+			break;
+		case 'Story':
+			initial = 'S';
 			break;
 		case 'Test':
 			initial = 'T';

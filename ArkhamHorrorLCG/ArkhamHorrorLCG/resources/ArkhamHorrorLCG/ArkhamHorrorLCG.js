@@ -135,7 +135,7 @@ function gameObject( masterSettings ) {
 	this.enemyFont = ResourceKit.getFont('ArkhamHorrorLCG/fonts/Bolton.ttf', 16.0);
 	this.symbolFont = ResourceKit.getFont('ArkhamHorrorLCG/fonts/AHLCGSymbol.ttf', 16.0);
 	this.headerFont = ResourceKit.getFont('ArkhamHorrorLCG/fonts/AHLCGSymbol.ttf', 11.2);
-		
+
 	// updated arrays for language support
 	this.comboClasses = new Array( 
 		ListItem( 'Guardian', @AHLCG-Class-Guardian ),
@@ -164,6 +164,10 @@ function gameObject( masterSettings ) {
 		ListItem( 'Neutral' , @AHLCG-Class-Neutral ),
 		ListItem( 'Weakness' , @AHLCG-Class-Weakness ) );
 		
+	this.comboStoryAssetClasses = new Array( 
+		ListItem( 'Neutral', @AHLCG-Class-Neutral ),
+		ListItem( 'Weakness', @AHLCG-Class-Weakness ) );
+
 	this.comboSkills = new Array( 
 		ListItem( 'None', @AHLCG-Skill-None ),
 		ListItem( 'Willpower', @AHLCG-Skill-Willpower ),
@@ -184,12 +188,14 @@ function gameObject( masterSettings ) {
 
 	this.comboWeaknessTypes = new Array( 
 		ListItem( 'BasicWeakness', @AHLCG-WknType-BasicWeakness ), 
-		ListItem( 'Weakness', @AHLCG-WknType-Weakness ) );
+		ListItem( 'Weakness', @AHLCG-WknType-Weakness ),
+		ListItem( 'StoryWeakness', @AHLCG-WknType-StoryWeakness ) );
 
 	this.comboWeaknessTypesI = new Array( 
 		ListItem( 'BasicWeakness', @AHLCG-WknType-BasicWeakness ), 
 		ListItem( 'Weakness', @AHLCG-WknType-Weakness ),
-		ListItem( 'InvestigatorWeakness', @AHLCG-WknType-InvestigatorWeakness ) );
+		ListItem( 'InvestigatorWeakness', @AHLCG-WknType-InvestigatorWeakness ),
+		ListItem( 'StoryWeakness', @AHLCG-WknType-StoryWeakness ) );
 
 	this.comboScenario = new Array( 
 		ListItem( 'Portrait', @AHLCG-Scenario-Portrait ),
@@ -269,7 +275,8 @@ function gameObject( masterSettings ) {
 
 	this.comboEnemyStat = new Array(
 		ListItem( '-', '-' ),
-		ListItem( '?', '?' ) );
+		ListItem( '?', '?' ),
+		ListItem( 'X', 'X' ) );
 	for( let index = 0; index <= 9; index++ ){
 		this.comboEnemyStat[this.comboEnemyStat.length] = ListItem( index, String(index) );
 	}
@@ -282,8 +289,8 @@ function gameObject( masterSettings ) {
 	}
 	
 	this.comboClues = new Array(
-		ListItem( '-', '-' ),
-		ListItem( '?', '?' ) );
+	ListItem( '-', '-' ),
+	ListItem( '?', '?' ) );
 	for( let index = 1; index <= 19; index++ ) {
 		this.comboClues[this.comboClues.length] = ListItem( index, String(index) );
 	}
@@ -298,9 +305,11 @@ function gameObject( masterSettings ) {
 		this.combo20[index] = ListItem( index+1, String(index+1) );
 	}
 
-	this.combo020 = new Array();
+	this.comboX20 = new Array(
+		ListItem( 'X', 'X' )
+	);
 	for( let index = 0; index <= 20; index++ ){
-		this.combo020[index] = ListItem( index, String(index) );
+		this.comboX20[this.comboX20.length] = ListItem( index, String(index) );
 	}
 
 	this.basicEncounterList = new Array(
@@ -308,7 +317,7 @@ function gameObject( masterSettings ) {
 		'StrangeEons'
 	);
 
-	// Highest = 74
+	// Highest = 76
 	// NameKey, CollectionID, Tag, Index into select keys
 	this.standardEncounterList = new Array(
 		[ 'APhantomOfTruth', 4, 'phntm', 50 ],
@@ -360,12 +369,14 @@ function gameObject( masterSettings ) {
 		[ 'Rainforest', 5, 'rainfst', 63 ],
 		[ 'Rats', 0, 'rats', 19 ],
 		[ 'Serpents', 5, 'serpent', 64 ],
+		[ 'ShatteredAeons', 5, 'shaaon', 76 ],
 		[ 'Sorcery', 1, 'sorcry', 20 ],
 		[ 'StrikingFear', 0, 'strfr', 21 ],
 		[ 'TemporalFlux', 5, 'temflx', 65 ],
 		[ 'TheBayou', 2, 'bayou', 22 ],
 		[ 'TheBeyond', 1, 'beyond', 23 ],
 		[ 'TheBoundaryBeyond', 5, 'bndry', 70 ],
+		[ 'TheCityOfArchives', 5, 'ctyarc', 75 ],	// this is out of order, cuz I'm dumb
 		[ 'TheDepthsOfYoth', 5, 'tdoy', 74 ],
 		[ 'TheDevourerBelow', 0, 'devbel', 24 ],
 		[ 'TheDoomOfEztli', 5, 'dmeztli', 66 ],
@@ -433,7 +444,7 @@ function gameObject( masterSettings ) {
 	);
 
 	this.locationIcons = [ 'Circle', 'Square', 'Triangle', 'Cross', 'Diamond', 
-		'Slash', 'T', 'Hourglass', 'Moon', 'DoubleSlash', 'Heart', 'Star' ];
+		'Slash', 'T', 'Hourglass', 'Moon', 'DoubleSlash', 'Heart', 'Star', 'Quote' ];
 
 	this.comboConnections = new Array (
 		ListItem( 'None', @AHLCG-LocIcon-None,

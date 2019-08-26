@@ -22,10 +22,11 @@ function create( diy ) {
 	createPortraits( diy, PortraitTypeList );
 	setDefaultCollection();
 	
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function setDefaults() {
+	$Unique = '1';
 	$Subtitle = '';
 	$CardClass = 'Guardian';
 	$Willpower = '3';
@@ -68,7 +69,7 @@ function createInterface( diy, editor ) {
 	
 	var bindings = new Bindings( editor, diy );
 
-	var TitlePanel = layoutTitle( diy, bindings, true, [0, 1], FACE_FRONT );
+	var TitlePanel = layoutTitleUnique( diy, bindings, true, [0, 1], FACE_FRONT );
 	var StatPanel = layoutInvestigatorStats( diy, bindings, FACE_FRONT );
 	var CopyrightPanel = layoutCopyright( bindings, [0], FACE_FRONT );
 
@@ -275,20 +276,23 @@ function createBackTextShape( textBox, textRegion, className ) {
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	readPortraits( diy, oos, PortraitTypeList );
+	readPortraits( diy, oos, PortraitTypeList, true );
 
-	if (diy.version < 2) {
+	if ( diy.version < 2 ) {
 		$DeckRestrictionsBack = '';
 		$DeckRestrictionsBackSpacing = '0';
 	}
-	if (diy.version < 4) {
+	if ( diy.version < 4 ) {
 		$AdditionalRequirementsBack = '';
 		$AdditionalRequirementsBackSpacing = '0';
+	}
+	if ( diy.version < 10 ) {
+		$Unique = '1';
 	}
 	
 	updateCollection();
 	
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function onWrite( diy, oos ) {
