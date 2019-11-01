@@ -908,11 +908,13 @@ function layoutText( bindings, parts, suffix, faceIndex ) {
 				var height = 6;
 				if ( CardTypes[faceIndex] == 'Scenario' ) height = 18;
 				else if ( CardTypes[faceIndex] == 'Guide75' ) height = 40;
+				else if ( CardTypes[faceIndex] == 'GuideA4' ) height = 40;
 				
 				field = new textArea( '', height, 30 );
 				bindings.add( key + BindingSuffixes[faceIndex], field, [ faceIndex ] );
 
 				if ( CardTypes[faceIndex] == 'Guide75' ) tipCount = 3;
+				else if ( CardTypes[faceIndex] == 'GuideA4' )  tipCount = 3;
 				else tipCount = 2;
 				break;
 			case 'Header':
@@ -1145,6 +1147,14 @@ function layoutPortraitOptions( bindings, faces, bindingFaceIndex, artist, mirro
 	var OptionPanel = new Grid();
 	OptionPanel.setTitle( @AHLCG-Options );
 
+	if ( share ) {
+		var shareBox = new checkBox( @AHLCG-SharePortrait, true, null );
+		bindings.add( 'PortraitShare', shareBox, faces );
+		
+		OptionPanel.place(
+			shareBox, 'wrap, span 2'
+			);
+	}
 	if ( artist ) {
 		var artistField = new textField( '', 30 );
 		bindings.add( 'Artist' + BindingSuffixes[bindingFaceIndex], artistField, faces );
@@ -1159,12 +1169,14 @@ function layoutPortraitOptions( bindings, faces, bindingFaceIndex, artist, mirro
 			mirror, 'align right'
 			);
 	}
+/*
 	if ( share != null) {
 		OptionPanel.place( 
 //			share, 'align left'
 			share, 'align right'
 			);
 	}
+*/
 					
 	return OptionPanel;
 }
@@ -1246,11 +1258,11 @@ function layoutPortraitsWithPanels( diy, bindings, frontPortrait, backPortrait, 
 			
 		let frontMirrorButton = null;
 		if (mirror) frontMirrorButton = createPortraitMirrorButton( frontPortrait, frontPortraitImagePanel );
-		
+/*
 		let frontShareButton = null;
 		if (share) frontShareButton = createPortraitShareButton( bindings );
-
-		let frontOptionPanel = layoutPortraitOptions( bindings, [0], FACE_FRONT, true, frontMirrorButton, frontShareButton );
+*/
+		let frontOptionPanel = layoutPortraitOptions( bindings, [0], FACE_FRONT, true, frontMirrorButton, false );
 		if ( backNeeded ) frontOptionPanel.setTitle( @AHLCG-Options + ': ' + @AHLCG-Front );
 
 		PortraitTab.place( frontPortraitImagePanel, 'wrap, pushx, growx' );
@@ -1267,7 +1279,7 @@ function layoutPortraitsWithPanels( diy, bindings, frontPortrait, backPortrait, 
 		let backMirrorButton = null;
 		if (mirror) backMirrorButton = createPortraitMirrorButton( backPortrait, backPortraitImagePanel );
 
-		let backOptionPanel = layoutPortraitOptions( bindings, [1], FACE_BACK, backArtist, backMirrorButton, null );
+		let backOptionPanel = layoutPortraitOptions( bindings, [1], FACE_BACK, backArtist, backMirrorButton, share );
 		if ( frontNeeded ) backOptionPanel.setTitle( @AHLCG-Options + ': ' + @AHLCG-Back );
 
 		PortraitTab.place( backPortraitImagePanel, 'wrap, pushx, growx' );
