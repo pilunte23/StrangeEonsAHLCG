@@ -41,6 +41,7 @@
     @AHLCG-AgendaStoryAsset = diy:ArkhamHorrorLCG/diy/AgendaAssetStory.js | ArkhamHorrorLCG/icons/AHLCG-Agenda.png | AHLCG
     @AHLCG-AgendaTreachery = diy:ArkhamHorrorLCG/diy/AgendaTreachery.js | ArkhamHorrorLCG/icons/AHLCG-Agenda.png | AHLCG
     @AHLCG-CampaignGuide75 = diy:ArkhamHorrorLCG/diy/Guide75.js | ArkhamHorrorLCG/icons/AHLCG-Guide75.png | AHLCG
+	@AHLCG-CampaignGuideA4 = diy:ArkhamHorrorLCG/diy/GuideA4.js | ArkhamHorrorLCG/icons/AHLCG-GuideA4.png | AHLCG
     @AHLCG-ScenarioInformation = diy:ArkhamHorrorLCG/diy/Scenario.js | ArkhamHorrorLCG/icons/AHLCG-Scenario.png | AHLCG
     @AHLCG-ChaosEffects = diy:ArkhamHorrorLCG/diy/Chaos.js | ArkhamHorrorLCG/icons/AHLCG-Chaos.png | AHLCG
 	@AHLCG-StoryAsset = diy:ArkhamHorrorLCG/diy/StoryAsset.js | ArkhamHorrorLCG/icons/AHLCG-Story.png | AHLCG

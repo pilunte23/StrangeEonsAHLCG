@@ -69,6 +69,34 @@ function drawGuideTemplate( g, sheet  ) {
 	}
 }
 
+function drawGuideTemplateA4( g, sheet  ) {
+	var faceIndex = sheet.getSheetIndex();
+	var image = ImageUtils.get('ArkhamHorrorLCG/templates/AHLCG-' + CardTypes[faceIndex] + $PageType + '.jp2');
+	
+	var w = image.getWidth();
+	var h = image.getHeight();
+	
+	if ( $PageType == 'Empty' && Number($Page) % 2 == 0 ) sheet.paintImage( g, ImageUtils.mirror( image, true, false ), new Region(0, 0, w, h) );
+	else sheet.paintImage( g, image, new Region(0, 0, w, h) );
+	
+	if ( $PageType == 'Title' ) {
+		// overlay header for supported languages
+		var locale = getLocale();
+
+		switch ( locale ) {
+			case 'fr':
+				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-GuideA4Title-' + locale + '.png'), new Region(206, 56, 827, 250) );
+				break;
+			case 'it':
+				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-GuideA4Title-' + locale + '.png'), new Region(172, 147, 783, 130) );
+				break;
+			case 'de':
+				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-GuideA4Title-' + locale + '.png'), new Region(172, 147, 783, 130) );
+				break;
+		}
+	}
+}
+
 function drawGuidePortraits( g, diy, sheet ) {
 	var bodyRegion = diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') );
 
@@ -162,6 +190,7 @@ function drawName( g, diy, sheet, nameBox ) {
 	if ( $Orientation == 'Reversed' ) region = reverseRegion( region );
 	
 	if ( CardTypes[faceIndex] == 'Guide75' ) title = title.toUpperCase();	
+	else if ( CardTypes[faceIndex] == 'GuideA4' ) title = title.toUpperCase();
 	else if ( CardTypes[faceIndex] == 'Event' && ( $CardClass == 'Weakness' || $CardClass == 'BasicWeakness' )) region.y -= 3;
 	
 	if ( title.length() >  0) {
