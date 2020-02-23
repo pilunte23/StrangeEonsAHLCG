@@ -160,7 +160,7 @@ function updateUsedEncounterSets( o ) {
 		let entry = o.standardEncounterList[index];
 
 		let item = entry[0];
-		
+
 		let used = loadUsedValue( 'Encounter', entry[3] );
 
 		if (used) {
@@ -281,9 +281,9 @@ function updateUsedCollections( o ) {
 function storeUsedValue( type, index, value ) {
 	var charToInsert = value ? '1' : '0';
 	var usedIndex = Math.floor( ( index / 40 ) + 1 );
-
 	var usedString = Settings.getUser().get( 'AHLCG-Use' + type + usedIndex, 0 );
-	usedString = usedString.substring(0, index) + charToInsert + usedString.substring(index+1);
+
+		usedString = usedString.substring( 0, index % 40 ) + charToInsert + usedString.substring( ( index % 40 ) + 1 );
 
 	Settings.getUser().set('AHLCG-Use' + type + usedIndex, usedString );
 }
@@ -291,9 +291,8 @@ function storeUsedValue( type, index, value ) {
 function loadUsedValue( type, index ) {
 	var usedIndex = Math.floor( ( index / 40 ) + 1 );
 	var usedString = Settings.getUser().get( 'AHLCG-Use' + type + usedIndex, '' );
-
+	
 	if ( usedString.length() < (index % 40) + 1 ) return true;	// set new ones to true
-
 	if ( usedString.charAt( index % 40 ) == 49 ) return true;	// == '1'?
 	return false;
 }
@@ -393,7 +392,7 @@ function updateEncounter() {
 		if ( $Encounter == entry[0] ) {
 			// [3] is index of set in the used setting strings
 			let used = loadUsedValue( 'Encounter', entry[3] );
-			
+
 			if ( !used ) {
 				storeUsedValue( 'Encounter', entry[3], true );
 				updateUsedEncounterSets( AHLCGObject );
@@ -521,6 +520,11 @@ function addTextPart( faceIndex, text, key, diy ) {
 				format = diy.settings.get('AHLCG-DeckSize-format',#AHLCG-DeckSize-format);
 				formatEnd = diy.settings.get('AHLCG-DeckSize-formatEnd',#AHLCG-DeckSize-formatEnd);
 				alignment = diy.settings.get('AHLCG-DeckSize-alignment','');
+				break;
+			case 'SecondaryClass':
+				format = diy.settings.get('AHLCG-SecondaryClass-format',#AHLCG-SecondaryClass-format);
+				formatEnd = diy.settings.get('AHLCG-SecondaryClass-formatEnd','');
+				alignment = diy.settings.get('AHLCG-SecondaryClass-alignment','');
 				break;
 			case 'DeckOptions':
 				format = diy.settings.get('AHLCG-DeckOptions-format',#AHLCG-DeckOptions-format);
@@ -1252,6 +1256,9 @@ function getClassInitial( className ) {
 		case 'Story':
 			initial = 'S';
 			break;
+		case 'Dual':
+			initial = 'D';
+			break;
 		case 'Test':
 			initial = 'T';
 			break;
@@ -1286,6 +1293,21 @@ function getSkillInitial( skillName )
 	}
 
 	return initial;
+}
+
+function isDualClass( cardClass, cardClass2 ) {
+	var dual = true;
+
+	// not dual class if the first class isn't a valid one or if the classes match
+	if ( cardClass2 == 'None' ) dual = false;
+	else if ( cardClass == cardClass2 ) dual = false;
+	else { 
+		let classInitial = getClassInitial( cardClass );
+
+		if ( classInitial != 'G' && classInitial != 'K' && classInitial != 'R' && classInitial != 'M' && classInitial != 'V' ) dual = false;
+	}
+
+	return dual;
 }
 
 function setPortraitPanelFileFieldEnabled( panel, enabled ) {
@@ -1333,6 +1355,7 @@ function createPortraitMirrorButton( portraitName, portraitPanel ) {
 	);
 }
 
+// unused
 //function createPortraitShareButton( portraitPanel, artistPanel ) {
 function createPortraitShareButton( bindings ) {
 	var shareButton = new toggleButton(
@@ -1408,7 +1431,7 @@ function createStencilImage( source, mask )
 
 //	var destImage = ImageUtils.resize( stencilImage, source.width, source.height );
 	var destImage = ImageUtils.create( source.width, source.height, true );
-	g = destImage.createGraphics();
+	var g = destImage.createGraphics();
 	g.drawImage( stencilImage, 0, 0, null );
 	g.setComposite( java.awt.AlphaComposite.SrcIn );
 	g.drawImage( source, 0, 0, null );
@@ -1420,3 +1443,18 @@ function createStencilImage( source, mask )
 const createDarkenedImage = filterFunction(
 	new ca.cgjennings.graphics.filters.BrightnessContrastFilter(-0.5,0.0)
 );
+
+function createReturnToImage( iconImage )
+{
+	var icon = ImageUtils.resize( iconImage, 28, 28 );
+	var base = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-ReturnToBase.png');
+
+	var destImage = ImageUtils.create( 36, 33, true );
+	var g = destImage.createGraphics();
+	g.drawImage( base, 0, 0, null );
+	g.setComposite( java.awt.AlphaComposite.DstOut );
+	g.drawImage(icon, 4, 4, null);
+	g.dispose();
+	
+	return destImage;
+}

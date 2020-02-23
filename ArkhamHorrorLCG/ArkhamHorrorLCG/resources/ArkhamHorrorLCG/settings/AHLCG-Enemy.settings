@@ -28,7 +28,7 @@ AHLCG-Enemy-BackPortrait-portrait-clip-region = 0,241,375,284
 
 AHLCG-Enemy-Attack-region = 107,51,26,27
 AHLCG-Enemy-Evade-region = 248,51,23,27
-AHLCG-Enemy-Health-region = 178,45,20,35
+AHLCG-Enemy-Health-region = 168,45,40,35
 AHLCG-Enemy-HealthPerInv-region = 169,45,27,35
 AHLCG-Enemy-PerInv-region = 191,55,17,17
 
@@ -54,5 +54,7 @@ AHLCG-Enemy-EncounterPortrait-portrait-pany = 0
 
 AHLCG-Enemy-Encounter-portrait-clip-region = 174,274,28,28
 AHLCG-Enemy-DefaultEncounter-portrait-clip-region = 174,274,28,28
+AHLCG-Enemy-ReturnEncounter-portrait-clip-region = 169,270,37,33
+AHLCG-Enemy-DefaultReturnEncounter-portrait-clip-region = 169,270,37,33
 
 AHLCG-Enemy-Dash-tint = 38.0, 0.14, 1.0

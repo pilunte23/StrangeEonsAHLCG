@@ -32,5 +32,7 @@ AHLCG-Story-Encounter-portrait-pany = 0
 
 AHLCG-Story-Encounter-portrait-clip-region = 308,27,36,36
 AHLCG-Story-DefaultEncounter-portrait-clip-region = 308,27,36,36
+AHLCG-Story-ReturnEncounter-portrait-clip-region = 302,23,49,48
+AHLCG-Story-DefaultReturnEncounter-portrait-clip-region = 301,20,49,48
 
 AHLCG-Story-Dash-tint = 38.0, 0.14, 1.0

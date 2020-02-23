@@ -43,7 +43,10 @@ AHLCG-Agenda-Encounter-portrait-pany = 0
 
 AHLCG-Agenda-Encounter-portrait-clip-region = 368,27,28,28
 AHLCG-Agenda-DefaultEncounter-portrait-clip-region = 368,27,28,28
+AHLCG-Agenda-ReturnEncounter-portrait-clip-region = 364,22,35,35
+AHLCG-Agenda-DefaultReturnEncounter-portrait-clip-region = 364,22,35,35
 AHLCG-AgendaBack-Encounter-portrait-clip-region = 27,57,36,36
+AHLCG-AgendaBack-ReturnEncounter-portrait-clip-region = 20,50,49,48
 
 AHLCG-Agenda-Artist-region = 220,365,120,10
 #AHLCG-Agenda-Copyright-region = 343,365,89,10

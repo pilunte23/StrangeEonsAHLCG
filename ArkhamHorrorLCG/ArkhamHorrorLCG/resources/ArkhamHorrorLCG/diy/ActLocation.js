@@ -256,18 +256,33 @@ function onClear() {
 	setDefaults();
 }
 
-function createTextShape( textBox, textRegion ) {
+function createTextShape( textBox, textRegion, reverse
+	 ) {
 	var x = textRegion.x;
 	var y = textRegion.y;
 	var w = textRegion.width;
 	var h = textRegion.height;
-
+	
 	var path = new java.awt.geom.Path2D.Double();
 
-	var xPathPoints = new Array( 0.000, 0.000, 0.148, 0.148, 1.000, 1.000 );
-	var yPathPoints = new Array( 0.000, 0.850, 0.850, 1.000, 1.000, 0.000 );
-
+	var xPathPoints = new Array( 0.000, 0.000, 0.715, 0.830, 0.830, 1.000, 1.000 );
+	var yPathPoints = new Array( 0.000, 1.000, 1.000, 0.957, 0.850, 0.850, 0.000 );
+	
 	var numPoints = xPathPoints.length;
+	
+	if ( reverse ) {
+		// swap order and x-value
+		for (let i = 0; i < numPoints / 2; i++) {
+			let px = xPathPoints[i];
+			let py = yPathPoints[i];
+			
+			xPathPoints[i] = 1.000 - xPathPoints[numPoints - i - 1];
+			yPathPoints[i] = yPathPoints[numPoints - i - 1];
+			
+			xPathPoints[numPoints - i - 1] = 1.000 - px;
+			yPathPoints[numPoints - i - 1] = py;
+		}
+	}
 	
 	path.moveTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
 

@@ -1,7 +1,12 @@
 AHLCG-Chaos-Default-template = ArkhamHorrorLCG/templates/AHLCG-Chaos.jp2
 
-AHLCG-Chaos-Name-region = 28,92,307,25
+#AHLCG-Chaos-Name-region = 28,92,307,25
+AHLCG-Chaos-Name-region = 28,90,307,75
 AHLCG-Chaos-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 14; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.05; FOREGROUND: #000000
+#AHLCG-Chaos-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 14; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.0; FOREGROUND: #000000
+AHLCG-Chaos-Name-alignment = center, top
+AHLCG-Chaos-Name-tightness = 0.2
+#AHLCG-Chaos-Name-tightness = 1.0
 
 AHLCG-Difficulty-region = 129,127,114,14
 AHLCG-Difficulty-alignment = center, top
@@ -22,6 +27,7 @@ AHLCG-Chaos-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Chaos-Encounter-portrait-pany = 0
 
 AHLCG-Chaos-Encounter-portrait-clip-region = 173,59,28,28
+AHLCG-Chaos-ReturnEncounter-portrait-clip-region = 169,54,35,35
 
 #AHLCG-Chaos-EncounterNumber-region = 276,515,45,10
 #AHLCG-Chaos-EncounterNumber-alignment = right, middle

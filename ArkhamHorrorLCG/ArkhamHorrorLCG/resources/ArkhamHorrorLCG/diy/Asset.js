@@ -24,7 +24,7 @@ function create( diy ) {
 	createPortraits( diy, PortraitTypeList );
 	setDefaultCollection();
 
-	diy.version = 9;
+	diy.version = 11;
 }
 
 function setDefaults() {
@@ -32,6 +32,7 @@ function setDefaults() {
 	$Subtitle = '';
 	
 	$CardClass = 'Guardian';
+	$CardClass2 = 'None';
 	$ResourceCost = '0';
 	$Level = '0';
 	$Skill1 = 'None';
@@ -41,6 +42,7 @@ function setDefaults() {
 	$Skill5 = 'None';
 	
 	$Slot = 'None';
+	$Slot2 = 'None';
 	$Stamina = 'None';
 	$Sanity = 'None';
 	
@@ -151,13 +153,14 @@ function paintFront( g, diy, sheet ) {
 	clearImage( g, sheet );
 
 	PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
-	drawTemplate( g, sheet, $CardClass );
-//	drawTemplate( g, sheet, 'Test' );
-
+	drawAssetTemplate( g, diy, sheet, $CardClass, $CardClass2 );
 	drawLabel( g, diy, sheet, Label_box, #AHLCG-Label-Asset );
 	drawName( g, diy, sheet, Name_box );
 
-	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, Subtitle_box, $CardClass, true );
+	var cClass = $CardClass;
+	if ( isDualClass( $CardClass, $CardClass2 ) ) cClass = 'Dual';
+
+	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, Subtitle_box, cClass, true );
 
 	if ($CardClass == 'Weakness' ) {	
 //		Subtype_box.markupText = #AHLCG-Label-Weakness.toUpperCase();
@@ -167,17 +170,18 @@ function paintFront( g, diy, sheet ) {
 	else if ($CardClass == 'BasicWeakness' ) {	
 //		Subtype_box.markupText = #AHLCG-Label-BasicWeakness.toUpperCase();
 //		Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
+		drawBasicWeaknessIcon( g, diy, sheet );
 		drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-BasicWeakness );
 	}
 //	if ( $CardClass != 'Weakness' ) {
 	else {
-		drawLevel( g, diy, sheet, $CardClass );
+		drawLevel( g, diy, sheet, cClass );
 	}
 		
 	drawCost( g, diy, sheet );
 
-	drawSkillIcons( g, diy, sheet, $CardClass );
-	drawSlot( g, diy, sheet );
+	drawSkillIcons( g, diy, sheet, cClass );
+	drawSlots( g, diy, sheet );
 	drawStamina( g, diy, sheet );
 	drawSanity( g, diy, sheet );
 	
@@ -210,10 +214,14 @@ function onRead(diy, oos) {
 	if ( diy.version < 9 ) {
 		$Skill5 = 'None';
 	}
+	if ( diy.version < 11 ) {
+		$CardClass2 = 'None';
+		$Slot2 = 'None';
+	}
 
 	updateCollection();
 
-	diy.version = 9;
+	diy.version = 11;
 }
 
 function onWrite( diy, oos ) {

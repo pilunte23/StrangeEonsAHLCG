@@ -193,6 +193,7 @@ function createBackPainter( diy, sheet ) {
 	BackBody_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Body-alignment'));
 //	BackBody_box.setLineTightness( $(getExpandedKey(FACE_BACK, 'Body', '-tightness') + '-tightness') );	
 
+	initBodyTags( diy, BackHeader_box );	
 	initBodyTags( diy, BackStory_box );	
 	initBodyTags( diy, BackBody_box );	
 

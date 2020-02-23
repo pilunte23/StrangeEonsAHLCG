@@ -179,6 +179,7 @@ function createFrontPainter( diy, sheet ) {
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
 	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
 
+	initBodyTags( diy, Header_box );	
 	initBodyTags( diy, Story_box );	
 	initBodyTags( diy, Body_box );	
 

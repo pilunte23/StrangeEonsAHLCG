@@ -15,6 +15,7 @@ AHLCG-SkillIcon3-region = 13,173,25,26
 AHLCG-SkillIcon4-region = 13,215,25,26
 AHLCG-SkillIcon5-region = 13,257,25,26
 AHLCG-Slot-region = 309,454,51,52
+AHLCG-Slot2-region = 255,454,51,52
 
 AHLCG-Artist-region = 14,515,121,10
 AHLCG-Artist-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
@@ -59,7 +60,7 @@ Action-tag-replacement = <ahf>n</ahf>
 Reaction-tag = rea
 Reaction-tag-replacement = <ahf>r</ahf>
 Fast-tag = fre
-Fast-tag-replacement = <ahf>f</ahf>
+Fast-tag-replacement = 	<ahf>f</ahf>
 
 Guardian-tag = gua
 Guardian-tag-replacement = <ahf>G</ahf>
@@ -119,6 +120,8 @@ Forced-tag = for
 Forced-tag-replacement = #AHLCG-Forced-tag
 Objective-tag = obj
 Objective-tag-replacement = #AHLCG-Objective-tag
+Haunted-tag = hau
+Haunted-tag-replacement = #AHLCG-Haunted-tag
 
 Copyright-tag = cop
 Copyright-tag-replacement = \u00a9
@@ -159,6 +162,7 @@ AHLCG-DoubleSlash-tint = 131.0, 0.34, 0.24
 AHLCG-Heart-tint = 24.0, 0.72, 0.73
 AHLCG-Star-tint = -71.0, 0.36, 0.23
 AHLCG-Quote-tint = 23.0, 0.64, 0.47
+AHLCG-Clover-tint = 123.0, 0.23, 0.44
 
 LocCircle-tag = lcir
 LocSquare-tag = lsqu
@@ -172,4 +176,6 @@ LocMoon-tag = lmoo
 LocDoubleSlash-tag = ldou
 LocHeart-tag = lhea
 LocStar-tag = lsta
+LocQuote-tag = lquo
+LocClover-tag = lclo
 
