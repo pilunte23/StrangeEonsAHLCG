@@ -10,5 +10,7 @@ AHLCG-Divider-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Divider-Encounter-portrait-pany = 0
 
 AHLCG-Divider-Encounter-portrait-clip-region = 476,11,40,40
+AHLCG-Divider-ReturnEncounter-portrait-clip-region = 474,10,43,43
 
 AHLCG-Divider-Watermark-portrait-clip-region = 80,46,380,380
+AHLCG-Divider-ReturnWatermark-portrait-clip-region = 80,46,380,380

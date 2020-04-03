@@ -25,7 +25,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 	
-	diy.version = 10;
+	diy.version = 11;
 }
 
 function setDefaults() {
@@ -43,6 +43,7 @@ function setDefaults() {
 	
 	$ResourceCost = '0';
 	$Slot = 'None';
+	$Slot2 = 'None';
 	$Stamina = 'None';
 	$Sanity = 'None';
 	
@@ -175,7 +176,7 @@ function paintFront( g, diy, sheet ) {
 	drawCost( g, diy, sheet );
 	drawSkillIcons( g, diy, sheet, 'Neutral' );
 		
-	drawSlot( g, diy, sheet );
+	drawSlots( g, diy, sheet );
 	drawStamina( g, diy, sheet );
 	drawSanity( g, diy, sheet );
 	
@@ -220,11 +221,14 @@ function onRead(diy, oos) {
 	if ( diy.version < 10 ) {
 		$CardClass = 'Neutral';
 	}
+	if ( diy.version < 11 ) {
+		$Slot2 = 'None';
+	}
 	
 	updateCollection();
 	updateEncounter();
 
-	diy.version = 10;
+	diy.version = 11;
 }
 
 function onWrite( diy, oos ) {

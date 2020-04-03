@@ -76,9 +76,13 @@ AHLCG-Investigator-EncounterPortrait-portrait-pany = 0
 
 AHLCG-Investigator-DefaultEncounter-portrait-clip-region = 11,12,28,28
 AHLCG-Investigator-Encounter-portrait-clip-region = 11,12,28,28
+AHLCG-Investigator-DefaultReturnEncounter-portrait-clip-region = 8,8,33,33
+AHLCG-Investigator-ReturnEncounter-portrait-clip-region = 8,8,33,33
 
 AHLCG-InvestigatorBack-EncounterPortrait-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-InvestigatorBack-EncounterPortrait-portrait-pany = 0
 
 AHLCG-InvestigatorBack-DefaultEncounter-portrait-clip-region = 231,15,28,28
 AHLCG-InvestigatorBack-Encounter-portrait-clip-region = 231,15,28,28
+AHLCG-InvestigatorBack-DefaultReturnEncounter-portrait-clip-region = 228,11,33,33
+AHLCG-InvestigatorBack-ReturnEncounter-portrait-clip-region = 228,11,33,33

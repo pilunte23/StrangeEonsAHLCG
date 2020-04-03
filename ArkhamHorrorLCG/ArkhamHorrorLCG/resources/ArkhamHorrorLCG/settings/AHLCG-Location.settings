@@ -73,6 +73,8 @@ AHLCG-Location-Encounter-portrait-pany = 0
 
 AHLCG-Location-Encounter-portrait-clip-region = 174,245,28,28
 AHLCG-LocationBack-Encounter-portrait-clip-region = 174,245,28,28
+AHLCG-Location-ReturnEncounter-portrait-clip-region = 170,241,37,34
+AHLCG-LocationBack-ReturnEncounter-portrait-clip-region = 170,241,37,34
 
 AHLCG-Location-Copyright-region = 143,515,86,10
 AHLCG-LocationBack-Copyright-region = 128,515,86,10

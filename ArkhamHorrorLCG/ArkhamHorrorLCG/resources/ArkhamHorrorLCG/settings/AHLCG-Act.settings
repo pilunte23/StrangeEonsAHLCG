@@ -45,7 +45,10 @@ AHLCG-Act-Encounter-portrait-pany = 0
 
 AHLCG-Act-Encounter-portrait-clip-region = 122,27,28,28
 AHLCG-Act-DefaultEncounter-portrait-clip-region = 122,27,28,28
+AHLCG-Act-ReturnEncounter-portrait-clip-region = 118,22,35,35
+AHLCG-Act-DefaultReturnEncounter-portrait-clip-region = 118,22,35,35
 AHLCG-ActBack-Encounter-portrait-clip-region = 27,57,36,36
+AHLCG-ActBack-ReturnEncounter-portrait-clip-region = 20,50,49,48
 
 AHLCG-Act-Clues-region = 240,290,49,50
 AHLCG-Act-CluesPerInv-region = 234,290,49,49

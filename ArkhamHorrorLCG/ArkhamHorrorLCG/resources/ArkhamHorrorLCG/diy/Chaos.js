@@ -61,7 +61,7 @@ function createInterface( diy, editor ) {
 	
 	var bindings = new Bindings( editor, diy );
 
-	var TitlePanel = layoutTitle( diy, bindings, false, [0, 1], FACE_FRONT );
+	var TitlePanel = layoutChaosTitle( diy, bindings, [0, 1], FACE_FRONT );
 	var StatPanel = layoutChaosStats( bindings, FACE_FRONT );
 	var CopyrightPanel = layoutCopyright( bindings, [0, 1], FACE_FRONT );
 
@@ -97,10 +97,12 @@ function createInterface( diy, editor ) {
 	bindings.bind();
 }
 
-function createFrontPainter( diy, sheet ) {	
+function createFrontPainter( diy, sheet ) {
 	Name_box = markupBox(sheet);
 	Name_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Name-style'), null);
 	Name_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Name-alignment'));
+	Name_box.setTextFitting(FIT_NONE);
+	Name_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Name', '-tightness') + '-tightness') );	// this doesn't seem to matter, sadly...
 	initBodyTags( diy, Name_box );	
 
 	Difficulty_box = markupBox(sheet);
@@ -113,7 +115,7 @@ function createFrontPainter( diy, sheet ) {
 		Body_boxes[i].defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 		Body_boxes[i].alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
 //		Body_boxes[i].setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
-		Body_boxes[i].setLineTightness( $(getExpandedKey(FACE_BACK, 'Body', '-tightness') + '-tightness') * Eons.namedObjects.AHLCGObject.bodyFontTightness );	
+		Body_boxes[i].setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') * Eons.namedObjects.AHLCGObject.bodyFontTightness );	
 		Body_boxes[i].setTextFitting( FIT_SCALE_TEXT );
 
 		initBodyTags( diy, Body_boxes[i] );	
@@ -142,6 +144,7 @@ function createBackPainter( diy, sheet ) {
 	BackName_box = markupBox(sheet);
 	BackName_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Name-style'), null);
 	BackName_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Name-alignment'));
+	BackName_box.setLineTightness( $(getExpandedKey(FACE_BACK, 'Name', '-tightness') + '-tightness') );
 	initBodyTags( diy, BackName_box );	
 
 	BackDifficulty_box  = markupBox(sheet);
@@ -185,12 +188,14 @@ function paintFront( g, diy, sheet ) {
 
 	drawTemplate( g, sheet, '' );
 
-	if ( diy.name != '' ) drawChaosName( g, diy, sheet, Name_box );
-	drawDifficulty( g, diy, sheet, Difficulty_box, #AHLCG-Difficulty-Front );
+	var y = 127;
+
+	if ( diy.name != '' ) y = drawChaosName( g, diy, sheet, Name_box );
+	y = drawDifficulty( g, diy, sheet, Difficulty_box, #AHLCG-Difficulty-Front, y );
 
 	if ( $TrackerBox.length > 0 ) drawChaosTrackerBox( g, diy, sheet, Tracker_box );
 
-	drawChaosBody( g, diy, sheet, Body_boxes );
+	drawChaosBody( g, diy, sheet, Body_boxes, y );
 
 //	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
 	
@@ -208,10 +213,12 @@ function paintBack( g, diy, sheet ) {
 
 	drawTemplate( g, sheet, '' );
 
-	if ( diy.name != '' ) drawChaosName( g, diy, sheet, BackName_box );
-	drawDifficulty( g, diy, sheet, BackDifficulty_box, #AHLCG-Difficulty-Back );
+	var y = 127;
+
+	if ( diy.name != '' ) y = drawChaosName( g, diy, sheet, BackName_box );
+	y = drawDifficulty( g, diy, sheet, BackDifficulty_box, #AHLCG-Difficulty-Back, y );
 	
-	drawChaosBody( g, diy, sheet, BackBody_boxes );
+	drawChaosBody( g, diy, sheet, BackBody_boxes, y );
 
 //	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
 	

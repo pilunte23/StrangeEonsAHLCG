@@ -24,13 +24,14 @@ function create( diy ) {
 	createPortraits( diy, PortraitTypeList );
 	setDefaultCollection();
 
-	diy.version = 10;
+	diy.version = 11;
 }
 
 function setDefaults() {
 	$Unique = '0';
 	$Subtitle = '';
 	$CardClass = 'Neutral';
+	$CardClass2 = 'None';
 	$ResourceCost = '0';
 	$Level = 'None';
 	$Skill1 = 'None';
@@ -40,6 +41,7 @@ function setDefaults() {
 	$Skill5 = 'None';
 	
 	$Slot = 'None';
+	$Slot2 = 'None';
 	$Stamina = 'None';
 	$Sanity = 'None';
 	
@@ -64,6 +66,7 @@ function setDefaults() {
 	$UniqueBack = '0';
 	$SubtitleBack = '';
 	$CardClassBack = 'Neutral';
+	$CardClassBack2 = 'None';
 	$ResourceCostBack = '0';
 	$LevelBack = 'None';
 	$Skill1Back = 'None';
@@ -73,6 +76,7 @@ function setDefaults() {
 	$Skill5Back = 'None';
 	
 	$SlotBack = 'None';
+	$Slot2Back = 'None';
 	$StaminaBack = 'None';
 	$SanityBack = 'None';
 	
@@ -226,11 +230,14 @@ function paintFront( g, diy, sheet ) {
 	clearImage( g, sheet );
 
 	PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
-	drawTemplate( g, sheet, $CardClass );
+	drawAssetTemplate( g, diy, sheet, $CardClass, $CardClass2 );
 	drawLabel( g, diy, sheet, Label_box, #AHLCG-Label-Asset );
 	drawName( g, diy, sheet, Name_box );
 
-	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, Subtitle_box, $CardClass, true );
+	var cClass = $CardClass;
+	if ( isDualClass( $CardClass, $CardClass2 ) ) cClass = 'Dual';
+
+	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, Subtitle_box, cClass, true );
 
 	if ($CardClass == 'Weakness' ) {	
 		drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-Weakness );
@@ -240,13 +247,13 @@ function paintFront( g, diy, sheet ) {
 	}	
 //	if ( $CardClass != 'Weakness' ) {
 	else {
-		drawLevel( g, diy, sheet, $CardClass );
+		drawLevel( g, diy, sheet, cClass );
 	}
 		
 	drawCost( g, diy, sheet );
 
-	drawSkillIcons( g, diy, sheet, $CardClass );
-	drawSlot( g, diy, sheet );
+	drawSkillIcons( g, diy, sheet, cClass );
+	drawSlots( g, diy, sheet );
 	drawStamina( g, diy, sheet );
 	drawSanity( g, diy, sheet );
 	
@@ -268,7 +275,7 @@ function paintBack( g, diy, sheet ) {
 	clearImage( g, sheet );
 
 	PortraitList[getPortraitIndex( 'BackPortrait' )].paint( g, sheet.getRenderTarget() );
-	drawTemplate( g, sheet, $CardClassBack );
+	drawAssetTemplate( g, diy, sheet, $CardClassBack, $CardClass2Back );
 	drawLabel( g, diy, sheet, BackLabel_box, #AHLCG-Label-Asset );
 	drawName( g, diy, sheet, BackName_box );
 
@@ -288,7 +295,7 @@ function paintBack( g, diy, sheet ) {
 	drawCost( g, diy, sheet );
 
 	drawSkillIcons( g, diy, sheet, $CardClassBack );
-	drawSlot( g, diy, sheet );
+	drawSlots( g, diy, sheet );
 	drawStamina( g, diy, sheet );
 	drawSanity( g, diy, sheet );
 	
@@ -324,10 +331,16 @@ function onRead(diy, oos) {
 		$ShowCollectionNumberFront = '1';
 		$ShowCollectionNumberBack = '1';
 	}
+	if ( diy.version < 11 ) {
+		$CardClass2 = 'None';
+		$CardClass2Back = 'None';
+		$Slot2 = 'None';
+		$Slot2Back = 'None';
+	}
 	
 	updateCollection();
 
-	diy.version = 10;
+	diy.version = 11;
 }
 
 function onWrite( diy, oos ) {

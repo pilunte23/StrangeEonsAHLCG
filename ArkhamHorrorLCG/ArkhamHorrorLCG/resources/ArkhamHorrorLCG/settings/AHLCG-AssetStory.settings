@@ -41,5 +41,7 @@ AHLCG-AssetStory-Encounter-portrait-pany = 0
 
 AHLCG-AssetStory-Encounter-portrait-clip-region = 329,10,30,30
 AHLCG-AssetStory-DefaultEncounter-portrait-clip-region = 329,10,30,30
+AHLCG-AssetStory-ReturnEncounter-portrait-clip-region = 327,8,32,32
+AHLCG-AssetStory-DefaultReturnEncounter-portrait-clip-region = 327,8,32,32
 
 AHLCG-AssetStory-Dash-tint = 0.0, 0.0, 1.0
