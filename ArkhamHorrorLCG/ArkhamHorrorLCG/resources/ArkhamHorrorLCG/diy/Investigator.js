@@ -22,7 +22,7 @@ function create( diy ) {
 	createPortraits( diy, PortraitTypeList );
 	setDefaultCollection();
 	
-	diy.version = 10;
+	diy.version = 11;
 }
 
 function setDefaults() {
@@ -46,6 +46,7 @@ function setDefaults() {
 	$RulesSpacing = '0';
 		
 	$DeckSizeBack = '30';
+	$SecondaryClassBack = '';
 	$DeckOptionsBack = '';
 	$DeckRequirementsBack = '';
 	$DeckRestrictionsBack = '';
@@ -53,6 +54,7 @@ function setDefaults() {
 	$InvStoryBack = '';
 
 	$DeckSizeBackSpacing = '0';
+	$SecondaryClassBackSpacing = '0';
 	$DeckOptionsBackSpacing = '0';
 	$DeckRequirementsBackSpacing = '0';
 	$DeckRestrictionsBackSpacing = '0';
@@ -208,7 +210,7 @@ function paintBack( g, diy, sheet ) {
 
 	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, BackSubtitle_box, $CardClass, false );
 
-	drawBody( g, diy, sheet, BackBody_box, new Array( 'DeckSize', 'DeckOptions', 'DeckRequirements', 'DeckRestrictions', 'AdditionalRequirements', 'InvStory' ) );
+	drawBody( g, diy, sheet, BackBody_box, new Array( 'DeckSize', 'SecondaryClass', 'DeckOptions', 'DeckRequirements', 'DeckRestrictions', 'AdditionalRequirements', 'InvStory' ) );
 } 
 
 function onClear() {
@@ -289,10 +291,14 @@ function onRead(diy, oos) {
 	if ( diy.version < 10 ) {
 		$Unique = '1';
 	}
+	if ( diy.version < 11 ) {
+		$SecondaryClassBack = '';
+		$SecondaryClassBackSpacing = '0';
+	}
 	
 	updateCollection();
 	
-	diy.version = 10;
+	diy.version = 11;
 }
 
 function onWrite( diy, oos ) {

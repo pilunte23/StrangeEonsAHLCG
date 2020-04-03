@@ -2,14 +2,20 @@ importClass( ca.cgjennings.graphics.ImageUtilities );
 useLibrary('tints');
 
 importClass( java.awt.FontMetrics );
+importClass( java.awt.font.FontRenderContext );
 importClass( java.awt.Rectangle );
+importClass( java.awt.font.TextLayout );
 
 function drawTemplate( g, sheet, className ) {
 	var faceIndex = sheet.getSheetIndex();
 	var image;
 
-	if (className != null && className.length > 0) {
-		image = ImageUtils.get('ArkhamHorrorLCG/templates/AHLCG-' + CardTypes[faceIndex] + '-' + getClassInitial( className ) + '.jp2');
+	if ( className != null && className.length > 0 ) {
+		// asset basic weaknesses should use the AssetStory template
+		if ( CardTypes[faceIndex] == 'Asset' && className == 'BasicWeakness' ) 
+			image = ImageUtils.get('ArkhamHorrorLCG/templates/AHLCG-AssetStory' + '-' + getClassInitial( className ) + '.jp2');
+		else
+			image = ImageUtils.get('ArkhamHorrorLCG/templates/AHLCG-' + CardTypes[faceIndex] + '-' + getClassInitial( className ) + '.jp2');
 	}
 	else
 	{
@@ -39,6 +45,46 @@ function drawBackTemplate( g, sheet ) {
 	var h = image.getHeight();
 	
 	sheet.paintImage( g, image, new Region(0, 0, w, h) );
+}
+
+function drawAssetTemplate( g, diy, sheet, className, className2 ) {
+	var faceIndex = sheet.getSheetIndex();
+
+	// normal
+	if ( className == null || className.length == 0 || className2 == null || className2 == 'None' ) {
+		drawTemplate( g, sheet, className );
+		return;
+	}
+
+	// don't draw dual class if the first class isn't a valid one or if the classes match
+//	if ( classInitial == classInitial2 || (classInitial != 'G' && classInitial != 'K' && classInitial != 'R' && classInitial != 'M' && classInitial != 'V' )) {
+	if ( !isDualClass( className, className2 ) ) {
+		drawTemplate( g, sheet, className );
+		return;
+	}
+
+	// dual class
+	var image = ImageUtils.get( 'ArkhamHorrorLCG/templates/AHLCG-' + CardTypes[faceIndex] + '-D.jp2' );
+	
+	var w = image.getWidth();
+	var h = image.getHeight();
+
+	sheet.paintImage( g, image, new Region(0, 0, w, h) );
+	
+	// draw class icons
+	var classInitial = getClassInitial( className );
+	var classInitial2 = getClassInitial( className2 );
+
+	var symbolImage1 = ImageUtils.get( 'ArkhamHorrorLCG/overlays/AHLCG-ClassSymbol-' + classInitial + '.png' );
+	var symbolImage2 = ImageUtils.get( 'ArkhamHorrorLCG/overlays/AHLCG-ClassSymbol-' + classInitial2 + '.png' );
+	
+	var symbolRegion1 = diy.settings.getRegion( getExpandedKey( faceIndex, 'ClassSymbol1-region') );
+	var symbolRegion2 = diy.settings.getRegion( getExpandedKey( faceIndex, 'ClassSymbol2-region') );
+	
+	sheet.paintImage( g, symbolImage1, symbolRegion1 );
+	sheet.paintImage( g, symbolImage2, symbolRegion2 );
+	
+	// don't forget about the skill icons box...
 }
 
 function drawGuideTemplate( g, sheet  ) {
@@ -134,9 +180,6 @@ function drawFadedPortrait( g, diy, sheet, portrait, mask ) {
 	var s = imageScale;
 
 	var imageScaled = ImageUtils.resize( image, image.width * s + 0.5, image.height * s + 0.5, true );	
-//	var imageScaled = ImageUtils.resize( image, image.width * s + 2, image.height * s + 2, true );	
-//	var cx = imageScaled.getWidth() / 2 - imagePanX;
-//	var cy = imageScaled.getHeight() / 2 - imagePanY;
 
 	// portrait center
 	var cx = image.getWidth() / 2 - imagePanX;
@@ -145,11 +188,8 @@ function drawFadedPortrait( g, diy, sheet, portrait, mask ) {
 	var sx = region.width / imageScale;
 	var sy = region.height / imageScale;
 
-//	imageCropped = ImageUtils.crop( imageScaled, cx - region.width/2, cy - region.height/2, region.width, region.height );
-//	imageCropped = ImageUtils.crop( image, cx - region.width/2, cy - region.height/2, region.width, region.height );
 	imageCropped = ImageUtils.crop( image, cx - sx/2, cy - sy/2, sx, sy );
 	imageCropped = createStencilImage( imageCropped, mask );
-//	imageCropped = createStencilImage( image, mask );
 
 	sheet.paintImage(g, imageCropped, region );
 }
@@ -157,7 +197,7 @@ function drawFadedPortrait( g, diy, sheet, portrait, mask ) {
 function drawSubtitleTemplate( g, sheet, className ) {
 	var faceIndex = sheet.getSheetIndex();
 	var image;
-
+	
 	if (className != null && className.length > 0) {
 		image = ImageUtils.get('ArkhamHorrorLCG/templates/AHLCG-' + CardTypes[faceIndex] + 'ST-' + getClassInitial( className ) + '.jp2');
 	}
@@ -186,13 +226,6 @@ function drawName( g, diy, sheet, nameBox ) {
 		if ( title == '' && CardTypes[faceIndex] == 'LocationBack' ) title = diy.name;
 	}
 	
-	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Name-region') );
-	if ( $Orientation == 'Reversed' ) region = reverseRegion( region );
-	
-	if ( CardTypes[faceIndex] == 'Guide75' ) title = title.toUpperCase();	
-	else if ( CardTypes[faceIndex] == 'GuideA4' ) title = title.toUpperCase();
-	else if ( CardTypes[faceIndex] == 'Event' && ( $CardClass == 'Weakness' || $CardClass == 'BasicWeakness' )) region.y -= 3;
-	
 	if ( title.length() >  0) {
 		unique = $( 'Unique' + BindingSuffixes[faceIndex] );
 		
@@ -205,8 +238,36 @@ function drawName( g, diy, sheet, nameBox ) {
 //			nameBox.markupText = '<b>' + title + '</b>';
 			nameBox.markupText = title;
 		}
+	
+		var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Name-region') );
+		if ( $Orientation == 'Reversed' ) region = reverseRegion( region );
+	
+		if ( CardTypes[faceIndex] == 'Asset' ) {
+			let class1 = $CardClass;
+			let class2 = $CardClass2;
+		
+			let dual = isDualClass( class1, class2 );
+	
+			// if dual, we should shrink the text box on both sides, to keep it centered, 
+			// but if the name is too long, we can extend the left side back out
+			if ( dual ) {
+				region.x += 30;
+				region.width -= 60;
+			
+				let height = nameBox.measure( g, region );
 
-	nameBox.drawAsSingleLine( g, region );
+				// trying to figure out if it doesn't fit in the region at full size
+				if ( height < 22.0 || ( height > 25.0 && title.length() > 20 ) ) {
+					region.x -= 30;
+					region.width += 30;
+				}
+			}
+		}
+		else if ( CardTypes[faceIndex] == 'Guide75' ) title = title.toUpperCase();	
+		else if ( CardTypes[faceIndex] == 'GuideA4' ) title = title.toUpperCase();
+		else if ( CardTypes[faceIndex] == 'Event' && ( $CardClass == 'Weakness' || $CardClass == 'BasicWeakness' )) region.y -= 3;
+	
+		nameBox.drawAsSingleLine( g, region );
 	}
 }
 /*
@@ -251,21 +312,36 @@ function drawRotatedName (g, diy, sheet ){
 
 function drawChaosName( g, diy, sheet, nameBox ) {
 	var faceIndex = sheet.getSheetIndex();
-
-//	nameBox.markupText = '<b>' + diy.name + '</b>';
-	nameBox.markupText = diy.name;
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
 
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Name-region') );
 
-	var width = nameBox.drawAsSingleLine( g, region );
+	nameBox.markupText = "Size";
+	var lineHeight = nameBox.measure( g, region );
 
+	var lines = diy.name.split('\n');
+	var width = 0;
+	for ( let i = 0; i < lines.length; i++ ) {
+		nameBox.markupText = lines[i];
+		width = nameBox.drawAsSingleLine( g, region );	// return the width of the last line (what we want!)
+
+		region.y += lineHeight * 0.8;
+		region.height -= lineHeight * 0.8;
+	}
+		
+	// I hope this calculation works everywhere
 	sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HorizLines.png'), 
-		new Region( region.x + (region.width - width) / 2 , region.y + region.height, width + 2, 6) );
+		new Region( region.x + (region.width - width) / 2, region.y + 1, width + 2, 6) );
+		
+	return region.y + 12;
 }
 
 function drawSubtitle( g, diy, sheet, subtitleBox, className, drawBox ) {
 	var faceIndex = sheet.getSheetIndex();
 	
+	// not currently supported
+	if ( className == 'Dual' ) return;
+
 	if ( drawBox ) {
 		var image = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Subtitle-' + getClassInitial( className )  + '.png');
 	
@@ -289,14 +365,18 @@ function drawSubtitle( g, diy, sheet, subtitleBox, className, drawBox ) {
 	subtitleBox.draw( g, textRegion );
 }
 
-function drawDifficulty( g, diy, sheet, textBox, text ) {
+function drawDifficulty( g, diy, sheet, textBox, text, y ) {
 	var faceIndex = sheet.getSheetIndex();
 
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Difficulty-region') );
+	region.y = y;
+	
 	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 2;
 
 	textBox.markupText = text;
 	textBox.drawAsSingleLine( g, region );
+	
+	return y + 29;
 }
 
 function drawLabel( g, diy, sheet, textBox, text ) {
@@ -358,7 +438,7 @@ function drawBody( g, diy, sheet, bodyBox, partsArray ) {
 		Text = addSpacing( faceIndex, Text, partsArray[index], diy );
 	}
 
-	bodyBox.markupText = Text;
+		bodyBox.markupText = Text;
 
 	updateNameTags( bodyBox, diy );
 	bodyBox.draw( g, region );
@@ -948,13 +1028,25 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 	}
 }
 
-function drawChaosBody( g, diy, sheet, textBoxes ) {
+function drawChaosBody( g, diy, sheet, textBoxes, y ) {
 	var tokenName = [ 'Skull', 'Cultist', 'Tablet', 'ElderThing' ];
 	var faceIndex = sheet.getSheetIndex();
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region' ) );
+	
+	var difference = y - region.y;
+	if ( difference < 0 ) difference = 0;
+	else {
+		region.y = y;
+		region.height -= difference;
+	}
+	
 	var iconRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'BodyIcon-region' ) );
 
-	if ( $TrackerBox.length > 0 ) region.height = 210;
+	if ( $TrackerBox.length > 0 ) {
+		region.height -= 95;
+	}
+//g.setPaint(Color.RED);
+//g.drawRect(region.x, region.y, region.width, region.height);
 
 	var AHLCGObject = Eons.namedObjects.AHLCGObject;
 
@@ -988,7 +1080,7 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 		maxSpacing = 62;
 		useOffsetPct = 0.6;
 	}
-	
+		
 	var index = 0;
 	var mergeIndex = 0;
 	var startingOffset = 0;
@@ -1050,6 +1142,12 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 		if ( tokenGroup[i] > 0 && tokenGroup[i] <= 4 ) numTokens++;
 	}
 	
+	// help everything fit
+	if ( $TrackerBox.length > 0 && numTokens > 3) {
+		region.y -= 5;
+		minSpacing = 1;
+	}
+
 	var heightSum = 0;
 	for ( let i = 1; i <= 4; i++ ) {		// group
 		for ( let j = 0; j < 4; j++) {	// token
@@ -1089,7 +1187,10 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 		tokenHeight[i] = Test_box.measure( g, tokenRegion[i] );
 
 		// if there's a tracking box, this lets the icon extend up above the normal region top, so the text is at the top of the region, to save space
-		if ( i == 0 && tokenHeight[i] < iconRegion.height ) firstBlockOffset = (iconRegion.height - tokenHeight[i]) / 2;
+		if ( i == 0 && tokenHeight[i] < iconRegion.height ) {
+			firstBlockOffset = (iconRegion.height - tokenHeight[i]) / 2;
+			if (firstBlockOffset > 10) firstBlockOffset = 10;
+		}
 
 		if (tokenHeight[i] < minHeight[tokensInGroup[i]-1]) tokenHeight[i] = minHeight[tokensInGroup[i]-1];
 
@@ -1111,19 +1212,14 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 		maxEqualCenterSpacing = tokenHeight[0];
 		totalEqualHeight = tokenHeight[0];
 	}
-//println('MaxECS Final ' + maxEqualCenterSpacing);
-//println('TotalEqualHeight ' + totalEqualHeight);
+
 	var spacingType = 1;	// 0 = center, 1 = top/bottom
-//println('RegionHeight ' + region.height);
-//println('RegionHeightLimit ' + (region.height*useOffsetPct));
 
 	if ( totalEqualHeight <= region.height ) {
 		spacingType = 0;
 		totalHeight = totalEqualHeight;
 		
-//		if (totalHeight + startingOffset[groupCount-1] <= region.height*useOffsetPct)
 		if (totalHeight <= region.height*useOffsetPct)
-//			region.y += startingOffset[groupCount-1];
 			region.y += (region.height - totalEqualHeight) * 0.35;
 	}
 	else {
@@ -1140,9 +1236,19 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 		region.y -= firstBlockOffset;
 		region.height += firstBlockOffset;
 
+		var minTotalHeight = 0;
+		for ( let i = 0; i < groupCount; i++ ) {
+			minTotalHeight += minHeight[tokensInGroup[i]-1];
+		}
+		minTotalHeight += minSpacing * (groupCount-1);
+
+		if ( region.height < minTotalHeight ) {
+			region.height = minTotalHeight;
+		}
+		
 		do {
 			scale -= 0.05;
-			
+
 			totalHeight = 0;
 			for (let i = 0; i < groupCount; i++) {
 				let Test_box = markupBox(sheet);
@@ -1153,17 +1259,18 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 
 				Test_box.markupText = Test_box.markupText = '<size ' + scale*100 + '%>' + tokenText[i] + '<size ' + (1/scale)*100 + '%>';
 				tokenHeight[i] = Test_box.measure( g, tokenRegion[i] );
+
 				if (tokenHeight[i] < minHeight[tokensInGroup[i]-1]) tokenHeight[i] = minHeight[tokensInGroup[i]-1];
 
 				totalHeight += tokenHeight[i];
 			}
 			
-			totalHeight += minSpacing * (groupCount-1);			
+			totalHeight += minSpacing * (groupCount-1);
 		} while (region.height < totalHeight && scale > 0.1);
 	}
 
 	if (scale > 1) scale = 1;
-	else if (scale < 0.1) scale = 0.1;
+	else if (scale < 0.5) scale = 0.5;
 	
 	var yOffset;
 
@@ -1192,7 +1299,7 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 //g.setPaint(Color.BLUE);
 //g.drawRect(tokenRegion[i].x, tokenRegion[i].y, 250, tokenRegion[i].height);
 			modifiedRegion = new Region( tokenRegion[i].x, tokenRegion[i].y, tokenRegion[i].width, tokenRegion[i].height );
-//			modifiedRegion.y -= (tokenRegion[i].height - 48.0) / 12.0;
+
 			if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) modifiedRegion.y -= 2;
 			
 			textBoxes[i].draw( g, modifiedRegion );
@@ -1201,13 +1308,11 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 			for ( let j = 0; j < 4; j++ ) {				// token				
 				if ( tokenGroup[j] == i+1 ) {
 					let iconY = tokenRegion[i].y + tokenRegion[i].height/2 - iconRegion.height*tokensInGroup[i]/2 + tokenIndex*iconRegion.height + 1;
-//					let iconY = tokenRegion[i].y + tokenRegion[i].height/2 - iconRegion.height/2 + 1;					
-					
+
 					if (iconY + 1 < yIconMin) yIconMin = iconY + 1;
-					if (tokenRegion[i].y + 5 < yIconMin) yIconMin = tokenRegion[i].y + 5;
-					if (iconY + iconRegion.height - 1 > yIconMax) yIconMax = iconY + iconRegion.height - 1;
-					if (tokenRegion[i].y + tokenRegion[i].height - 3 > yIconMax) yIconMax = tokenRegion[i].y + tokenRegion[i].height - 3;
-					
+					if (tokenRegion[i].y < yIconMin) yIconMin = tokenRegion[i].y;
+					if (iconY + iconRegion.height - 3 > yIconMax) yIconMax = iconY + iconRegion.height - 3;
+					if (tokenRegion[i].y + tokenRegion[i].height > yIconMax) yIconMax = tokenRegion[i].y + tokenRegion[i].height;			
 //g.setPaint(Color.GREEN);
 //g.drawRect(iconRegion.x, iconY, iconRegion.width, iconRegion.height);
 					sheet.paintImage( g, tokenIcon[j], 
@@ -1249,8 +1354,6 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 			else textBoxes[i].markupText = tokenText[i];
 //g.setPaint(Color.RED);
 //g.drawRect(tokenRegion[i].x, tokenRegion[i].y, tokenRegion[i].width, tokenRegion[i].height);
-//			modifiedRegion = new Region( tokenRegion[i].x, tokenRegion[i].y, tokenRegion[i].width, tokenRegion[i].height );
-//			modifiedRegion.y -= (tokenRegion[i].height - 48.0) / 12.0;
 
 			textBoxes[i].draw( g, tokenRegion[i] );
 
@@ -1259,13 +1362,11 @@ function drawChaosBody( g, diy, sheet, textBoxes ) {
 				if ( tokenGroup[j] == i+1 ) {
 					let iconY = tokenRegion[i].y + tokenRegion[i].height/2 - iconRegion.height*tokensInGroup[i]/2 + tokenIndex*iconRegion.height + 1;
 					
-//					if (iconY < yIconMin) yIconMin = iconY;
-//					if (iconY + iconRegion.height > yIconMax) yIconMax = iconY + iconRegion.height;
 					if (iconY + 1 < yIconMin) yIconMin = iconY + 1;
-					if (tokenRegion[i].y + 5 < yIconMin) yIconMin = tokenRegion[i].y + 5;
-					if (iconY + iconRegion.height - 1 > yIconMax) yIconMax = iconY + iconRegion.height - 1;
-					if (tokenRegion[i].y + tokenRegion[i].height - 3 > yIconMax) yIconMax = tokenRegion[i].y + tokenRegion[i].height - 3;
-					
+					if (tokenRegion[i].y < yIconMin) yIconMin = tokenRegion[i].y;
+					if (iconY + iconRegion.height - 3 > yIconMax) yIconMax = iconY + iconRegion.height - 3;
+					if (tokenRegion[i].y + tokenRegion[i].height > yIconMax) yIconMax = tokenRegion[i].y + tokenRegion[i].height;			
+
 //g.setPaint(Color.GREEN);
 //g.drawRect(iconRegion.x, iconY, iconRegion.width, iconRegion.height);
 					sheet.paintImage( g, tokenIcon[j], 
@@ -1487,13 +1588,21 @@ function drawSkillIcons( g, diy, sheet, className ) {
 	}
 }
 
-function drawSlot( g, diy, sheet ) {
+function drawSlots( g, diy, sheet ) {
 	var faceIndex = sheet.getSheetIndex();
 
-	var slotName = $( 'Slot' + BindingSuffixes[ faceIndex] );
+	var slotName1 = $( 'Slot' + BindingSuffixes[ faceIndex] );
+	var slotName2 = $( 'Slot2' + BindingSuffixes[ faceIndex] );
 
-	if (slotName != 'None' ) {
-		sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Slot-' + slotName + '.png'), 
+	if (slotName2 != 'None' ) {
+		sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Slot-' + slotName1 + '.png'), 
+			diy.settings.getRegion( getExpandedKey( faceIndex, 'Slot2' + '-region' ) ) );	
+		
+		sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Slot-' + slotName2 + '.png'), 
+			diy.settings.getRegion( getExpandedKey( faceIndex, 'Slot-region' ) ) );	
+	}
+	else if (slotName1 != 'None' ) {
+		sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Slot-' + slotName1 + '.png'), 
 			diy.settings.getRegion( getExpandedKey( faceIndex, 'Slot-region' ) ) );	
 	}
 }
@@ -1620,29 +1729,69 @@ function drawEncounterIcon( g, diy, sheet ) {
 	var faceIndex = sheet.getSheetIndex();
 	
 	var iconName = $Encounter;
-
+	var returnSet = false;
+	
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'DefaultEncounter-portrait-clip-region' ),
 		// default - if no DefaultEncounter defined, use normal Encounter
 		diy.settings.getRegion( getExpandedKey( faceIndex, 'Encounter-portrait-clip-region' ) ) );
 	
 	if ( faceIndex == FACE_FRONT && $Orientation == 'Reversed' ) {
 		region = reverseRegion( region );
-		region.x += 1;
+//		region.x += 1;
 	}
+	
+	if ( iconName.substring(0, 6) == 'Return') {
+		region = diy.settings.getRegion( getExpandedKey( faceIndex, 'DefaultReturnEncounter-portrait-clip-region' ),
+			// default - if no DefaultReturnEncounter defined, use normal ReturnEncounter
+			diy.settings.getRegion( getExpandedKey( faceIndex, 'ReturnEncounter-portrait-clip-region' ) ) );
+		
+		if ( faceIndex == FACE_FRONT && $Orientation == 'Reversed' ) {
+			region = reverseRegion( region );
+		}
 
-	// resource
-	if ( $EncounterType == '0' ) {
-		sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-' + iconName + '.png'), region );		
+		// special draw, doesn't use Return icon, fills space and removes the original icon
+		if ( CardTypes[faceIndex] == 'Enemy' || CardTypes[faceIndex] == 'WeaknessEnemy' || 
+			 CardTypes[faceIndex] == 'Location' || CardTypes[faceIndex] == 'LocationBack' ||
+			 CardTypes[faceIndex] == 'Treachery' || CardTypes[faceIndex] == 'WeaknessTreachery' ) {
+		
+			returnSet = true;
+			iconName = iconName.substring(8);
+			
+			if ( iconName == 'ExtracurricularActivities' )
+				iconName = 'ExtracurricularActivity';
+			
+			// resource
+			if ( $EncounterType == '0' ) {
+				sheet.paintImage( g, createReturnToImage( ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-' + iconName + '.png') ), region );		
+			}
+			// custom
+			else {
+				// [0] because that is the type the portrait is reading its setting from
+//				diy.settings.setRegion( 'AHLCG-' + CardTypes[0] + '-Encounter-portrait-clip-region', region );
+//				PortraitList[getPortraitIndex( 'Encounter' )].paint( g, sheet.getRenderTarget() );
+//println( PortraitList[getPortraitIndex( 'Encounter' )].getSource() );
+//				sheet.paintImage( g, createReturnToImage( PortraitList[getPortraitIndex( 'Encounter' )].getImage() ), region );		
+			}
+		}
+		else {
+			sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-' + iconName + '.png'), region );		
+		}
 	}
-	// custom
 	else {
-		// [0] because that is the type the portrait is reading its setting from
-		diy.settings.setRegion( 'AHLCG-' + CardTypes[0] + '-Encounter-portrait-clip-region', region );
-		PortraitList[getPortraitIndex( 'Encounter' )].paint( g, sheet.getRenderTarget() );
+		// resource
+		if ( $EncounterType == '0' ) {
+			sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-' + iconName + '.png'), region );		
+		}
+		// custom
+		else {
+			// [0] because that is the type the portrait is reading its setting from
+			diy.settings.setRegion( 'AHLCG-' + CardTypes[0] + '-Encounter-portrait-clip-region', region );
+			PortraitList[getPortraitIndex( 'Encounter' )].paint( g, sheet.getRenderTarget() );
+		}
 	}
 }
 
-function drawBasicWeaknessIcon( g, diy, sheet, overlayName ) {
+function drawBasicWeaknessIcon( g, diy, sheet ) {
 	var faceIndex = sheet.getSheetIndex();
 
 	sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-BasicWeakness.png'), 
@@ -1728,7 +1877,7 @@ function drawLocationIcon( g, diy, sheet, locationIconName, drawBaseCircle )
 		sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-LocationCircle.png'), 
 			diy.settings.getRegion( getExpandedKey( faceIndex, 'BaseIcon-region' ) ) );				
 	}
-	
+
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, locationIconName + '-region' ) );
 
 	var locationIcon = $( locationIconName + BindingSuffixes[faceIndex] );

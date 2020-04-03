@@ -1,10 +1,10 @@
 #WARNING:
 #If this file is deleted then this folder will no
 #longer appear to be a project/task in Strange Eons.
-#Fri Aug 23 11:57:00 EDT 2019
+#Sun Feb 23 13:47:51 EST 2020
 first-row=0
-open-folders=\:ArkhamHorrorLCG\:ArkhamHorrorLCG/resources\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG/diy\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG/overlays\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG/settings
+open-folders=\:ArkhamHorrorLCG\:ArkhamHorrorLCG/resources\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG/diy\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG/settings\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG/text
 res-id=tim
 notes=
 type=PROJECT
-selected-members=\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG/diy/AssetStoryAsset.js
+selected-members=\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG/diy/AHLCG-drawLibrary.js

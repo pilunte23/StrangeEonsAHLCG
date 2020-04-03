@@ -27,7 +27,7 @@ function() initialize {
 	const ahlcgGame = Game.register(
 		'AHLCG', 'AHLCG-ArkhamHorrorLCG', image( 'AHLCG-Game', 'icons', 'png' )
 	);
-	
+
 	ahlcgGame.masterSettings.addSettingsFrom('ArkhamHorrorLCG/settings/AHLCG-Game.settings');
 	ahlcgGame.masterSettings.addSettingsFrom('ArkhamHorrorLCG/settings/AHLCG-Asset.settings');
 	ahlcgGame.masterSettings.addSettingsFrom('ArkhamHorrorLCG/settings/AHLCG-Event.settings');
@@ -135,7 +135,8 @@ function gameObject( masterSettings ) {
 	this.costFont = ResourceKit.getFont('ArkhamHorrorLCG/fonts/Teutonic.ttf', 16.0);
 	this.enemyFont = ResourceKit.getFont('ArkhamHorrorLCG/fonts/Bolton.ttf', 16.0);
 	this.symbolFont = ResourceKit.getFont('ArkhamHorrorLCG/fonts/AHLCGSymbol.ttf', 16.0);
-	this.headerFont = ResourceKit.getFont('ArkhamHorrorLCG/fonts/AHLCGSymbol.ttf', 11.2);
+//	this.headerFont = ResourceKit.getFont('ArkhamHorrorLCG/fonts/AHLCGSymbol.ttf', 11.2);
+	this.chaosFont = ResourceKit.getFont('ArkhamHorrorLCG/fonts/AHLCGSymbol.ttf', 14.0);
 
 	// updated arrays for language support
 	this.comboClasses = new Array( 
@@ -165,6 +166,14 @@ function gameObject( masterSettings ) {
 		ListItem( 'Neutral' , @AHLCG-Class-Neutral ),
 		ListItem( 'Weakness' , @AHLCG-Class-Weakness ) );
 		
+	this.comboClassesD = new Array( 
+		ListItem( 'None', @AHLCG-Class-None ),
+		ListItem( 'Guardian', @AHLCG-Class-Guardian ),
+		ListItem( 'Seeker', @AHLCG-Class-Seeker ),
+		ListItem( 'Rogue', @AHLCG-Class-Rogue ),
+		ListItem( 'Mystic', @AHLCG-Class-Mystic ),
+		ListItem( 'Survivor', @AHLCG-Class-Survivor ) );
+
 	this.comboStoryAssetClasses = new Array( 
 		ListItem( 'Neutral', @AHLCG-Class-Neutral ),
 		ListItem( 'Weakness', @AHLCG-Class-Weakness ) );
@@ -185,7 +194,8 @@ function gameObject( masterSettings ) {
 		ListItem( '1 Hand', @AHLCG-Slot-1Hand ),
 		ListItem( '2 Hands', @AHLCG-Slot-2Hands ),
 		ListItem( '1 Arcane', @AHLCG-Slot-1Arcane ),
-		ListItem( '2 Arcane' , @AHLCG-Slot-2Arcane ) );
+		ListItem( '2 Arcane' , @AHLCG-Slot-2Arcane ),
+		ListItem( 'Tarot', @AHLCG-Slot-Tarot ) );
 
 	this.comboWeaknessTypes = new Array( 
 		ListItem( 'BasicWeakness', @AHLCG-WknType-BasicWeakness ), 
@@ -282,6 +292,14 @@ function gameObject( masterSettings ) {
 		this.comboEnemyStat[this.comboEnemyStat.length] = ListItem( index, String(index) );
 	}
 
+	this.comboEnemyHealth = new Array(
+		ListItem( '-', '-' ),
+		ListItem( '?', '?' ),
+		ListItem( 'X', 'X' ) );
+	for( let index = 0; index <= 19; index++ ){
+		this.comboEnemyHealth[this.comboEnemyHealth.length] = ListItem( index, String(index) );
+	}
+
 	this.comboCost = new Array(
 		ListItem( '-', '-' ),
 		ListItem( 'X', 'X' ) );
@@ -317,61 +335,120 @@ function gameObject( masterSettings ) {
 		'CustomEncounterSet',
 		'StrangeEons'
 	);
+/*
+MurderAtTheExcelsiorHotelE
+AlienInterference
+DarkRituals
+ExcelsiorManagement
+SinsOfThePast
+VileExperiments
+*/
 
-	// Highest = 76
+	// Highest = 140
 	// NameKey, CollectionID, Tag, Index into select keys
 	this.standardEncounterList = new Array(
+		[ 'AbyssalGifts', 8, 'abygfts', 87 ],
+		[ 'AbyssalTribute', 8, 'abytrib', 88 ],
 		[ 'APhantomOfTruth', 4, 'phntm', 50 ],
+		[ 'AgentsOfAzathoth', 10, 'agtaz', 107 ],
 		[ 'AgentsOfCthulhu', 0, 'agtcth', 0 ],
 		[ 'AgentsOfHastur', 0, 'agthas', 1 ],
 		[ 'AgentsOfShubNiggurath', 0, 'agtshb', 2 ],
 		[ 'AgentsOfYig', 5, 'agtyig', 56 ],
 		[ 'AgentsOfYogSothoth', 0, 'agtyog', 3 ],
 		[ 'AncientEvils', 0, 'ancevl', 4 ],
+		[ 'AnettesCoven', 10, 'anette', 108 ],
 		[ 'ArmitagesFate', 1, 'armfat', 5 ],
+		[ 'AtDeathsDoorstep', 10, 'atdths', 109 ],
 		[ 'BadLuck', 1, 'badlck', 6 ],
 		[ 'BeastThralls', 1, 'bstthrl', 33 ],
+		[ 'BeforeTheBlackThrone', 10, 'btbt', 110 ],
+		[ 'BeyondTheThreshold', 9, 'byndthr', 93 ],
 		[ 'BishopsThralls', 1, 'bpthrl', 7 ],
 		[ 'BlackStarsRise', 4, 'bsr', 52 ],
 		[ 'BloodOnTheAltar', 1, 'bldalt', 31 ],
+		[ 'BrotherhoodOfTheBeast', 8, 'bhdbst', 89 ],
 		[ 'Byakhee', 4, 'byak', 48 ],
 		[ 'CarnevaleOfHorrorsE', 3, 'carhor', 8 ],
 		[ 'ChillingCold', 0, 'chlcld', 9 ],
+		[ 'CityOfSins', 10, 'ctysins', 111 ],
+		[ 'CreepingCold', 9, 'crpcld', 94 ],
 		[ 'CultOfTheYellowSign', 4, 'cltyel', 37 ],
 		[ 'CultOfUmordhoth', 0, 'cltumh', 10 ],
+		[ 'ReturnToCultOfUmordhoth', 7, 'cltumhr', 81 ],
 		[ 'CurseOfTheRougarouE', 2, 'currou', 11 ],
 		[ 'CurtainCall', 4, 'curtncl', 38 ],
 		[ 'DarkCult', 0, 'dkcult', 12 ],
 		[ 'DeadlyTraps', 5, 'deadtrp', 57 ],
 		[ 'DecayFilth', 4, 'decay', 39 ],
-		[ 'DimCarcosa', 4, 'dimcar', 55 ],
-		[ 'Dunwich', 1, 'dunwch', 32 ],
+		[ 'DecayingReality', 11, 'decrea', 128 ],
 		[ 'Delusions', 4, 'delusn', 40 ],
+		[ 'DelusoryEvils', 11, 'delevl', 129 ],
+		[ 'DimCarcosa', 4, 'dimcar', 55 ],
+		[ 'DisappearanceAtTheTwilightEstate', 10, 'datte', 112 ],
+		[ 'Dunwich', 1, 'dunwch', 32 ],
 		[ 'EchoesOfThePast', 4, 'echoes', 46 ],
+		[ 'EpicMultiplayer', 6, 'epicmp', 79 ],
+		[ 'ErraticFear', 9, 'errfr', 95 ],
 		[ 'EvilPortents', 4, 'evilpor', 41 ],
 		[ 'Expedition', 5, 'exped', 58 ],
 		[ 'ExtracurricularActivity', 1, 'extact', 13 ],
 		[ 'ForgottenRuins', 5, 'fruins', 59 ],
+		[ 'ForTheGreaterGood', 10, 'ftgg', 113 ],
 		[ 'Ghouls', 0, 'ghouls', 14 ],
+		[ 'GhoulsOfUmordhoth', 7, 'ghoum', 82 ],
 		[ 'GuardiansOfTime', 5, 'guatim', 60 ],
+		[ 'HastursEnvoys', 11, 'hasenv', 130 ],
 		[ 'HastursGift', 4, 'hasgft', 42 ],
 		[ 'Hauntings', 4, 'haunt', 43 ],
 		[ 'HeartOfTheElders', 5, 'hrteld', 71 ],
 		[ 'HideousAbominations', 1, 'hidabo', 15 ],
+		[ 'InexorableFate', 10, 'inexft', 114 ],
 		[ 'InhabitantsOfCarcosa', 4, 'inhcar', 49 ],
+		[ 'InTheClutchesOfChaos', 10, 'itcoc', 115 ],
 		[ 'KnYan', 5, 'knyan', 73 ],
 		[ 'LockedDoors', 0, 'lckdrs', 16 ],
 		[ 'LostInTimeAndSpace', 1, 'litas', 36 ],
+		[ 'MaddeningDelusions', 11, 'maddel', 131 ],
+		[ 'MusicOfTheDamned', 10, 'motd', 116 ],
 		[ 'NaomisCrew', 1, 'naocrw', 17 ],
+		[ 'NeuroticFear', 11, 'neufr', 132 ],
 		[ 'Nightgaunts', 0, 'ntgnts', 18 ],
 		[ 'PillarsOfJudgment', 5, 'piljdg', 72 ],
 		[ 'PnakoticBrotherhood', 5, 'pnabro', 61 ],
 		[ 'Poison', 5, 'poison', 62 ],
 		[ 'Rainforest', 5, 'rainfst', 63 ],
 		[ 'Rats', 0, 'rats', 19 ],
+		[ 'RealmOfDeath', 10, 'rlmdth', 117 ],
+		[ 'ResurgentEvils', 9, 'resevl', 96 ],
+		[ 'ReturnToAPhantomOfTruth', 11, 'rphntm', 133 ],
+		[ 'ReturnToBlackStarsRise', 11, 'rbsr', 134 ],
+		[ 'ReturnToBloodOnTheAltar', 9, 'rbldalt', 97 ],
+		[ 'ReturnToCurtainCall', 11, 'rcurtncl', 135 ],
+		[ 'ReturnToDimCarcosa', 11, 'rdimcar', 136 ],
+		[ 'ReturnToEchoesOfThePast', 11, 'rechoes', 137 ],
+		[ 'ReturnToExtracurricularActivities', 9, 'rextact', 98 ],
+		[ 'ReturnToLostInTimeAndSpace', 9, 'rtlitas', 98 ],
+		[ 'ReturnToTheDevourerBelow', 7, 'rdevbel', 83 ],
+		[ 'ReturnToTheEssexCountyExpress', 9, 'resxexp', 100 ],
+		[ 'ReturnToTheGathering', 7, 'rgather', 84 ],
+		[ 'ReturnToTheHouseAlwaysWins', 9, 'rhsewin', 101 ],
+		[ 'ReturnToTheLastKing', 11, 'rlstkng', 138 ],
+		[ 'ReturnToTheMidnightMasks', 7, 'rmidmsk', 85 ],
+		[ 'ReturnToTheMiskatonicMuseum', 9, 'rmskmus', 102 ],
+		[ 'ReturnToThePallidMask', 11, 'rpalmsk', 139 ],
+		[ 'ReturnToTheUnspeakableOath', 11, 'runspk', 140 ],
+		[ 'ReturnToUndimensionedAndUnseen', 9, 'rundim', 103 ],
+		[ 'ReturnToWhereDoomAwaits', 9, 'rtwda', 104 ],
+		[ 'SandsOfEgypt', 8, 'sdsegpt', 90 ],
+		[ 'SecretDoors', 9, 'scrtdr', 105 ],
+		[ 'SecretsOfTheUniverse', 10, 'sotu', 118 ],
 		[ 'Serpents', 5, 'serpent', 64 ],
 		[ 'ShatteredAeons', 5, 'shaaon', 76 ],
+		[ 'SilverTwilightLodge', 10, 'siltwil', 119 ],
+		[ 'SingleGroup', 6, 'singrp', 80 ],
 		[ 'Sorcery', 1, 'sorcry', 20 ],
+		[ 'SpectralPredators', 10, 'specpred', 120 ],
 		[ 'StrikingFear', 0, 'strfr', 21 ],
 		[ 'TemporalFlux', 5, 'temflx', 65 ],
 		[ 'TheBayou', 2, 'bayou', 22 ],
@@ -380,24 +457,37 @@ function gameObject( masterSettings ) {
 		[ 'TheCityOfArchives', 5, 'ctyarc', 75 ],	// this is out of order, cuz I'm dumb
 		[ 'TheDepthsOfYoth', 5, 'tdoy', 74 ],
 		[ 'TheDevourerBelow', 0, 'devbel', 24 ],
+		[ 'TheDevourersCult', 7, 'devclt', 86 ],
 		[ 'TheDoomOfEztli', 5, 'dmeztli', 66 ],
 		[ 'TheEssexCountyExpress', 1, 'esxexp', 25 ],
+		[ 'TheEternalSlumber', 8, 'eslmbr', 91 ],
 		[ 'TheFloodBelow', 4, 'flood', 53 ],
 		[ 'TheGathering', 0, 'gather', 26 ],
 		[ 'TheHouseAlwaysWins', 1, 'hsewin', 27 ],
+		[ 'TheLabyrinthsOfLunacyE', 6, 'lablun', 78 ],
 		[ 'TheLastKing', 4, 'lstkng', 44 ],
 		[ 'TheMidnightMasks', 0, 'midmsk', 28 ],
 		[ 'TheMiskatonicMuseum', 1, 'mskmus', 29 ],
+		[ 'TheNightsUsurper', 8, 'ntusrpr', 92 ],
 		[ 'ThePallidMask', 4, 'palmsk', 51 ],		
+		[ 'TheSecretName', 10, 'secrtnm', 121 ],
 		[ 'TheStranger', 4, 'strngr', 45 ],
 		[ 'TheUnspeakableOath', 4, 'unspk', 47 ],
 		[ 'TheUntamedWilds', 5, 'untmdwld', 67 ],
 		[ 'TheVortexAbove', 4, 'vortex', 54 ],
+		[ 'TheWagesOfSin', 10, 'twos', 122 ],
+		[ 'TheWatcher', 10, 'watcher', 123 ],
+		[ 'TheWitchingHour', 10, 'wtchhr', 124 ],
 		[ 'ThreadsOfFate', 5, 'tof', 69 ],
+		[ 'TrappedSpirits', 10, 'trpspi', 125 ],
+		[ 'TurnBackTime', 5, 'tbt', 77 ],
 		[ 'UndimensionedAndUnseen', 1, 'undim', 34 ],
+		[ 'UnionAndDisillusion', 10, 'undis', 126 ],
 		[ 'WhereDoomAwaits', 1, 'wda', 35 ],
 		[ 'Whippoorwills', 1, 'whip', 30 ],
-		[ 'YigsVenom', 5, 'yigvnm', 68 ]
+		[ 'Witchcraft', 10, 'witch', 127 ],
+		[ 'YigsVenom', 5, 'yigvnm', 68 ],
+		[ 'YogSothothsEmissaries', 9, 'yogem', 106]
 	);
 
 	this.basicCollectionList = new Array(
@@ -406,12 +496,20 @@ function gameObject( masterSettings ) {
 	);
 
 	this.standardCollectionList = new Array(
-		[ 'CoreSet', 'core' ],
-		[ 'TheDunwichLegacy', 'dunleg' ],
-		[ 'CurseOfTheRougarou', 'ccurrou' ],
-		[ 'CarnevaleOfHorrors', 'ccarhor' ],
-		[ 'ThePathToCarcosa', 'carcosa' ],
-		[ 'TheForgottenAge', 'forage' ]
+		[ 'CoreSet', 'core' ],							//  0
+		[ 'TheDunwichLegacy', 'dunleg' ],				//  1
+		[ 'CurseOfTheRougarou', 'ccurrou' ],			//  2
+		[ 'CarnevaleOfHorrors', 'ccarhor' ],			//  3
+		[ 'ThePathToCarcosa', 'carcosa' ],				//  4
+		[ 'TheForgottenAge', 'forage' ],				//  5
+		[ 'TheLabyrinthsOfLunacy', 'lablun' ],			//  6
+		[ 'ReturnToTheNightOfTheZealot', 'rtnotz' ],	//  7
+		[ 'GuardiansOfTheAbyss', 'guaaby' ],			//  8
+		[ 'ReturnToTheDunwichLegacy', 'rttdl' ],		//  9
+		[ 'TheCircleUndone', 'cirund' ],				// 10
+		[ 'ReturnToThePathToCarcosa', 'rttptc' ]		// 11
+//		[ 'The Dream-Eaters', 'dreeat' ]				// 12
+//		[ 'MurderAtTheExcelsiorHotel', 'mateh' ]		// 13
 	);
 
 	this.encounterTypes = new Array();
@@ -427,7 +525,7 @@ function gameObject( masterSettings ) {
 		'Willpower', 'Intellect', 'Combat', 'Agility', 'Wild',
 		'Skull', 'Cultist', 'Artifact', 'Monster', 'ElderSign', 'Tentacle',
 		'Unique', 'PerInvestigator', 'Prey', 'Spawn', 'Revelation', 'Forced',
-		'Objective', 'Bullet', 'Resolution', 'EndResolution', 'GuideBullet'
+		'Objective', 'Haunted', 'Bullet', 'Resolution', 'EndResolution', 'GuideBullet'
 	);
 	
 	this.StyleList = new Array (
@@ -444,9 +542,9 @@ function gameObject( masterSettings ) {
 		'Copyright'
 	);
 
-	this.locationIcons = [ 'Circle', 'Square', 'Triangle', 'Cross', 'Diamond', 
-		'Slash', 'T', 'Hourglass', 'Moon', 'DoubleSlash', 'Heart', 'Star', 'Quote' , 'CircleAlt', 'SquareAlt', 'TriangleAlt', 'CrossAlt', 'DiamondAlt',
+	this.locationIcons = [ 'Circle', 'Square', 'Triangle', 'Cross', 'Diamond', 'Slash', 'T', 'Hourglass', 'Moon', 'DoubleSlash', 'Heart', 'Star', 'Quote' , 'Clover', 'CircleAlt', 'SquareAlt', 'TriangleAlt', 'CrossAlt', 'DiamondAlt',
         'SlashAlt', 'TAlt', 'HourglassAlt', 'MoonAlt', 'DoubleSlashAlt', 'HeartAlt', 'StarAlt' ];
+
 
 	this.comboConnections = new Array (
 		ListItem( 'None', @AHLCG-LocIcon-None,
