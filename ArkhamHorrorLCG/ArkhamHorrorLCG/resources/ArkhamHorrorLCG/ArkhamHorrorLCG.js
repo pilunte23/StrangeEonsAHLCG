@@ -445,7 +445,8 @@ function gameObject( masterSettings ) {
 	);
 
 	this.locationIcons = [ 'Circle', 'Square', 'Triangle', 'Cross', 'Diamond', 
-		'Slash', 'T', 'Hourglass', 'Moon', 'DoubleSlash', 'Heart', 'Star', 'Quote' ];
+		'Slash', 'T', 'Hourglass', 'Moon', 'DoubleSlash', 'Heart', 'Star', 'Quote' , 'CircleAlt', 'SquareAlt', 'TriangleAlt', 'CrossAlt', 'DiamondAlt',
+        'SlashAlt', 'TAlt', 'HourglassAlt', 'MoonAlt', 'DoubleSlashAlt', 'HeartAlt', 'StarAlt' ];
 
 	this.comboConnections = new Array (
 		ListItem( 'None', @AHLCG-LocIcon-None,
