@@ -122,7 +122,8 @@ Objective-tag = obj
 Objective-tag-replacement = #AHLCG-Objective-tag
 Haunted-tag = hau
 Haunted-tag-replacement = #AHLCG-Haunted-tag
-
+Patrol-tag = pat
+Patrol-tag-replacement = #AHLCG-Patrol-tag
 Copyright-tag = cop
 Copyright-tag-replacement = \u00a9
 
