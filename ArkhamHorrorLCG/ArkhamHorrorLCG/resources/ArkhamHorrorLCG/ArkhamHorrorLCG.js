@@ -525,7 +525,7 @@ VileExperiments
 		'Willpower', 'Intellect', 'Combat', 'Agility', 'Wild',
 		'Skull', 'Cultist', 'Artifact', 'Monster', 'ElderSign', 'Tentacle',
 		'Unique', 'PerInvestigator', 'Prey', 'Spawn', 'Revelation', 'Forced',
-		'Objective', 'Haunted', 'Bullet', 'Resolution', 'EndResolution', 'GuideBullet'
+		'Objective', 'Haunted', 'Patrol', 'Bullet', 'Resolution', 'EndResolution', 'GuideBullet'
 	);
 	
 	this.StyleList = new Array (
