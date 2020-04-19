@@ -109,6 +109,8 @@ EndResolution-tag = /res
 EndResolution-tag-replacement = </b>
 GuideBullet-tag = gbul
 GuideBullet-tag-replacement = <ahf><boxbullet>B</boxbullet></ahf>
+Square-tag = squ
+Square-tag-replacement = <ahf>s</ahf>
 
 Prey-tag = pre
 Prey-tag-replacement = #AHLCG-Prey-tag
