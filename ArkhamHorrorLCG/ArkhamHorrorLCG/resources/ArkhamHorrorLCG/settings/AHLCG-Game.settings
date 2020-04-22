@@ -109,6 +109,8 @@ EndResolution-tag = /res
 EndResolution-tag-replacement = </b>
 GuideBullet-tag = gbul
 GuideBullet-tag-replacement = <ahf><boxbullet>B</boxbullet></ahf>
+Square-tag = squ
+Square-tag-replacement = <ahf>s</ahf>
 
 Prey-tag = pre
 Prey-tag-replacement = #AHLCG-Prey-tag
@@ -122,7 +124,8 @@ Objective-tag = obj
 Objective-tag-replacement = #AHLCG-Objective-tag
 Haunted-tag = hau
 Haunted-tag-replacement = #AHLCG-Haunted-tag
-
+Patrol-tag = pat
+Patrol-tag-replacement = #AHLCG-Patrol-tag
 Copyright-tag = cop
 Copyright-tag-replacement = \u00a9
 
@@ -163,6 +166,19 @@ AHLCG-Heart-tint = 24.0, 0.72, 0.73
 AHLCG-Star-tint = -71.0, 0.36, 0.23
 AHLCG-Quote-tint = 23.0, 0.64, 0.47
 AHLCG-Clover-tint = 123.0, 0.23, 0.44
+
+AHLCG-TriangleAlt-tint = 50.0, 0.81, 0.88
+AHLCG-CrossAlt-tint = -2.0, 0.83, 0.73
+AHLCG-DiamondAlt-tint = -150.0, 0.51, 0.45
+AHLCG-SlashAlt-tint = 8.0, 0.75, 0.51
+AHLCG-TAlt-tint = 98.0, 0.61, 0.63
+AHLCG-HourglassAlt-tint = 40.0, 0.64, 0.56
+AHLCG-MoonAlt-tint = -123.0, 0.49, 0.34
+AHLCG-DoubleSlashAlt-tint = -20.0, 0.65, 0.40
+AHLCG-HeartAlt-tint = -25.0, 0.61, 0.61
+AHLCG-StarAlt-tint = 131.0, 0.44, 0.34
+AHLCG-CircleAlt-tint = 24.0, 0.82, 0.83
+AHLCG-SquareAlt-tint = -71.0, 0.46, 0.33
 
 LocCircle-tag = lcir
 LocSquare-tag = lsqu
