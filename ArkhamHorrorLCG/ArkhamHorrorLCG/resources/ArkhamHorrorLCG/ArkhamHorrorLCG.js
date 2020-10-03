@@ -335,16 +335,8 @@ function gameObject( masterSettings ) {
 		'CustomEncounterSet',
 		'StrangeEons'
 	);
-/*
-MurderAtTheExcelsiorHotelE
-AlienInterference
-DarkRituals
-ExcelsiorManagement
-SinsOfThePast
-VileExperiments
-*/
 
-	// Highest = 140
+	// Highest = 198
 	// NameKey, CollectionID, Tag, Index into select keys
 	this.standardEncounterList = new Array(
 		[ 'AbyssalGifts', 8, 'abygfts', 87 ],
@@ -380,7 +372,7 @@ VileExperiments
 		[ 'CurtainCall', 4, 'curtncl', 38 ],
 		[ 'DarkCult', 0, 'dkcult', 12 ],
 		[ 'DeadlyTraps', 5, 'deadtrp', 57 ],
-		[ 'DecayFilth', 4, 'decay', 39 ],
+		[ 'DecayAndFilth', 4, 'decay', 39 ],
 		[ 'DecayingReality', 11, 'decrea', 128 ],
 		[ 'Delusions', 4, 'delusn', 40 ],
 		[ 'DelusoryEvils', 11, 'delevl', 129 ],
@@ -414,7 +406,7 @@ VileExperiments
 		[ 'NaomisCrew', 1, 'naocrw', 17 ],
 		[ 'NeuroticFear', 11, 'neufr', 132 ],
 		[ 'Nightgaunts', 0, 'ntgnts', 18 ],
-		[ 'PillarsOfJudgment', 5, 'piljdg', 72 ],
+		[ 'PillarsOfJudgement', 5, 'piljdg', 72 ],
 		[ 'PnakoticBrotherhood', 5, 'pnabro', 61 ],
 		[ 'Poison', 5, 'poison', 62 ],
 		[ 'Rainforest', 5, 'rainfst', 63 ],
@@ -487,7 +479,77 @@ VileExperiments
 		[ 'Whippoorwills', 1, 'whip', 30 ],
 		[ 'Witchcraft', 10, 'witch', 127 ],
 		[ 'YigsVenom', 5, 'yigvnm', 68 ],
-		[ 'YogSothothsEmissaries', 9, 'yogem', 106]
+		[ 'YogSothothsEmissaries', 9, 'yogem', 106],
+
+		// The Dream-Eaters
+		[ 'BeyondTheGatesOfSleep', 12, 'beyondthegatesofsleep', 141 ],
+		[ 'WakingNightmare', 12, 'wakingnightmare', 142 ],
+		[ 'AgentsOfAtlachNacha', 12, 'agentsofatlachnacha', 143 ],
+		[ 'AgentsOfNyarlathotep', 12, 'agentsofnyarlathotep', 144 ],
+		[ 'CreaturesOfTheUnderworld', 12, 'creaturesoftheunderworld', 145 ],
+		[ 'DreamersCurse', 12, 'dreamerscurse', 146 ],
+		[ 'Dreamlands', 12, 'dreamlands', 147 ],
+		[ 'MergingRealities', 12, 'mergingrealities', 148 ],
+		[ 'Spiders', 12, 'spiders', 149 ],
+		[ 'Corsairs', 12, 'corsairs', 150 ],
+		[ 'WhispersOfHypnos', 12, 'whispersofhypnos', 151 ],
+		[ 'Zoogs', 12, 'zoogs', 152 ],
+		[ 'TheSearchForKadath', 12, 'thesearchforkadath', 153 ],
+		[ 'DarkSideOfTheMoon', 12, 'darksideofthemoon', 154 ],
+		[ 'AThousandShapesOfHorror', 12, 'athousandshapesofhorror', 155 ],
+		[ 'PointOfNoReturn', 12, 'pointofnoreturn', 156 ],
+		[ 'TerrorOfTheVale', 12, 'terrorofthevale', 157 ],
+		[ 'DescentIntoThePitch', 12, 'descentintothepitch', 158 ],
+		[ 'WhereGodsDwell', 12, 'wheregodsdwell', 159 ],
+		[ 'WeaverOfTheCosmos', 12, 'weaverofthecosmos', 160 ],
+
+		// Murder At The Excelsior Hotel
+		[ 'MurderAtTheExcelsiorHotelE', 13, 'murderattheexcelsiorhotele', 161 ],
+		[ 'AlienInterference', 13, 'alieninterference', 162 ],
+		[ 'ExcelsiorManagement', 13, 'excelsiormanagement', 163 ],
+		[ 'DarkRituals', 13, 'darkrituals', 164 ],
+		[ 'VileExperiments', 13, 'vileexperiments', 165 ],
+		[ 'SinsOfThePast', 13, 'sinsofthepast', 166 ],
+
+		// Parellel Investigators
+		[ 'ReadOrDie', 14, 'readordie', 167 ],
+		[ 'AllOrNothing', 14, 'allornothing', 168 ],
+
+		// The Blob That Ate Everything
+		[ 'TheBlobThatAteEverythingE', 15, 'theblobthatateeverythinge', 169 ],
+		[ 'MiGoIncursion', 15, 'migoincursion', 170 ],
+
+		// Return To The Forgotten Age
+		[ 'ReturnToTheUntamedWilds', 16, 'returntotheuntamedwilds', 171 ],
+		[ 'ReturnToTheDoomOfEztli', 16, 'returntothedoomofeztli', 172 ],
+		[ 'ReturnToThreadsOfFate', 16, 'returntothreadsoffate', 173 ],
+		[ 'ReturnToTheBoundaryBeyond', 16, 'returntotheboundarybeyond', 174 ],
+		[ 'ReturnToTheHeartOfTheElders', 16, 'returntotheheartoftheelders', 175 ],
+		[ 'ReturnToPillarsOfJudgement', 16, 'returntopillarsofjudgement', 176 ],
+		[ 'ReturnToKnyan', 16, 'returntoknyan', 177 ],
+		[ 'ReturnToTheCityOfArchives', 16, 'returntothecityofarchives', 178 ],
+		[ 'ReturnToTheDepthsOfYoth', 16, 'returntothedepthsofyoth', 179 ],
+		[ 'ReturnToShatteredAeons', 16, 'returntoshatteredaeons', 180 ],
+		[ 'ReturnToTurnBackTime', 16, 'returntoturnbacktime', 181 ],
+		[ 'ReturnToTheRainforest', 16, 'returntotherainforest', 182 ],
+		[ 'CultOfPnakotus', 16, 'cultofpnakotus', 183 ],
+		[ 'DoomedExpedition', 16, 'doomedexpedition', 184 ],
+		[ 'TemporalHunters', 16, 'temporalhunters', 185 ],
+		[ 'VenomousHate', 16, 'venomoushate', 186 ],
+
+		// The Innsmouth Conspiricy
+		[ 'ShatteredMemories', 22, 'shatteredmemories', 187 ],
+		[ 'DisappearanceOfElinaHarper', 22, 'disappearanceofelinaharper', 188 ],
+		[ 'AgentsOfDagon', 22, 'agentsofdagon', 189 ],
+		[ 'AgentsOfHydra', 22, 'agentsofhydra', 190 ],
+		[ 'CreaturesFromBelow', 22, 'creaturesfrombelow', 191 ],
+		[ 'FloodedCaves', 22, 'floodedcaves', 192 ],
+		[ 'FogOverInnsmouth', 22, 'fogoverinnsmouth', 193 ],
+		[ 'GrottoOfDespair', 22, 'grottoofdespair', 194 ],
+		[ 'Locals', 22, 'locals', 195 ],
+		[ 'Malfunction', 22, 'malfunction', 196 ],
+		[ 'RisingTide', 22, 'risingtide', 197 ],
+		[ 'Syzygy', 22, 'syzygy', 198 ]
 	);
 
 	this.basicCollectionList = new Array(
@@ -507,9 +569,18 @@ VileExperiments
 		[ 'GuardiansOfTheAbyss', 'guaaby' ],			//  8
 		[ 'ReturnToTheDunwichLegacy', 'rttdl' ],		//  9
 		[ 'TheCircleUndone', 'cirund' ],				// 10
-		[ 'ReturnToThePathToCarcosa', 'rttptc' ]		// 11
-//		[ 'The Dream-Eaters', 'dreeat' ]				// 12
-//		[ 'MurderAtTheExcelsiorHotel', 'mateh' ]		// 13
+		[ 'ReturnToThePathToCarcosa', 'rttptc' ],		// 11
+		[ 'TheDreamEaters', 'dreeat' ],					// 12
+		[ 'MurderAtTheExcelsiorHotel', 'mateh' ],		// 13
+		[ 'ParallelInvestigators', 'parallel' ],		// 14
+		[ 'TheBlobThatAteEverything', 'blob' ],			// 15
+		[ 'ReturnToTheForgottenAge', 'rttfa' ],			// 16
+		[ 'NathanielCho', 'nathanielcho' ],				// 17
+		[ 'HarveyWalters', 'harveywalters' ],			// 18
+		[ 'WinifredHabbamock', 'winifredhabbamock' ],	// 19
+		[ 'JacquelineFine', 'jacquelinefine' ],			// 20
+		[ 'StellaClark', 'stellaclark' ],				// 21
+		[ 'TheInnsmouthConspiracy', 'theinnsmouthconspiracy' ]	// 22
 	);
 
 	this.encounterTypes = new Array();
