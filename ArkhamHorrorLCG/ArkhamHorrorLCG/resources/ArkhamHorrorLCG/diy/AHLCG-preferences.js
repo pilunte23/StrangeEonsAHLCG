@@ -143,10 +143,6 @@ function createSetData() {
 		}),
 		initialize: function() {
 			try {
-//				this.seTableModel.setColumnIdentifiers( [ '', 'Name', 'Cycle', 'Tag' ] );
-//				this.ueTableModel.setColumnIdentifiers( [ '', 'Name', 'Icon', 'Tag' ] );
-//				this.scTableModel.setColumnIdentifiers( [ '', 'Name', 'Tag' ] );
-//				this.ucTableModel.setColumnIdentifiers( [ '', 'Name', 'Icon', 'Tag' ] );
 				this.seTableModel.setColumnIdentifiers( [ '', @AHLCG-Pref-Name, @AHLCG-Pref-Cycle, @AHLCG-Pref-Tag ] );
 				this.ueTableModel.setColumnIdentifiers( [ '', @AHLCG-Pref-Name, @AHLCG-Pref-Icon, @AHLCG-Pref-Tag ] );
 				this.scTableModel.setColumnIdentifiers( [ '', @AHLCG-Pref-Name, @AHLCG-Pref-Tag ] );
@@ -580,7 +576,7 @@ function storeAHLCGPreferences( data ) {
 	for( index = 0; index < AHLCGObject.standardEncounterList.length; index++ ) {
 		// we need to convert this index into the used setting string index		
 		let usedIndex = -1;
-		
+
 		for ( i = 0; i < AHLCGObject.standardEncounterList.length; i++) {
 			let entry = AHLCGObject.standardEncounterList[i];
 			
@@ -590,6 +586,8 @@ function storeAHLCGPreferences( data ) {
 			}
 		}
 
+		if (usedIndex < 0) continue;
+	
 		let value = data.seTableModel.getValueAt( usedIndex, 0 );
 
 		if ( value == java.lang.Boolean(false) ) usedString = usedString + '0';
@@ -597,6 +595,7 @@ function storeAHLCGPreferences( data ) {
 
 		if (usedString.length >= 40) {
 			settings.set( 'AHLCG-UseEncounter' + settingsIndex, usedString );
+
 			settingsIndex++;
 			usedString = '';
 		}
@@ -605,8 +604,9 @@ function storeAHLCGPreferences( data ) {
 	if (usedString.length > 0) {
 		settings.set( 'AHLCG-UseEncounter' + settingsIndex, usedString );		
 	}
-	
+
 	var userCount = data.ueTableModel.getRowCount();
+
 	settings.setInt( 'AHLCG-UserEncounterCount', userCount);
 
 	for ( index = 0; index < userCount; index++) {

@@ -75,7 +75,7 @@ function createInterface( diy, editor ) {
 	CollectionTab.addToEditor(editor, @AHLCG-Collection);
 
 	var EncounterImagePanel = new portraitPanel( diy, getPortraitIndex( 'Encounter' ), @AHLCG-CustomEncounterSet );
-	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, false, [0, 1], [0], FACE_FRONT );
+	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, [0, 1], [0], FACE_FRONT );
 	
 	var EncounterTab = new Grid();
 	EncounterTab.editorTabScrolling = true;
@@ -159,12 +159,6 @@ function paintFront( g, diy, sheet ) {
 	drawSubtype( g, diy, sheet, Subtype_box, subtypeText );
 
 	drawBody( g, diy, sheet, Body_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ) );
-
-//	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
-//	drawCollectionIcon( g, diy, sheet );
-//	drawCollectionNumber (g, diy, sheet, false );
 
 	drawCollectorInfo( g, diy, sheet, true, false, $Subtype == 'StoryWeakness', $Subtype == 'StoryWeakness', true );
 }

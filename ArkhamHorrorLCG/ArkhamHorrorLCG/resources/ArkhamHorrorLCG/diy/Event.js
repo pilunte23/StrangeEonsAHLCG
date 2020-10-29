@@ -15,7 +15,7 @@ function create( diy ) {
 	diy.frontTemplateKey = getExpandedKey( FACE_FRONT, 'Default', '-template' );	// not used, set card size	
 	diy.backTemplateKey = getExpandedKey( FACE_BACK, 'Default', '-template' );
 
-	diy.faceStyle = FaceStyle.PLAIN_BACK;
+	diy.faceStyle = FaceStyle.TWO_FACES;
 
 	diy.name = '';
 
@@ -23,7 +23,7 @@ function create( diy ) {
 	createPortraits( diy, PortraitTypeList );
 	setDefaultCollection();
 
-	diy.version = 9;
+	diy.version = 12;
 }
 
 function setDefaults() {
@@ -36,6 +36,8 @@ function setDefaults() {
 	$Skill3 = 'None';
 	$Skill4 = 'None';
 	$Skill5 = 'None';
+	
+	$BackTypeBack = 'Player';
 	
 	$Traits = '';
 	$Keywords = '';
@@ -60,11 +62,14 @@ function createInterface( diy, editor ) {
 		
 	var TitlePanel = layoutTitle( diy, bindings, false, [0], FACE_FRONT );
 	var StatPanel = layoutEventStats( diy, bindings, FACE_FRONT );
+	StatPanel.setTitle( @AHLCG-BasicData + ': ' + @AHLCG-Front );
+	var BackStatPanel = layoutBackTypeStats( diy, bindings, FACE_BACK );
+	BackStatPanel.setTitle( @AHLCG-BasicData + ': ' + @AHLCG-Back );
 	var CopyrightPanel = layoutCopyright( bindings, [0], FACE_FRONT );
 
 	var StatisticsTab = new Grid();
 	StatisticsTab.editorTabScrolling = true;
-	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', StatPanel, 'wrap, pushx, growx', CopyrightPanel, 'wrap, pushx, growx' );
+	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', StatPanel, 'wrap, pushx, growx', BackStatPanel, 'wrap, pushx, growx', CopyrightPanel, 'wrap, pushx, growx' );
 	StatisticsTab.addToEditor( editor , @AHLCG-General );
 	
 	var TextTab = layoutText( bindings, [ 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ], '', FACE_FRONT );	
@@ -103,10 +108,6 @@ function createFrontPainter( diy, sheet ) {
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
-//	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
-	
-//	if ( $CardClass == 'Weakness' || $CardClass == 'BasicWeakness' ) createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'WeaknessBody-region') ) );
-//	else 
 	createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );
 
 	initBodyTags( diy, Body_box );	
@@ -127,14 +128,6 @@ function createFrontPainter( diy, sheet ) {
 }
 
 function createBackPainter( diy, sheet ) {
-	// this won't be called because the default face style
-	// is a plain (unpainted) card back [FaceStyle.PLAIN_BACK]
-	// in fact, we could leave this function out altogether;
-	// look out for this when writing your own scripts
-	// (a do-nothing function will be created to stand in
-	// for any missing DIY functions, so if one of your functions
-	// doesn't seem to be getting called, check the spelling
-	// carefully)
 }
 
 function paintFront( g, diy, sheet ) {
@@ -170,18 +163,13 @@ function paintFront( g, diy, sheet ) {
 	if ( $CardClass == 'Weakness' || $CardClass == 'BasicWeakness') regionName = 'WeaknessBody';
 	drawBodyWithRegionName( g, diy, sheet, Body_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ), regionName );
 
-//	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
-//	drawCollectionIcon( g, diy, sheet );
-//	drawCollectionNumber (g, diy, sheet, false );
-
 	drawCollectorInfo( g, diy, sheet, true, false, false, false, true );
 }
 
 function paintBack( g, diy, sheet ) {
-	// like createBackPainter(), this won't be called because of
-	// the type of card we created
+	clearImage( g, sheet );
+
+	drawBackTemplate( g, sheet );
 }
 
 function onClear() {
@@ -238,10 +226,13 @@ function onRead(diy, oos) {
 	if ( diy.version < 9 ) {
 		$Skill5 = 'None';
 	}
+	if ( diy.version < 12 ) {
+		$BackTypeBack = 'Player';
+	}
 	
 	updateCollection();
 	
-	diy.version = 9;
+	diy.version = 12;
 }
 
 function onWrite( diy, oos ) {

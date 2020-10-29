@@ -1,7 +1,7 @@
 #
 #
 
-id = CATALOGUEID{0b899f3c-78ae-40b8-bcfc-b06479b1f136:2020-1-23-18-51-18-551}
+id = CATALOGUEID{0b899f3c-78ae-40b8-bcfc-b06479b1f136:2020-9-12-11-31-22-1}
 
 priority = GAME
 ui-languages = en_US,it_IT,es,fr_FR,de_DE
@@ -10,8 +10,8 @@ game-languages = en_US,it_IT,es,fr_FR,de_DE
 catalog-name = Arkham Horror: The Card Game
 catalog-name_de_DE = Arkham Horror: Das Kartenspiel
 catalog-name_en_US = Arkham Horror: The Card Game
-catalog-name_it_IT = Arkham Horror: Il Gioco di Carte
 catalog-name_fr_FR = Horreur a Arkham : Le Jeu de Cartes
+catalog-name_it_IT = Arkham Horror: Il Gioco di Carte
 
 catalog-credit = jaqenZann
 catalog-description = <p>This plug-in allows the creation of components for \

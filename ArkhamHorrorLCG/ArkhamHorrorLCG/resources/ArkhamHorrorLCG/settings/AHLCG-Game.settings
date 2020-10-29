@@ -96,6 +96,10 @@ ElderSign-tag = eld
 ElderSign-tag-replacement = <ahf>E</ahf>
 Tentacle-tag = ten
 Tentacle-tag-replacement = <ahf>T</ahf>
+Bless-tag = ble
+Bless-tag-replacement = <ahf>D</ahf>
+Curse-tag = cur
+Curse-tag-replacement = <ahf>U</ahf>
 
 Unique-tag = uni
 Unique-tag-replacement = <ahf>u</ahf>

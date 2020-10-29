@@ -51,13 +51,10 @@ function createInterface( diy, editor ) {
 	var bindings = new Bindings( editor, diy );
 
 	var TitlePanel = layoutTitle( diy, bindings, false, [0], FACE_FRONT );
-//	var BackStatPanel = layoutBackTypeStats( diy, bindings, FACE_BACK );
-//	BackStatPanel.setTitle( @AHLCG-BasicData + ': ' + @AHLCG-Back );
 	var CopyrightPanel = layoutCopyright( bindings, [0], FACE_FRONT );
 
 	var StatisticsTab = new Grid();
 	StatisticsTab.editorTabScrolling = true;
-//	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', BackStatPanel, 'wrap, pushx, growx', CopyrightPanel, 'wrap, pushx, growx' );
 	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', CopyrightPanel, 'wrap, pushx, growx' );
 	StatisticsTab.addToEditor( editor , @AHLCG-General );
 	
@@ -77,7 +74,7 @@ function createInterface( diy, editor ) {
 	CollectionTab.addToEditor(editor, @AHLCG-Collection);
 
 	var EncounterImagePanel = new portraitPanel( diy, getPortraitIndex( 'Encounter' ), @AHLCG-CustomEncounterSet );
-	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, false, [0, 1], [0], FACE_FRONT );
+	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, [0, 1], [0], FACE_FRONT );
 	
 	var EncounterTab = new Grid();
 	EncounterTab.editorTabScrolling = true;
@@ -146,24 +143,11 @@ function paintFront( g, diy, sheet ) {
 	drawLabel( g, diy, sheet, Label_box, #AHLCG-Label-Treachery );
 	drawName( g, diy, sheet, Name_box );
 
-//	var subtypeText = #AHLCG-Label-Weakness;
-
-//	Subtype_box.markupText = subtypeText.toUpperCase();
-//	Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
 	drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-Weakness );
 
 	drawOverlay( g, diy, sheet, 'BasicWeakness' );
 
 	drawBody( g, diy, sheet, Body_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ) );
-
-//	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
-//	drawCollectionIcon( g, diy, sheet );
-//	drawCollectionNumber (g, diy, sheet, false );
-
-//	drawEncounterIcon( g, diy, sheet );	
-//	drawEncounterInfo( g, diy, sheet );
 
 	drawCollectorInfo( g, diy, sheet, true, false, true, true, true );
 }

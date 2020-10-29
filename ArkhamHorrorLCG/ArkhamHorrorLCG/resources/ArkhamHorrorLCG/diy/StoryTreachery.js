@@ -118,7 +118,7 @@ function createInterface( diy, editor ) {
 	CollectionTab.addToEditor(editor, @AHLCG-Collection);
 
 	var EncounterImagePanel = new portraitPanel( diy, getPortraitIndex( 'Encounter' ), @AHLCG-CustomEncounterSet );
-	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, false, [0, 1], [0, 1], FACE_FRONT );
+	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, [0, 1], [0, 1], FACE_FRONT );
 	
 	var EncounterTab = new Grid();
 	EncounterTab.editorTabScrolling = true;
@@ -226,15 +226,6 @@ function paintBack( g, diy, sheet ) {
 	drawName( g, diy, sheet, BackName_box );
 
 	drawBody( g, diy, sheet, BackBody_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ) );
-
-//	if ( $ArtistBack.length > 0 ) drawArtist( g, diy, sheet );
-//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
-//	drawCollectionIcon( g, diy, sheet );
-//	drawCollectionNumber (g, diy, sheet, false );
-
-//	drawEncounterIcon( g, diy, sheet );		
-//	drawEncounterInfo( g, diy, sheet );
 
 	drawCollectorInfo( g, diy, sheet, true, false, true, true, true );
 }

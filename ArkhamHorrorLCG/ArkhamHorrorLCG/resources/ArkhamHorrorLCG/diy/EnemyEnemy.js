@@ -128,7 +128,7 @@ function createInterface( diy, editor ) {
 	CollectionTab.addToEditor(editor, @AHLCG-Collection);
 
 	var EncounterImagePanel = new portraitPanel( diy, getPortraitIndex( 'Encounter' ), @AHLCG-CustomEncounterSet );
-	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, true, [0, 1], [0, 1], FACE_FRONT );
+	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, true, [0, 1], [0, 1], FACE_FRONT );
 
 	var EncounterTab = new Grid();
 	EncounterTab.editorTabScrolling = true;
@@ -235,18 +235,9 @@ function paintFront( g, diy, sheet ) {
 
 	if ( $Damage > 0 )  drawDamage( g, diy, sheet );
 	if ( $Horror > 0 )	drawHorror( g, diy, sheet );
-
-//	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
 	
 	var collectionSuffix = false;
 	if ( $ShowCollectionNumberFront == '1' && $ShowCollectionNumberBack == '1' ) collectionSuffix = true;
-
-//	drawCollectionIcon( g, diy, sheet );
-//	drawCollectionNumber (g, diy, sheet, true );
-	
-//	drawEncounterIcon( g, diy, sheet );	
-//	drawEncounterInfo( g, diy, sheet );
 
 	drawCollectorInfo( g, diy, sheet, $ShowCollectionNumberFront == '1', collectionSuffix, $ShowEncounterNumberFront == '1', true, true );
 }
@@ -276,16 +267,8 @@ function paintBack( g, diy, sheet ) {
 	if ( $DamageBack > 0 )  drawDamage( g, diy, sheet );
 	if ( $HorrorBack > 0 )	drawHorror( g, diy, sheet );
 
-//	if ( $ArtistBack.length > 0 ) drawArtist( g, diy, sheet );
-	
 	var collectionSuffix = false;
 	if ( $ShowCollectionNumberFront == '1' && $ShowCollectionNumberBack == '1' ) collectionSuffix = true;
-
-//	drawCollectionIcon( g, diy, sheet );
-//	drawCollectionNumber (g, diy, sheet, true );
-	
-//	drawEncounterIcon( g, diy, sheet );	
-//	drawEncounterInfo( g, diy, sheet );
 
 	drawCollectorInfo( g, diy, sheet, $ShowCollectionNumberBack == '1', collectionSuffix, $ShowEncounterNumberBack == '1', true, true );
 }

@@ -36,6 +36,7 @@
     @AHLCG-ActPortrait = diy:ArkhamHorrorLCG/diy/ActPortrait.js | ArkhamHorrorLCG/icons/AHLCG-Act.png | AHLCG
     @AHLCG-ActStoryAsset = diy:ArkhamHorrorLCG/diy/ActAssetStory.js | ArkhamHorrorLCG/icons/AHLCG-Act.png | AHLCG
     @AHLCG-AgendaStandard = diy:ArkhamHorrorLCG/diy/Agenda.js | ArkhamHorrorLCG/icons/AHLCG-Agenda.png | AHLCG
+    @AHLCG-AgendaFrontPortrait = diy:ArkhamHorrorLCG/diy/AgendaFrontPortrait.js | ArkhamHorrorLCG/icons/AHLCG-AgendaFrontPortrait.png | AHLCG
     @AHLCG-AgendaEnemy = diy:ArkhamHorrorLCG/diy/AgendaEnemy.js | ArkhamHorrorLCG/icons/AHLCG-Agenda.png | AHLCG
     @AHLCG-AgendaLocation = diy:ArkhamHorrorLCG/diy/AgendaLocation.js | ArkhamHorrorLCG/icons/AHLCG-Agenda.png | AHLCG
     @AHLCG-AgendaPortrait = diy:ArkhamHorrorLCG/diy/AgendaPortrait.js | ArkhamHorrorLCG/icons/AHLCG-Agenda.png | AHLCG
@@ -48,4 +49,5 @@
 	@AHLCG-StoryAsset = diy:ArkhamHorrorLCG/diy/StoryAsset.js | ArkhamHorrorLCG/icons/AHLCG-Story.png | AHLCG
     @AHLCG-StoryEnemy = diy:ArkhamHorrorLCG/diy/StoryEnemy.js | ArkhamHorrorLCG/icons/AHLCG-Story.png | AHLCG
     @AHLCG-StoryLocation = diy:ArkhamHorrorLCG/diy/StoryLocation.js | ArkhamHorrorLCG/icons/AHLCG-Story.png | AHLCG
+    @AHLCG-StoryChaos = diy:ArkhamHorrorLCG/diy/StoryChaos.js | ArkhamHorrorLCG/icons/AHLCG-Story.png | AHLCG
     @AHLCG-StoryTreachery = diy:ArkhamHorrorLCG/diy/StoryTreachery.js | ArkhamHorrorLCG/icons/AHLCG-Story.png | AHLCG

@@ -23,7 +23,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 	
-	diy.version = 11;
+	diy.version = 12;
 }
 
 function setDefaults() {
@@ -51,6 +51,9 @@ function setDefaults() {
 	$DeckRequirementsBack = '';
 	$DeckRestrictionsBack = '';
 	$AdditionalReqirementsBack = '';
+	$SetupBack = '';
+	$StartingPlayAreaBack = '';
+	$OpeningHandBack = '';
 	$InvStoryBack = '';
 
 	$DeckSizeBackSpacing = '0';
@@ -59,6 +62,9 @@ function setDefaults() {
 	$DeckRequirementsBackSpacing = '0';
 	$DeckRestrictionsBackSpacing = '0';
 	$AdditionalRequirementsBackSpacing = '0';
+	$SetupBackSpacing = '0';
+	$StartingPlayAreaBackSpacing = '0';
+	$OpeningHandBackSpacing = '0';
 
 	$Artist = '';
 	$Copyright = '';
@@ -100,7 +106,7 @@ function createInterface( diy, editor ) {
 	CollectionTab.addToEditor(editor, @AHLCG-Collection);
 
 	var EncounterImagePanel = new portraitPanel( diy, getPortraitIndex( 'Encounter' ), @AHLCG-CustomEncounterSet );
-	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, false, [0, 1], [0, 1], FACE_FRONT );
+	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, [0, 1], [0, 1], FACE_FRONT );
 
 	var EncounterTab = new Grid();
 	EncounterTab.editorTabScrolling = true;
@@ -131,7 +137,6 @@ function createFrontPainter( diy, sheet ) {
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
-//	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
 
 	initBodyTags( diy, Body_box );	
 
@@ -168,7 +173,6 @@ function createBackPainter( diy, sheet ) {
 	BackBody_box = markupBox(sheet);
 	BackBody_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Body-style'), null);
 	BackBody_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Body-alignment'));
-//	BackBody_box.setLineTightness( $(getExpandedKey(FACE_BACK, 'Body', '-tightness') + '-tightness') );	
 	createBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ), 'Neutral' );
 
 	BackEncounter_box = markupBox(sheet);
@@ -183,8 +187,6 @@ function paintFront( g, diy, sheet ) {
 
 	drawTemplate( g, sheet, 'Story' );
 
-//	PortraitList[getPortraitIndex( 'TransparentPortrait' )].paint( g, sheet.getRenderTarget() );
-//	drawInvestigatorPortrait( g, diy, sheet );	
 	drawFadedPortrait( g, diy, sheet, 'TransparentPortrait', 'Investigator' );
 
 	drawName( g, diy, sheet, Name_box );
@@ -198,27 +200,13 @@ function paintFront( g, diy, sheet ) {
 
 	drawBody( g, diy, sheet, Body_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor' ) );
 
-//	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
-//	drawCollectionIcon( g, diy, sheet );
-//	drawCollectionNumber (g, diy, sheet, false );
-
 	drawCollectorInfo( g, diy, sheet, true, false, false, true, true );
 }
 
 function paintBack( g, diy, sheet ) {
 	clearImage( g, sheet );
 
-//	if ( $PortraitShare == '1' ) {
-//		PortraitList[getPortraitIndex( 'Portrait' )].setImage( PortraitList[getPortraitIndex( 'TransparentPortrait' )].getSource(), PortraitList[getPortraitIndex( 'TransparentPortrait' )].getImage() );
-//		PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
-//		PortraitList[getPortraitIndex( 'TransparentPortrait' )].paint( g, sheet.getRenderTarget() );
-//	}
-//	else {
-		PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
-//	}
-//	PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
+	PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
 
 	drawTemplate( g, sheet, 'Story' );
 
@@ -226,7 +214,7 @@ function paintBack( g, diy, sheet ) {
 
 	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, BackSubtitle_box, 'Neutral', false );
 
-	drawBody( g, diy, sheet, BackBody_box, new Array( 'DeckSize', 'SecondaryClass', 'DeckOptions', 'DeckRequirements', 'DeckRestrictions', 'AdditionalRequirements', 'InvStory' ) );
+	drawBody( g, diy, sheet, BackBody_box, new Array( 'DeckSize', 'SecondaryClass', 'DeckOptions', 'DeckRequirements', 'DeckRestrictions', 'AdditionalRequirements', 'Setup', 'StartingPlayArea', 'OpeningHand', 'InvStory' ) );
 	
 	drawEncounterIcon( g, diy, sheet );
 } 
@@ -313,10 +301,18 @@ function onRead(diy, oos) {
 		$SecondaryClassBack = '';
 		$SecondaryClassBackSpacing = '0';
 	}
+	if ( diy.version < 12 ) {
+		$StartingPlayAreaBack = '';
+		$OpeningHandBack = '';
+		$InvStoryBack = '';
+		$SetupBackSpacing = '0';
+		$StartingPlayAreaBackSpacing = '0';
+		$OpeningHandBackSpacing = '0';
+	}
 	
 	updateCollection();
 	
-	diy.version = 11;
+	diy.version = 12;
 }
 
 function onWrite( diy, oos ) {

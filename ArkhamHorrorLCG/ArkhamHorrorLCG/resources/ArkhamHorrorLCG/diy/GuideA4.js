@@ -28,11 +28,13 @@ function setDefaults() {
 	$PageType = 'Empty';
 
 	$Page = '1';
-//	$Columns = '2';
 	
 	$RulesLeft = '';
 	$RulesRight = '';
-	
+
+	$PositionPortrait1 = 'None';
+	$PositionPortrait2 = 'None';
+		
 	$PositionPortrait1 = 'TopLeftSmall';
 	$PositionPortrait2 = 'BottomLarge';
 }
@@ -54,7 +56,6 @@ function createInterface( diy, editor ) {
 	var StatisticsTab = new Grid();
 	StatisticsTab.editorTabScrolling = true;
 	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', StatPanel, 'wrap, pushx, growx' );
-//	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx' );
 	StatisticsTab.addToEditor( editor , @AHLCG-General );
 
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
@@ -83,15 +84,10 @@ function createFrontPainter( diy, sheet ) {
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
-//	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
 	Body_box.setTextFitting( FIT_NONE );
 	initBodyTags( diy, Body_box );	
 	initGuideTags( diy, Body_box );
-/*
-	Artist_box = markupBox(sheet);
-	Artist_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Artist-style'), null);
-	Artist_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'Artist-alignment'));
-*/
+
 	Page_box = markupBox(sheet);
 	Page_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Page-style'), null);
 	Page_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Page-alignment'));

@@ -120,20 +120,7 @@ function createInterface( diy, editor ) {
 
 	PortraitTab = layoutPortraits( diy, bindings, null, 'BackPortrait', true, false, true );
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
-/*
-	var PortraitImagePanel = new portraitPanel( diy, getPortraitIndex( 'BackPortrait' ), @AHLCG-Portrait );	
-	var ArtistPanel = layoutArtist( bindings, [1], FACE_BACK );
-	
-	var MirrorButton = createPortraitMirrorButton( 'BackPortrait', PortraitImagePanel );
 
-	var PortraitTab = new Grid();
-	PortraitTab.editorTabScrolling = true;
-	PortraitTab.place( PortraitImagePanel, 'wrap, pushx, growx' );
-	PortraitTab.place( MirrorButton, 'wrap, align right' );
-	PortraitTab.place( ArtistPanel, 'wrap, pushx, growx' );
-
-	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
-*/
 	var CollectionImagePanel = new portraitPanel( diy, getPortraitIndex( 'Collection' ), @AHLCG-CustomCollection );
 	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, false, [1], FACE_FRONT );
 	
@@ -143,7 +130,7 @@ function createInterface( diy, editor ) {
 	CollectionTab.addToEditor(editor, @AHLCG-Collection);
 
 	var EncounterImagePanel = new portraitPanel( diy, getPortraitIndex( 'Encounter' ), @AHLCG-CustomEncounterSet );
-	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, false, [0, 1], [0, 1], FACE_FRONT );
+	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, [0, 1], [0, 1], FACE_FRONT );
 	
 	var EncounterTab = new Grid();
 	EncounterTab.editorTabScrolling = true;
@@ -266,15 +253,6 @@ function paintBack( g, diy, sheet ) {
 
 	if ( $DamageBack > 0 )  drawDamage( g, diy, sheet );
 	if ( $HorrorBack > 0 )	drawHorror( g, diy, sheet );
-
-//	if ( $ArtistBack.length > 0 ) drawArtist( g, diy, sheet );
-//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
-//	drawCollectionIcon( g, diy, sheet );
-//	drawCollectionNumber (g, diy, sheet, false );
-	
-//	drawEncounterIcon( g, diy, sheet );		
-//	drawEncounterInfo( g, diy, sheet );
 
 	drawCollectorInfo( g, diy, sheet, true, false, true, true, true );
 }

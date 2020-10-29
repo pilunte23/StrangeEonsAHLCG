@@ -12,6 +12,10 @@ AHLCG-Difficulty-region = 129,127,114,14
 AHLCG-Difficulty-alignment = center, top
 AHLCG-Difficulty-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.difficultySize}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.97; FOREGROUND: #000000
 
+AHLCG-Chaos-Header-region = 35,135,300,305
+AHLCG-Chaos-Header-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize*0.8}; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.05; FOREGROUND: #000000; POSTURE: OBLIQUE
+AHLCG-Chaos-Header-alignment = center, top
+
 AHLCG-Chaos-Body-region = 95,156,240,305
 AHLCG-Chaos-Body-alignment = left, middle
 AHLCG-Chaos-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize*0.96}; WEIGHT: WEIGHT_MEDIUM; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000

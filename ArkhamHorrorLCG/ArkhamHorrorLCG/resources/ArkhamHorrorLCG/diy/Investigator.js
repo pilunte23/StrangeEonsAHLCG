@@ -59,7 +59,7 @@ function setDefaults() {
 	$DeckRequirementsBackSpacing = '0';
 	$DeckRestrictionsBackSpacing = '0';
 	$AdditionalRequirementsBackSpacing = '0';
-
+	
 	$Artist = '';
 	$Copyright = '';
 
@@ -123,7 +123,6 @@ function createFrontPainter( diy, sheet ) {
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
-//	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
 
 	initBodyTags( diy, Body_box );	
 
@@ -156,7 +155,6 @@ function createBackPainter( diy, sheet ) {
 	BackBody_box = markupBox(sheet);
 	BackBody_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Body-style'), null);
 	BackBody_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Body-alignment'));
-//	BackBody_box.setLineTightness( $(getExpandedKey(FACE_BACK, 'Body', '-tightness') + '-tightness') );	
 	createBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ), $CardClass );
 
 	initBodyTags( diy, BackBody_box );	
@@ -167,8 +165,6 @@ function paintFront( g, diy, sheet ) {
 
 	drawTemplate( g, sheet, $CardClass );
 
-//	PortraitList[getPortraitIndex( 'TransparentPortrait' )].paint( g, sheet.getRenderTarget() );
-//	drawInvestigatorPortrait( g, diy, sheet );	
 	drawFadedPortrait( g, diy, sheet, 'TransparentPortrait', 'Investigator' );
 
 	drawName( g, diy, sheet, Name_box );
@@ -182,31 +178,17 @@ function paintFront( g, diy, sheet ) {
 
 	drawBody( g, diy, sheet, Body_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor' ) );
 
-//	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
-//	drawCollectionIcon( g, diy, sheet );
-//	drawCollectionNumber (g, diy, sheet, false );
-
 	drawCollectorInfo( g, diy, sheet, true, false, false, false, true );
 }
 
 function paintBack( g, diy, sheet ) {
 	clearImage( g, sheet );
 
-//	if ( $PortraitShare == '1' ) {
-//		PortraitList[getPortraitIndex( 'Portrait' )].setImage( PortraitList[getPortraitIndex( 'TransparentPortrait' )].getSource(), PortraitList[getPortraitIndex( 'TransparentPortrait' )].getImage() );
-//		PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
-//		PortraitList[getPortraitIndex( 'TransparentPortrait' )].paint( g, sheet.getRenderTarget() );
-//	}
-//	else {
-		PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
-//	}
-//	PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
+	PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
 
 	drawTemplate( g, sheet, $CardClass );
 
-	drawName( g, diy, sheet, BackName_box );
+	drawName( g, diy, sheet, BackName_box, $CardClass.indexOf('Parallel') > 0 );
 
 	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, BackSubtitle_box, $CardClass, false );
 
@@ -227,17 +209,21 @@ function getPathPointArrays( className ) {
 			pointArray[1] = new Array( 0.000, 0.566, 0.566, 0.600, 0.600, 1.000, 1.0, 0.0 );
 			break;
 		case 'Seeker':
+		case 'ParallelSeeker':
 			pointArray[0] = new Array( 0.355, 0.322, 0.296, 0.275, 0.010, 0.010, 1.0, 1.0 );
 			pointArray[1] = new Array( 0.000, 0.585, 0.578, 0.630, 0.622, 1.000, 1.0, 0.0 );
 			break;
 		case 'Rogue':
+		case 'ParallelRogue':
 			pointArray[0] = new Array( 0.355, 0.326, 0.272, 0.264, 0.000, 0.0, 1.0, 1.0 );
-			pointArray[1] = new Array( 0.000, 0.511, 0.511, 0.593, 0.593, 1.0, 1.0, 0.0 );
+//			pointArray[1] = new Array( 0.000, 0.511, 0.511, 0.593, 0.593, 1.0, 1.0, 0.0 );
+			pointArray[1] = new Array( 0.000, 0.511, 0.511, 0.583, 0.583, 1.0, 1.0, 0.0 );
 			break;
 		case 'Mystic':
 		case 'Survivor':
 			pointArray[0] = new Array( 0.355, 0.315, 0.276, 0.264, 0.010, 0.010, 1.0, 1.0 );
-			pointArray[1] = new Array( 0.000, 0.544, 0.544, 0.631, 0.631, 1.000, 1.0, 0.0 );
+//			pointArray[1] = new Array( 0.000, 0.544, 0.544, 0.631, 0.631, 1.000, 1.0, 0.0 );
+			pointArray[1] = new Array( 0.000, 0.544, 0.544, 0.611, 0.611, 1.000, 1.0, 0.0 );
 			break;
 		case 'Neutral':
 			pointArray[0] = new Array( 0.400, 0.357, 0.010, 0.010, 1.0, 1.0 );

@@ -25,7 +25,8 @@ function layoutTitle( diy, bindings, subtitle, updateFaces, bindingFaceIndex ) {
 	return TitlePanel;
 }
 
-function layoutChaosTitle( diy, bindings, updateFaces, bindingFaceIndex ) {
+// 2 lines
+function layoutTitle2( diy, bindings, updateFaces, bindingFaceIndex ) {
 	var TitlePanel = new Grid();	
 	TitlePanel.setTitle( @AHLCG-Title );
 
@@ -124,17 +125,17 @@ function layoutTitleGuide( diy, bindings, updateFaces, bindingFaceIndex, portrai
 					
 						let coveringScale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
 
-						portrait.pan = Point2D.Float( region.x + (region.width - clipDimension.width) / 2, region.y + (region.height - clipDimension.height) / 2 );					
+						portrait.pan = Point2D.Float( region.x + (region.width - clipDimension.width) / 2, region.y + (region.height - clipDimension.height) / 2 );
 						portrait.scale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
 						portrait.scale = coveringScale;
-				
+
 						portraitPanels[i].portrait = portrait;
 					}
 				
 					portraitPanels[i].portrait = portrait;
 				}
 			}
-			
+
 			createPortraitStencil( diy, PortraitList[0], portraitPanels[0], $PositionPortrait1, (String)(TypeList.getSelectedItem()) );
 			createPortraitStencil( diy, PortraitList[1], portraitPanels[1],  $PositionPortrait2, (String)(TypeList.getSelectedItem()) );
 		} catch ( ex ) {
@@ -227,8 +228,6 @@ function layoutActStats( diy, bindings, faceIndex, portraitPanels ) {
 			if ( orientationSetting == 'Reversed' ) region = shiftRegion( region, CardTypes[FACE_FRONT] );
 			
 			diy.settings.setRegion( 'AHLCG-Act-Collection-portrait-clip-region', region );
-				
-//			portraitPanels[index].portrait = portrait;
 		} catch ( ex if ex instanceof ReferenceError ) {
 			// means Body_box has not been created yet (during createInterface)
 			// we can safely ignore this
@@ -313,7 +312,48 @@ function layoutAgendaStats( diy, bindings, faceIndex, portraitPanels ) {
 		@AHLCG-ScenarioDeckID, 'align right', deckList, 'pushx, growx, sizegroup sp', 
 		@AHLCG-Orientation, 'align right, gapx 10', orientationList, 'pushx, growx, span 3'
 		);
-		
+
+	return StatPanel;
+}
+
+function layoutAgendaFrontPortraitStats( diy, bindings, faceIndex, portraitPanels ) {
+	var StatPanel = new Grid();
+	StatPanel.setTitle( @AHLCG-BasicData );
+
+	StatPanel.editorTabScrolling = true;
+
+	var indexList = new comboBox( Eons.namedObjects.AHLCGObject.combo20, null );
+	bindings.add( 'ScenarioIndex' + BindingSuffixes[faceIndex], indexList, [0, 1] );
+
+	var deckList = new comboBox( [ 'a', 'c', 'e', 'g', 'i', 'k', 'm', 'o', 'q', 's', 'u', 'w', 'y' ], null );
+	bindings.add( 'ScenarioDeckID' + BindingSuffixes[faceIndex], deckList, [0, 1] );
+
+	var doomList = new comboBox( Eons.namedObjects.AHLCGObject.comboClues, null );
+	bindings.add( 'Doom' + BindingSuffixes[faceIndex], doomList, [0] );
+
+	var perInvestigatorIcon = ImageUtils.createIcon(ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-PerInvestigator.png'), 12, 12);
+	var perInvestigatorButton = new toggleButton( '', perInvestigatorIcon, false );
+	bindings.add( 'PerInvestigator' + BindingSuffixes[faceIndex], perInvestigatorButton, [0] );
+
+	var asteriskButton = new toggleButton( '*', null, false );
+	bindings.add( 'Asterisk' + BindingSuffixes[faceIndex], asteriskButton, [0] );
+
+	perInvestigatorButton.addActionListener( function updateButtons( actionEvent ) {
+		asteriskButton.setSelected(false);
+	});
+	
+	asteriskButton.addActionListener( function updateButtons( actionEvent ) {
+		perInvestigatorButton.setSelected(false);		
+	});	
+
+	StatPanel.place(
+		@AHLCG-AgendaNumber, 'align right', indexList, 'pushx, growx, sizegroup sp', 
+		@AHLCG-Doom, 'align right, gapx 10', doomList, 'pushx, growx, sizegroup sp',
+		perInvestigatorButton, 'wmax 35, hmin 25, hmax 25',
+		asteriskButton, 'wrap, wmax 35, hmin 25, hmax 25',
+		@AHLCG-ScenarioDeckID, 'align right', deckList, 'pushx, growx, sizegroup sp'
+		);
+
 	return StatPanel;
 }
 
@@ -578,13 +618,12 @@ function layoutInvestigatorStats( diy, bindings, faceIndex ) {
 
 	var AHLCGObject = Eons.namedObjects.AHLCGObject;
 
-	var ClassList = new comboBox( AHLCGObject.comboClasses, null );
+	var ClassList = new comboBox( AHLCGObject.comboClassesI, null );
 	bindings.add( 'CardClass' + BindingSuffixes[faceIndex], ClassList, [0, 1] );
 
 	ClassList.addActionListener( function updateShape( actionEvent ) {
 		try {
-			createBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ), (String)(ClassList.getSelectedItem()) );
-			
+			createBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ), (String)(ClassList.getSelectedItem()) );			
 		} catch ( ex if ex instanceof ReferenceError ) {
 			// means Body_box has not been created yet (during createInterface)
 			// we can safely ignore this
@@ -817,7 +856,7 @@ function layoutBackTypeStats( diy, bindings, faceIndex ) {
 	});
 
 	StatsPanel.place(
-		@AHLCG-Back, 'align right', BackList, 'wrap'
+		@AHLCG-Back, 'align right ', BackList, 'wrap, width 40%'
 		);
 		
 	return StatsPanel;
@@ -830,12 +869,8 @@ function layoutGuideStats( bindings, faceIndex ) {
 	var pageSpinner = new spinner( 0, 100, 1, 1 );
 	bindings.add( 'Page' + BindingSuffixes[faceIndex], pageSpinner, [0] );
 		
-//	var columnSpinner = new spinner( 1, 2, 1, 1 );
-//	bindings.add( 'Columns' + BindingSuffixes[faceIndex], columnSpinner, [0] );
-
 	StatsPanel.place(
 		@AHLCG-Page, 'align right, gapx 10', pageSpinner, 'wrap'
-//		@AHLCG-Columns, 'align right, gapx 10', columnSpinner, 'wrap'
 		);
 		
 	return StatsPanel;
@@ -901,7 +936,6 @@ function layoutCopyright( bindings, faces, faceIndex ) {
 	CopyrightPanel.setTitle( @AHLCG-CopyrightTitle );
 
 	var copyrightField = new textField( '', 30 );
-//	bindings.add( 'Copyright' + BindingSuffixes[faceIndex], copyrightField, faces );
 	bindings.add( 'Copyright', copyrightField, faces );
 
 	CopyrightPanel.place( 
@@ -1032,16 +1066,7 @@ function layoutText( bindings, parts, suffix, faceIndex ) {
 			);
 		}
 	}
-/*
-	var lineSpinner = new spinner( 25, 300, 1, 100 );
-	var paragraphSpinner = new spinner( 25, 300, 1, 100 );
 
-	bindings.add( 'LineSpacing' + BindingSuffixes[faceIndex], lineSpinner, [ faceIndex ] );
-
-	TextPanel.place(
-		@AHLCG-LineSpacing, 'align right', lineSpinner, 'split 2', '%', 'wrap'
-	);
-*/				
 	return TextPanel;
 }
 
@@ -1049,9 +1074,7 @@ function layoutInvestigatorTextBack( bindings, faceIndex ) {
 	var TextPanel = new Grid();
 	TextPanel.setTitle( @AHLCG-Rules );
 	
-//	var deckSizeSpinner = new spinner( 1, 60, 1, 1 );
 	var deckSizeText = new textArea( '', 2, 30, true );
-//	bindings.add( 'DeckSize' + BindingSuffixes[faceIndex], deckSizeSpinner, [faceIndex] );
 	bindings.add( 'DeckSize' + BindingSuffixes[faceIndex], deckSizeText, [faceIndex] );
 
 	var sizeSpinner = new spinner( 0, 50, 1, 1 );
@@ -1086,7 +1109,25 @@ function layoutInvestigatorTextBack( bindings, faceIndex ) {
 
 	var additionalRequirementsSpinner = new spinner( 0, 50, 1, 1 );
 	bindings.add( 'AdditionalRequirements' + BindingSuffixes[faceIndex] + 'Spacing', additionalRequirementsSpinner, [faceIndex] );
+/*
+	var setupText = new textArea( '', 4, 30, true );
+	bindings.add( 'Setup' + BindingSuffixes[faceIndex], setupText, [faceIndex] );
 
+	var setupSpinner = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Setup' + BindingSuffixes[faceIndex] + 'Spacing', setupSpinner, [faceIndex] );
+
+	var playAreaText = new textArea( '', 4, 30, true );
+	bindings.add( 'StartingPlayArea' + BindingSuffixes[faceIndex], playAreaText, [faceIndex] );
+
+	var playAreaSpinner = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'StartingPlayArea' + BindingSuffixes[faceIndex] + 'Spacing', playAreaSpinner, [faceIndex] );
+
+	var handText = new textArea( '', 4, 30, true );
+	bindings.add( 'OpeningHand' + BindingSuffixes[faceIndex], handText, [faceIndex] );
+
+	var handSpinner = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'OpeningHand' + BindingSuffixes[faceIndex] + 'Spacing', handSpinner, [faceIndex] );
+*/
 	var storyText = new textArea( '', 12, 30, true );
 	bindings.add( 'InvStory' + BindingSuffixes[faceIndex], storyText, [faceIndex] );
 
@@ -1103,15 +1144,29 @@ function layoutInvestigatorTextBack( bindings, faceIndex ) {
 		@AHLCG-Spacing, 'align right', restrictionsSpinner, 'wrap',
 		@AHLCG-AdditionalRequirements, 'align right', additionalRequirementsText, 'wrap, pushx, growx',
 		@AHLCG-Spacing, 'align right', additionalRequirementsSpinner, 'wrap',
+//		@AHLCG-Setup, 'align right', setupText, 'wrap, pushx, growx',
+//		@AHLCG-Spacing, 'align right', setupSpinner, 'wrap',
+//		@AHLCG-StartingPlayArea, 'align right', playAreaText, 'wrap, pushx, growx',
+//		@AHLCG-Spacing, 'align right', playAreaSpinner, 'wrap',
+//		@AHLCG-OpeningHand, 'align right', handText, 'wrap, pushx, growx',
+//		@AHLCG-Spacing, 'align right', handSpinner, 'wrap',
 		@AHLCG-Story, 'align right', storyText, 'pushx, growx'
 		);
-		
+
 	return TextPanel;
 }
 
-function layoutChaosText( bindings, faceIndex ) {
+// header = story/chaos
+function layoutChaosText( bindings, faceIndex, header ) {
 	var TextPanel = new Grid();
 	TextPanel.setTitle( @AHLCG-Rules );
+	
+	var headerText = null;
+	
+	if (header) {
+		headerText = new textArea( '', 2, 30, true );
+		bindings.add( 'Header' + BindingSuffixes[faceIndex], headerText, [faceIndex]);
+	}
 	
 	var skullText = new textArea( '', 6, 30, true );
 	bindings.add( 'Skull' + BindingSuffixes[faceIndex], skullText, [faceIndex]);
@@ -1119,7 +1174,6 @@ function layoutChaosText( bindings, faceIndex ) {
 	var skullSpinner = new spinner( 0, 50, 0, 1 );
 	bindings.add( 'Skull' + BindingSuffixes[faceIndex] + 'Spacing', skullSpinner, [faceIndex] );
 			
-//	var skullMergeBox = new checkBox( @AHLCG-CombineDown, false, null );
 	var skullMergeList = new comboBox( new Array (
 		ListItem( 'None', @AHLCG-Chaos-None ),
 		ListItem( 'Cultist', @AHLCG-Chaos-Cultist ),
@@ -1155,21 +1209,20 @@ function layoutChaosText( bindings, faceIndex ) {
 		
 	var elderThingText = new textArea( '', 6, 30, true );
 	bindings.add( 'ElderThing' + BindingSuffixes[faceIndex], elderThingText, [faceIndex] );
-			
+	
+	if ( headerText ) 
+		TextPanel.place( @AHLCG-Header, 'align right', headerText, 'wrap, pushx, growx' );
+		
 	TextPanel.place(
-//		@AHLCG-Skull, 'align right', skullText, 'pushx, growx', new tipButton( @AHLCG-Statistics ), 'wrap, aligny top, gaptop 5',
 		@AHLCG-Skull, 'align right', skullText, 'wrap, pushx, growx',
 		@AHLCG-CombineWith, '', skullMergeList, 'wrap',
 		@AHLCG-Spacing, 'align right', skullSpinner, 'wrap', 
-//		@AHLCG-Cultist, 'align right', cultistText, 'pushx, growx', new tipButton( @AHLCG-Statistics ), 'wrap, aligny top, gaptop 5',
 		@AHLCG-Cultist, 'align right', cultistText, 'wrap, pushx, growx',
 		@AHLCG-CombineWith, '', cultistMergeList, 'wrap',
 		@AHLCG-Spacing, 'align right', cultistSpinner, 'wrap', 
-//		@AHLCG-Tablet, 'align right', tabletText, 'pushx, growx', new tipButton( @AHLCG-Statistics ), 'wrap, aligny top, gaptop 5',
 		@AHLCG-Tablet, 'align right', tabletText, 'wrap, pushx, growx',
 		@AHLCG-CombineWith, '', tabletMergeList, 'wrap',
 		@AHLCG-Spacing, 'align right', tabletSpinner, 'wrap', 
-//		@AHLCG-ElderThing, 'align right', elderThingText, 'pushx, growx', new tipButton( @AHLCG-Statistics ), 'wrap, aligny top, gaptop 5'
 		@AHLCG-ElderThing, 'align right', elderThingText, 'wrap, pushx, growx'
 		);
 		
@@ -1212,18 +1265,9 @@ function layoutPortraitOptions( bindings, faces, bindingFaceIndex, artist, mirro
 	}
 	if ( mirror != null) {
 		OptionPanel.place( 
-//			mirror, 'span 2, split 2, align left'
 			mirror, 'align right'
 			);
 	}
-/*
-	if ( share != null) {
-		OptionPanel.place( 
-//			share, 'align left'
-			share, 'align right'
-			);
-	}
-*/
 					
 	return OptionPanel;
 }
@@ -1241,7 +1285,8 @@ function layoutGuidePortraitOptions( diy, bindings, faces, bindingFaceIndex, por
 	// update portrait pan/scale, stencil
 	PositionList.addActionListener( function updatePosition( actionEvent ) {
 		try {
-			if ( (String)(PositionList.getSelectedItem()) != $( 'PositionPortrait'+ (portraitIndex+1) )  ) {
+			// assume pan is 0 before this has run -> run this once when component is created
+			if ( ( portrait.getPanX() == 0.0 && portrait.getPanY() == 0.0 ) || (String)(PositionList.getSelectedItem()) != $( 'PositionPortrait'+ (portraitIndex+1) )  ) {
 				// update portrait positioning
 				let region = getGuidePortraitRegion( diy, (String)(PositionList.getSelectedItem()) );
 
@@ -1256,14 +1301,14 @@ function layoutGuidePortraitOptions( diy, bindings, faces, bindingFaceIndex, por
 					
 					let coveringScale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
 
-					portrait.pan = Point2D.Float( region.x + (region.width - clipDimension.width) / 2, region.y + (region.height - clipDimension.height) / 2 );					
+					portrait.pan = Point2D.Float( region.x + (region.width - clipDimension.width) / 2, region.y + (region.height - clipDimension.height) / 2);
 					portrait.scale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
 					portrait.scale = coveringScale;
-				
+
 					panel.portrait = portrait;
 				}
 			}
-			
+
 			createPortraitStencil( diy, portrait, panel, (String)(PositionList.getSelectedItem()), $PageType );
 		} catch ( ex ) {
 			Error.handleUncaught( ex );
@@ -1305,10 +1350,7 @@ function layoutPortraitsWithPanels( diy, bindings, frontPortrait, backPortrait, 
 			
 		let frontMirrorButton = null;
 		if (mirror) frontMirrorButton = createPortraitMirrorButton( frontPortrait, frontPortraitImagePanel );
-/*
-		let frontShareButton = null;
-		if (share) frontShareButton = createPortraitShareButton( bindings );
-*/
+
 		let frontOptionPanel = layoutPortraitOptions( bindings, [0], FACE_FRONT, true, frontMirrorButton, false );
 		if ( backNeeded ) frontOptionPanel.setTitle( @AHLCG-Options + ': ' + @AHLCG-Front );
 
@@ -1317,7 +1359,6 @@ function layoutPortraitsWithPanels( diy, bindings, frontPortrait, backPortrait, 
 		
 		resultArray.push( frontPortraitImagePanel );
 	}
-//	if ( backPortrait != null && backPortrait.length > 0 ) {
 	if ( backNeeded ) {
 		let backPortraitImagePanel = null;
 		if ( frontNeeded ) backPortraitImagePanel = new portraitPanel( diy, getPortraitIndex( backPortrait ), @AHLCG-Portrait + ' : ' + @AHLCG-Back );
@@ -1443,7 +1484,7 @@ function layoutCollection( bindings, portraitPanel, useSpinner, selectFaces, fac
 	return CollectionPanel;
 }
 
-function layoutEncounter( bindings, portraitPanel, useSpinner, selectFaces, iconFaces, numberFaces, bindingFaceIndex ) {
+function layoutEncounter( bindings, portraitPanel, selectFaces, iconFaces, numberFaces, bindingFaceIndex ) {
 	var EncounterPanel = new Grid();
 	EncounterPanel.setTitle( @AHLCG-EncounterSet );
 
@@ -1471,19 +1512,13 @@ function layoutEncounter( bindings, portraitPanel, useSpinner, selectFaces, icon
 		}
 	});
 
-	var encounterNumber;
-	if ( useSpinner ) {
-		encounterNumber = new spinner(1, 99, 1, 1);
-	}
-	else {
-		encounterNumber = new textField( '', 8 );
-		encounterNumber.setHorizontalAlignment(JTextField.RIGHT);
-	}
+	var encounterNumber = new textField( '', 8 );
+	encounterNumber.setHorizontalAlignment(JTextField.RIGHT);
 	
 	bindings.add( 'EncounterNumber' + BindingSuffixes[bindingFaceIndex], encounterNumber, numberFaces );
 		
-	var totalSpinner = new spinner(1, 99, 1, 1);
-	bindings.add( 'EncounterTotal' + BindingSuffixes[bindingFaceIndex], totalSpinner, numberFaces );
+	var totalNumber = new textField( "", 4);
+	bindings.add( 'EncounterTotal' + BindingSuffixes[bindingFaceIndex], totalNumber, numberFaces );
 
 	EncounterPanel.place(
 		@AHLCG-Set, 'align right', EncounterList, 'wrap, pushx, growx, span 3'
@@ -1498,14 +1533,14 @@ function layoutEncounter( bindings, portraitPanel, useSpinner, selectFaces, icon
 								
 		EncounterPanel.place(
 			@AHLCG-SetNumber, 'align right', encounterNumber, 'align left, split 3',
-			' / ', 'align left', totalSpinner, 'align left',
+			' / ', 'align left', totalNumber, 'align left',
 			frontBox, 'align right', backBox, 'align right, gapx 10'
 		);
 	}
 	else {
 		EncounterPanel.place(
 			@AHLCG-SetNumber, 'align right', encounterNumber, 'split',
-			' / ', 'split', totalSpinner, 'split, wrap'
+			' / ', 'split', totalNumber, 'split, wrap'
 		);
 	}
 

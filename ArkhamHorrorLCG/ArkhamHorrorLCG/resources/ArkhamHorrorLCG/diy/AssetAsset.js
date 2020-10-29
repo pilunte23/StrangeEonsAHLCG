@@ -162,7 +162,6 @@ function createFrontPainter( diy, sheet ) {
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
-//	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
 
 	initBodyTags( diy, Body_box );	
 	
@@ -207,7 +206,6 @@ function createBackPainter( diy, sheet ) {
 	BackBody_box = markupBox(sheet);
 	BackBody_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Body-style'), null);
 	BackBody_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Body-alignment'));
-//	BackBody_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
 
 	initBodyTags( diy, BackBody_box );	
 	
@@ -236,8 +234,10 @@ function paintFront( g, diy, sheet ) {
 
 	var cClass = $CardClass;
 	if ( isDualClass( $CardClass, $CardClass2 ) ) cClass = 'Dual';
-
-	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, Subtitle_box, cClass, true );
+	else {
+		// no subtitles for multiclass
+		if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, Subtitle_box, cClass, true );
+	}
 
 	if ($CardClass == 'Weakness' ) {	
 		drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-Weakness );
@@ -245,7 +245,6 @@ function paintFront( g, diy, sheet ) {
 	else if ($CardClass == 'BasicWeakness' ) {	
 		drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-BasicWeakness );
 	}	
-//	if ( $CardClass != 'Weakness' ) {
 	else {
 		drawLevel( g, diy, sheet, cClass );
 	}
@@ -259,14 +258,8 @@ function paintFront( g, diy, sheet ) {
 	
 	drawBody( g, diy, sheet, Body_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ) );
 
-//	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
 	var collectionSuffix = false;
 	if ( $ShowCollectionNumberFront == '1' && $ShowCollectionNumberBack == '1' ) collectionSuffix = true;
-
-//	drawCollectionIcon( g, diy, sheet );
-//	drawCollectionNumber (g, diy, sheet, true );
 
 	drawCollectorInfo( g, diy, sheet, $ShowCollectionNumberFront == '1', collectionSuffix, false, false, true );
 }
@@ -279,7 +272,12 @@ function paintBack( g, diy, sheet ) {
 	drawLabel( g, diy, sheet, BackLabel_box, #AHLCG-Label-Asset );
 	drawName( g, diy, sheet, BackName_box );
 
-	if ( $SubtitleBack.length > 0 ) drawSubtitle( g, diy, sheet, BackSubtitle_box, $CardClassBack, true );
+//	if ( $SubtitleBack.length > 0 ) drawSubtitle( g, diy, sheet, BackSubtitle_box, $CardClassBack, true );
+	
+	var cClass = $CardClassBack;
+	if ( isDualClass( $CardClassBack, $CardClass2Back ) ) cClass = 'Dual';
+
+	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, Subtitle_box, cClass, true );
 
 	if ($CardClassBack == 'Weakness' ) {	
 		drawSubtype( g, diy, sheet, BackSubtype_box, #AHLCG-Label-Weakness );
@@ -287,28 +285,21 @@ function paintBack( g, diy, sheet ) {
 	else if ($CardClassBack == 'BasicWeakness' ) {	
 		drawSubtype( g, diy, sheet, BackSubtype_box, #AHLCG-Label-BasicWeakness );
 	}	
-//	if ( $CardClassBack != 'Weakness' ) {
 	else {
-		drawLevel( g, diy, sheet, $CardClassBack );
+		drawLevel( g, diy, sheet, cClass );
 	}
 		
 	drawCost( g, diy, sheet );
 
-	drawSkillIcons( g, diy, sheet, $CardClassBack );
+	drawSkillIcons( g, diy, sheet, cClass );
 	drawSlots( g, diy, sheet );
 	drawStamina( g, diy, sheet );
 	drawSanity( g, diy, sheet );
 	
 	drawBody( g, diy, sheet, BackBody_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ) );
 
-//	if ( $ArtistBack.length > 0 ) drawArtist( g, diy, sheet );
-//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
 	var collectionSuffix = false;
 	if ( $ShowCollectionNumberFront == '1' && $ShowCollectionNumberBack == '1' ) collectionSuffix = true;
-
-//	drawCollectionIcon( g, diy, sheet );
-//	drawCollectionNumber (g, diy, sheet, true );
 
 	drawCollectorInfo( g, diy, sheet, $ShowCollectionNumberBack == '1', collectionSuffix, false, false, true );
 }

@@ -13,6 +13,8 @@ useLibrary( 'ui' );
 importClass( arkham.diy.ListItem );
 importClass( resources.StrangeImage );
 importClass( java.io.File );
+importClass( java.lang.System );
+importClass( java.util.Locale );
 
 useLibrary( 'res://ArkhamHorrorLCG/diy/AHLCG-utilLibrary.js' );
 useLibrary( 'res://ArkhamHorrorLCG/diy/AHLCG-preferences.js' );
@@ -20,7 +22,7 @@ useLibrary( 'res://ArkhamHorrorLCG/diy/AHLCG-preferences.js' );
 function() initialize {
 	var GameLanguage = Language.getGame();
 	var InterfaceLanguage = Language.getInterface();
-
+	
 	InterfaceLanguage.addStrings( 'ArkhamHorrorLCG/text/AHLCG-Interface' );
 	GameLanguage.addStrings( 'ArkhamHorrorLCG/text/AHLCG-Game' );
 
@@ -50,6 +52,7 @@ function() initialize {
 	ahlcgGame.masterSettings.addSettingsFrom('ArkhamHorrorLCG/settings/AHLCG-Guide75.settings');
 	ahlcgGame.masterSettings.addSettingsFrom('ArkhamHorrorLCG/settings/AHLCG-GuideA4.settings');
 	ahlcgGame.masterSettings.addSettingsFrom('ArkhamHorrorLCG/settings/AHLCG-Divider.settings');
+	ahlcgGame.masterSettings.addSettingsFrom('ArkhamHorrorLCG/settings/AHLCG-AgendaFrontPortrait.settings');
 
 	Eons.namedObjects.AHLCGObject = new gameObject( ahlcgGame.masterSettings );
 
@@ -59,6 +62,14 @@ function() initialize {
 }
 
 function gameObject( masterSettings ) {
+	this.OS = "Windows";	// default
+	
+	var systemOS = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
+	
+	if ( systemOS.indexOf("mac") >= 0 || systemOS.indexOf("darwin") >= 0) {
+		this.OS = "Mac";
+	}
+
 	const registerTTFont = function registerTTFont() {
 		for( let i=0; i<arguments.length; ++i ) {
 			arguments[i] = 'ArkhamHorrorLCG/fonts/' + arguments[i] + '.ttf';
@@ -110,7 +121,9 @@ function gameObject( masterSettings ) {
 	if (fontFamily == 'Arno Pro') {
 		this.bodyFamily = 'Arno Pro';
 
-		this.bodyFontTightness = 0.57;
+		if ( this.OS == "Mac" ) this.bodyFontTightness = 0.58;
+		else this.bodyFontTightness = 0.90;
+		
 		this.bodyFontSize = this.bodyFontSize * 1.08;
 		this.bodyTraitSize = this.bodyTraitSize * 1.12;
 		this.bodyFlavorSize = this.bodyFlavorSize * 1.12;
@@ -139,13 +152,15 @@ function gameObject( masterSettings ) {
 	this.chaosFont = ResourceKit.getFont('ArkhamHorrorLCG/fonts/AHLCGSymbol.ttf', 14.0);
 
 	// updated arrays for language support
-	this.comboClasses = new Array( 
+	this.comboClassesI = new Array( 
 		ListItem( 'Guardian', @AHLCG-Class-Guardian ),
 		ListItem( 'Seeker', @AHLCG-Class-Seeker ),
 		ListItem( 'Rogue', @AHLCG-Class-Rogue ),
 		ListItem( 'Mystic', @AHLCG-Class-Mystic ),
 		ListItem( 'Survivor', @AHLCG-Class-Survivor ),
-		ListItem( 'Neutral', @AHLCG-Class-Neutral ) );
+		ListItem( 'Neutral', @AHLCG-Class-Neutral ),
+		ListItem( 'ParallelSeeker', @AHLCG-Class-ParallelSeeker ),
+		ListItem( 'ParallelRogue', @AHLCG-Class-ParallelRogue ) );
 		
 	this.comboClassesBW = new Array( 
 		ListItem( 'Guardian', @AHLCG-Class-Guardian ),
@@ -335,24 +350,19 @@ function gameObject( masterSettings ) {
 		'CustomEncounterSet',
 		'StrangeEons'
 	);
-/*
-MurderAtTheExcelsiorHotelE
-AlienInterference
-DarkRituals
-ExcelsiorManagement
-SinsOfThePast
-VileExperiments
-*/
 
-	// Highest = 140
+	// Highest = 166
 	// NameKey, CollectionID, Tag, Index into select keys
 	this.standardEncounterList = new Array(
 		[ 'AbyssalGifts', 8, 'abygfts', 87 ],
 		[ 'AbyssalTribute', 8, 'abytrib', 88 ],
+		[ 'AlienInterference', 13, 'alnint', 161 ],
 		[ 'APhantomOfTruth', 4, 'phntm', 50 ],
+		[ 'AgentsOfAtlachNacha', 12, 'agtan', 141 ],
 		[ 'AgentsOfAzathoth', 10, 'agtaz', 107 ],
 		[ 'AgentsOfCthulhu', 0, 'agtcth', 0 ],
 		[ 'AgentsOfHastur', 0, 'agthas', 1 ],
+		[ 'AgentsOfNyarlathotep', 12, 'agtnya', 142 ],
 		[ 'AgentsOfShubNiggurath', 0, 'agtshb', 2 ],
 		[ 'AgentsOfYig', 5, 'agtyig', 56 ],
 		[ 'AgentsOfYogSothoth', 0, 'agtyog', 3 ],
@@ -360,9 +370,11 @@ VileExperiments
 		[ 'AnettesCoven', 10, 'anette', 108 ],
 		[ 'ArmitagesFate', 1, 'armfat', 5 ],
 		[ 'AtDeathsDoorstep', 10, 'atdths', 109 ],
+		[ 'AThousandShapesOfHorror', 12, 'atsoh', 143 ],
 		[ 'BadLuck', 1, 'badlck', 6 ],
 		[ 'BeastThralls', 1, 'bstthrl', 33 ],
 		[ 'BeforeTheBlackThrone', 10, 'btbt', 110 ],
+		[ 'BeyondTheGatesOfSleep', 12, 'btgos', 144 ],
 		[ 'BeyondTheThreshold', 9, 'byndthr', 93 ],
 		[ 'BishopsThralls', 1, 'bpthrl', 7 ],
 		[ 'BlackStarsRise', 4, 'bsr', 52 ],
@@ -372,6 +384,8 @@ VileExperiments
 		[ 'CarnevaleOfHorrorsE', 3, 'carhor', 8 ],
 		[ 'ChillingCold', 0, 'chlcld', 9 ],
 		[ 'CityOfSins', 10, 'ctysins', 111 ],
+		[ 'Corsairs', 12, 'cors', 145 ],
+		[ 'CreaturesOfTheUnderworld', 12, 'cotu', 146 ],
 		[ 'CreepingCold', 9, 'crpcld', 94 ],
 		[ 'CultOfTheYellowSign', 4, 'cltyel', 37 ],
 		[ 'CultOfUmordhoth', 0, 'cltumh', 10 ],
@@ -379,18 +393,24 @@ VileExperiments
 		[ 'CurseOfTheRougarouE', 2, 'currou', 11 ],
 		[ 'CurtainCall', 4, 'curtncl', 38 ],
 		[ 'DarkCult', 0, 'dkcult', 12 ],
+		[ 'DarkRituals', 13, 'dkrit', 162 ],
+		[ 'DarkSideOfTheMoon', 12, 'dsotm', 147 ],
 		[ 'DeadlyTraps', 5, 'deadtrp', 57 ],
 		[ 'DecayFilth', 4, 'decay', 39 ],
 		[ 'DecayingReality', 11, 'decrea', 128 ],
 		[ 'Delusions', 4, 'delusn', 40 ],
 		[ 'DelusoryEvils', 11, 'delevl', 129 ],
+		[ 'DescentIntoThePitch', 12, 'ditp', 148 ],
 		[ 'DimCarcosa', 4, 'dimcar', 55 ],
 		[ 'DisappearanceAtTheTwilightEstate', 10, 'datte', 112 ],
+		[ 'DreamersCurse', 12, 'drmcur', 149 ],
+		[ 'Dreamlands', 12, 'drmlnds', 150 ],
 		[ 'Dunwich', 1, 'dunwch', 32 ],
 		[ 'EchoesOfThePast', 4, 'echoes', 46 ],
 		[ 'EpicMultiplayer', 6, 'epicmp', 79 ],
 		[ 'ErraticFear', 9, 'errfr', 95 ],
 		[ 'EvilPortents', 4, 'evilpor', 41 ],
+		[ 'ExcelsiorManagement', 13, 'exman', 163 ],
 		[ 'Expedition', 5, 'exped', 58 ],
 		[ 'ExtracurricularActivity', 1, 'extact', 13 ],
 		[ 'ForgottenRuins', 5, 'fruins', 59 ],
@@ -410,12 +430,15 @@ VileExperiments
 		[ 'LockedDoors', 0, 'lckdrs', 16 ],
 		[ 'LostInTimeAndSpace', 1, 'litas', 36 ],
 		[ 'MaddeningDelusions', 11, 'maddel', 131 ],
+		[ 'MergingRealities', 12, 'merreal', 151 ],
+		[ 'MurderAtTheExcelsiorHotelE', 13, 'matehe', 164 ],
 		[ 'MusicOfTheDamned', 10, 'motd', 116 ],
 		[ 'NaomisCrew', 1, 'naocrw', 17 ],
 		[ 'NeuroticFear', 11, 'neufr', 132 ],
 		[ 'Nightgaunts', 0, 'ntgnts', 18 ],
 		[ 'PillarsOfJudgment', 5, 'piljdg', 72 ],
 		[ 'PnakoticBrotherhood', 5, 'pnabro', 61 ],
+		[ 'PointOfNoReturn', 12, 'ponr', 152 ],
 		[ 'Poison', 5, 'poison', 62 ],
 		[ 'Rainforest', 5, 'rainfst', 63 ],
 		[ 'Rats', 0, 'rats', 19 ],
@@ -428,7 +451,7 @@ VileExperiments
 		[ 'ReturnToDimCarcosa', 11, 'rdimcar', 136 ],
 		[ 'ReturnToEchoesOfThePast', 11, 'rechoes', 137 ],
 		[ 'ReturnToExtracurricularActivities', 9, 'rextact', 98 ],
-		[ 'ReturnToLostInTimeAndSpace', 9, 'rtlitas', 98 ],
+		[ 'ReturnToLostInTimeAndSpace', 9, 'rtlitas', 99 ],
 		[ 'ReturnToTheDevourerBelow', 7, 'rdevbel', 83 ],
 		[ 'ReturnToTheEssexCountyExpress', 9, 'resxexp', 100 ],
 		[ 'ReturnToTheGathering', 7, 'rgather', 84 ],
@@ -437,7 +460,7 @@ VileExperiments
 		[ 'ReturnToTheMidnightMasks', 7, 'rmidmsk', 85 ],
 		[ 'ReturnToTheMiskatonicMuseum', 9, 'rmskmus', 102 ],
 		[ 'ReturnToThePallidMask', 11, 'rpalmsk', 139 ],
-		[ 'ReturnToTheUnspeakableOath', 11, 'runspk', 140 ],
+		[ 'ReturnToTheUnspeakableOath', 11, 'runspk', 140 ],	
 		[ 'ReturnToUndimensionedAndUnseen', 9, 'rundim', 103 ],
 		[ 'ReturnToWhereDoomAwaits', 9, 'rtwda', 104 ],
 		[ 'SandsOfEgypt', 8, 'sdsegpt', 90 ],
@@ -447,10 +470,13 @@ VileExperiments
 		[ 'ShatteredAeons', 5, 'shaaon', 76 ],
 		[ 'SilverTwilightLodge', 10, 'siltwil', 119 ],
 		[ 'SingleGroup', 6, 'singrp', 80 ],
+		[ 'SinsOfThePast', 13, 'sotp', 165 ],
 		[ 'Sorcery', 1, 'sorcry', 20 ],
 		[ 'SpectralPredators', 10, 'specpred', 120 ],
+		[ 'Spiders', 12, 'spdrs', 153 ],
 		[ 'StrikingFear', 0, 'strfr', 21 ],
 		[ 'TemporalFlux', 5, 'temflx', 65 ],
+		[ 'TerrorOfTheVale', 12, 'totv', 154 ],
 		[ 'TheBayou', 2, 'bayou', 22 ],
 		[ 'TheBeyond', 1, 'beyond', 23 ],
 		[ 'TheBoundaryBeyond', 5, 'bndry', 70 ],
@@ -470,6 +496,7 @@ VileExperiments
 		[ 'TheMiskatonicMuseum', 1, 'mskmus', 29 ],
 		[ 'TheNightsUsurper', 8, 'ntusrpr', 92 ],
 		[ 'ThePallidMask', 4, 'palmsk', 51 ],		
+		[ 'TheSearchForKadath', 12, 'tsfk', 155 ],
 		[ 'TheSecretName', 10, 'secrtnm', 121 ],
 		[ 'TheStranger', 4, 'strngr', 45 ],
 		[ 'TheUnspeakableOath', 4, 'unspk', 47 ],
@@ -483,11 +510,17 @@ VileExperiments
 		[ 'TurnBackTime', 5, 'tbt', 77 ],
 		[ 'UndimensionedAndUnseen', 1, 'undim', 34 ],
 		[ 'UnionAndDisillusion', 10, 'undis', 126 ],
+		[ 'VileExperiments', 13, 'vileex', 166 ],
+		[ 'WakingNightmare', 12, 'wkngnm', 156 ],
+		[ 'WeaverOfTheCosmos', 12, 'wotc', 157 ],
 		[ 'WhereDoomAwaits', 1, 'wda', 35 ],
+		[ 'WhereTheGodsDwell', 12, 'wtgd', 158 ],
 		[ 'Whippoorwills', 1, 'whip', 30 ],
+		[ 'WhispersOfHypnos', 12, 'woh', 159 ],
 		[ 'Witchcraft', 10, 'witch', 127 ],
 		[ 'YigsVenom', 5, 'yigvnm', 68 ],
-		[ 'YogSothothsEmissaries', 9, 'yogem', 106]
+		[ 'YogSothothsEmissaries', 9, 'yogem', 106],
+		[ 'Zoogs', 12, 'zoogs', 160 ]
 	);
 
 	this.basicCollectionList = new Array(
@@ -507,9 +540,9 @@ VileExperiments
 		[ 'GuardiansOfTheAbyss', 'guaaby' ],			//  8
 		[ 'ReturnToTheDunwichLegacy', 'rttdl' ],		//  9
 		[ 'TheCircleUndone', 'cirund' ],				// 10
-		[ 'ReturnToThePathToCarcosa', 'rttptc' ]		// 11
-//		[ 'The Dream-Eaters', 'dreeat' ]				// 12
-//		[ 'MurderAtTheExcelsiorHotel', 'mateh' ]		// 13
+		[ 'ReturnToThePathToCarcosa', 'rttptc' ],		// 11
+		[ 'TheDreamEaters', 'dreeat' ],				// 12
+		[ 'MurderAtTheExcelsiorHotel', 'mateh' ]		// 13
 	);
 
 	this.encounterTypes = new Array();
@@ -523,7 +556,7 @@ VileExperiments
 		'SmallVerticalSpacer', 'Action', 'Reaction', 'Fast',
 		'Guardian', 'Seeker', 'Rogue', 'Mystic', 'Survivor',
 		'Willpower', 'Intellect', 'Combat', 'Agility', 'Wild',
-		'Skull', 'Cultist', 'Artifact', 'Monster', 'ElderSign', 'Tentacle',
+		'Skull', 'Cultist', 'Artifact', 'Monster', 'Bless', 'Curse', 'ElderSign', 'Tentacle',
 		'Unique', 'PerInvestigator', 'Prey', 'Spawn', 'Revelation', 'Forced',
 		'Objective', 'Haunted', 'Patrol', 'Bullet', 'Resolution', 'EndResolution', 'GuideBullet', 'Square'
 	);

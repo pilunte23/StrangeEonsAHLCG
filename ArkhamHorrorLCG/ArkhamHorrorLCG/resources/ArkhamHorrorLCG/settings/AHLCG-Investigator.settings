@@ -3,8 +3,10 @@ AHLCG-InvestigatorBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-Invest
 
 AHLCG-Investigator-Name-region = 48,9,212,27
 AHLCG-Investigator-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 12.2; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.00; FOREGROUND: #000000
+AHLCG-Investigator-ParallelName-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 12.2; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.00; FOREGROUND: #FFFFFF
 AHLCG-Investigator-SubtitleTextG-region = 73,39,175,20
 AHLCG-Investigator-SubtitleTextK-region = 73,39,175,20
+AHLCG-Investigator-SubtitleTextKP-region = 73,39,175,20
 AHLCG-Investigator-SubtitleTextR-region = 73,39,175,20
 AHLCG-Investigator-SubtitleTextM-region = 73,40,175,20
 AHLCG-Investigator-SubtitleTextV-region = 73,39,175,20
@@ -12,12 +14,14 @@ AHLCG-Investigator-SubtitleTextN-region = 73,39,175,20
 AHLCG-Investigator-SubtitleTextW-region = 73,39,175,20
 AHLCG-Investigator-SubtitleTextT-region = 73,39,175,20
 AHLCG-Investigator-Subtitle-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.subtitleSize}; WEIGHT: WEIGHT_BOLD; WIDTH: 1.0; FOREGROUND: #000000
+AHLCG-Investigator-ParallelSubtitle-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.subtitleSize}; WEIGHT: WEIGHT_BOLD; WIDTH: 1.0; FOREGROUND: #FFFFFF
 AHLCG-Investigator-Subtitle-alignment = center, middle
 
 AHLCG-InvestigatorBack-Name-region = 248,6,246,29
 AHLCG-InvestigatorBack-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 11.5; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.10; FOREGROUND: #000000
 AHLCG-InvestigatorBack-SubtitleTextG-region = 297,40,159,15
 AHLCG-InvestigatorBack-SubtitleTextK-region = 297,40,159,15
+AHLCG-InvestigatorBack-SubtitleTextKP-region = 297,40,159,15
 AHLCG-InvestigatorBack-SubtitleTextR-region = 297,40,159,15
 AHLCG-InvestigatorBack-SubtitleTextM-region = 297,40,159,15
 AHLCG-InvestigatorBack-SubtitleTextV-region = 297,40,159,15
@@ -25,6 +29,7 @@ AHLCG-InvestigatorBack-SubtitleTextN-region = 297,40,159,15
 AHLCG-InvestigatorBack-SubtitleTextW-region = 297,40,159,15
 AHLCG-InvestigatorBack-SubtitleTextT-region = 297,40,159,15
 AHLCG-InvestigatorBack-Subtitle-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.subtitleSize*1.25}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.95; FOREGROUND: #000000
+AHLCG-InvestigatorBack-ParallelSubtitle-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.subtitleSize*1.25}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.95; FOREGROUND: #FFFFFF
 AHLCG-InvestigatorBack-Subtitle-alignment = center, middle
 
 AHLCG-Willpower-region = 291,19,16,22
@@ -33,6 +38,7 @@ AHLCG-Combat-region = 412,19,16,22
 AHLCG-Agility-region = 473,19,16,22
 
 AHLCG-Skill-style = FAMILY: {Eons.namedObjects.AHLCGObject.skillFamily}; SIZE: 11.5; WEIGHT: WEIGHT_MEDIUM; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
+AHLCG-ParallelSkill-style = FAMILY: {Eons.namedObjects.AHLCGObject.skillFamily}; SIZE: 11.5; WEIGHT: WEIGHT_MEDIUM; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 AHLCG-Skill-alignment = center, middle
 
 AHLCG-Investigator-Stamina-region = 366,306,31,40	
@@ -45,7 +51,7 @@ AHLCG-Investigator-Body-tightness = 1.0
 AHLCG-InvestigatorBack-Body-region = 30,79,470,273
 AHLCG-InvestigatorBack-Body-alignment = left
 AHLCG-InvestigatorBack-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WEIGHT: WEIGHT_MEDIUM; WIDTH: 1.0; FOREGROUND: #000000
-AHLCG-InvestigatorBack-Body-tightness = 1.1
+AHLCG-InvestigatorBack-Body-tightness = 1.0
 
 AHLCG-Investigator-TransparentPortrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
 AHLCG-Investigator-TransparentPortrait-portrait-pany = 0
@@ -54,7 +60,7 @@ AHLCG-Investigator-TransparentPortrait-portrait-clip-region = 0,60,278,315
 
 AHLCG-InvestigatorBack-Portrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
 AHLCG-InvestigatorBack-Portrait-portrait-pany = 0
-AHLCG-InvestigatorBack-Portrait-portrait-rotation = 335
+AHLCG-InvestigatorBack-Portrait-portrait-rotation = 354
 AHLCG-InvestigatorBack-Portrait-portrait-scale = 0.65
 
 AHLCG-InvestigatorBack-Portrait-portrait-clip-region = 1,-2,188,206

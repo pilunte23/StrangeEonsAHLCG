@@ -84,7 +84,7 @@ function createInterface( diy, editor ) {
 	CollectionTab.addToEditor(editor, @AHLCG-Collection);
 
 	var EncounterImagePanel = new portraitPanel( diy, getPortraitIndex( 'Encounter' ), @AHLCG-CustomEncounterSet );
-	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, false, [0], [0], FACE_FRONT );
+	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, [0], [0], FACE_FRONT );
 
 	var EncounterTab = new Grid();
 	EncounterTab.editorTabScrolling = true;
@@ -172,8 +172,6 @@ function paintFront( g, diy, sheet ) {
 		drawOverlay( g, diy, sheet, 'BasicWeaknessEnemy' );
 	}
 
-//	Subtype_box.markupText = subtypeText.toUpperCase();
-//	Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
 	drawSubtype( g, diy, sheet, Subtype_box, subtypeText );
 
 	drawEnemyStats( g, diy, sheet, [ 'Attack', 'Evade' ] );
@@ -183,12 +181,6 @@ function paintFront( g, diy, sheet ) {
 
 	if ( $Damage > 0)  drawDamage( g, diy, sheet );
 	if ( $Horror > 0 )	drawHorror( g, diy, sheet );
-
-//	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-//	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
-//	drawCollectionIcon( g, diy, sheet );
-//	drawCollectionNumber (g, diy, sheet, false );
 
 	drawCollectorInfo( g, diy, sheet, true, false, $Subtype == 'StoryWeakness', $Subtype == 'StoryWeakness', true );
 }

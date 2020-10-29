@@ -111,9 +111,7 @@ function readPortraits( diy, oos, typeList, readEncounter ) {
 
 function writePortraits( oos, typeList ) {
 	for ( let index = 0; index < typeList.length; index++) {
-//	for ( let index = 0; index < PortraitList.length; index++) {
 		let portrait = getPortrait( index );
-//		let portrait = PortraitList[index];
 		
 		oos.writeObject( portrait );
 	}
@@ -256,7 +254,6 @@ function updateUsedCollections( o ) {
 			let icon = settings.get( 'AHLCG-UserCollectionIcon' + (index+1), '' );
 
 			try {
-//				let image = ImageUtils.createIcon( createInvertedImage( ImageUtils.read( icon ) ), 12, 12);
 				let image = ImageUtils.createIcon( ImageUtils.read( icon ), 12, 12);
 			
 				o.comboCollection[o.comboCollection.length] = ListItem(
@@ -291,7 +288,7 @@ function storeUsedValue( type, index, value ) {
 function loadUsedValue( type, index ) {
 	var usedIndex = Math.floor( ( index / 40 ) + 1 );
 	var usedString = Settings.getUser().get( 'AHLCG-Use' + type + usedIndex, '' );
-	
+
 	if ( usedString.length() < (index % 40) + 1 ) return true;	// set new ones to true
 	if ( usedString.charAt( index % 40 ) == 49 ) return true;	// == '1'?
 	return false;
@@ -306,7 +303,7 @@ function updateCollection() {
 	if ( $Collection == 'StrangeEonsLight' ) $Collection = 'StrangeEons';
 
 	var settings = Settings.getUser();
-
+//println($Collection);
 	if ( $Collection == 'CustomCollection' ) {
 		$CollectionType = '-1';
 		return;
@@ -320,7 +317,7 @@ function updateCollection() {
 			return;
 		}
 	}
-	
+//println(AHLCGObject.standardCollectionList);
 	for ( let index = 0; index < AHLCGObject.standardCollectionList.length; index++ ) {
 		let entry = AHLCGObject.standardCollectionList[index];
 
@@ -347,8 +344,6 @@ function updateCollection() {
 		if ( $Collection == createUserSettingValue( name ) && ( source == '' || icon == source ) ) {
 			if ( source == '' ) {
 				PortraitList[ getPortraitIndex( 'Collection' ) ].setSource( icon );
-//				image = createInvertedImage( PortraitList[getPortraitIndex( 'Collection' )].getImage() );
-//				PortraitList[ getPortraitIndex( 'Collection' ) ].setImage( icon, image );
 			}
 
 			let used = settings.getBoolean( 'AHLCG-UseUserCollection' + (index+1) );
@@ -733,7 +728,9 @@ function setPortraitDefaults( diy, faceIndex, key, portraitKey ) {
 	if ( diy.settings.get( getExpandedKey( faceIndex, portraitKey + '-portrait-rotation' ), '' ) == '' ) {
 		diy.settings.set( 'AHLCG-' + CardTypes[faceIndex] + '-' + portraitKey + '-portrait-rotation', '0' );		
 	}
-	
+//println('setPortraitDefaults');
+//println(diy.settings.get( getExpandedKey( faceIndex, portraitKey + '-portrait-clip-region' ), '') );
+//println($( getExpandedKey( faceIndex, key + '-portrait-clip-region' ) ) );	
 	if ( diy.settings.get( getExpandedKey( faceIndex, portraitKey + '-portrait-clip-region' ), '' ) == '' ) {
 //		println( 'AHLCG-' + CardTypes[faceIndex] + '-' + portraitKey + '-portrait-clip-region = ' + $( getExpandedKey( faceIndex, key + '-portrait-clip-region' ) ) );
 		diy.settings.set( 'AHLCG-' + CardTypes[faceIndex] + '-' + portraitKey + '-portrait-clip-region', $( getExpandedKey( faceIndex, key + '-portrait-clip-region' ) ) );		
@@ -745,7 +742,7 @@ function setPortraitDefaults( diy, faceIndex, key, portraitKey ) {
 
 function createPortrait( diy, fullKey ) {
 	var partArray = fullKey.split('-');
-		
+
 	var key = partArray[0];		
 //	var portraitKey = key + 'Portrait';
 	var portraitKey = key;
@@ -795,115 +792,11 @@ function createPortrait( diy, fullKey ) {
 			allowRotation = true;
 			break;
 	}
-/*
-	switch( key ) {
-		case 'Portrait':
-//			setPortraitDefaults( diy, FACE_FRONT, key, portraitKey );
-			setPortraitDefaults( diy, settingsFace, key, portraitKey );
 
-//			PortraitList[portraitIndex] = new DefaultPortrait( diy, getExpandedKey( FACE_FRONT, portraitKey, '-portrait-template' ), true );
-			PortraitList[portraitIndex] = new DefaultPortrait( diy, getExpandedKey( settingsFace, portraitKey, '-portrait-template' ), true );
-			PortraitList[portraitIndex].facesToUpdate = facesArray;
-			PortraitList[portraitIndex].backgroundFilled = true;
-			PortraitList[portraitIndex].installDefault();
-			break;
-		case 'BackPortrait':
-			setPortraitDefaults( diy, FACE_BACK, key, portraitKey );
-			
-			PortraitList[portraitIndex] = new DefaultPortrait( diy, getExpandedKey( FACE_BACK, portraitKey, '-portrait-template' ), true );
-			PortraitList[portraitIndex].facesToUpdate = facesArray;
-			PortraitList[portraitIndex].backgroundFilled = true;
-			PortraitList[portraitIndex].installDefault();
-			break;
-		case 'TransparentPortrait':
-//			setPortraitDefaults( diy, FACE_FRONT, key, portraitKey );
-			setPortraitDefaults( diy, settingsFace, key, portraitKey );
-
-//			PortraitList[portraitIndex] = new DefaultPortrait( diy, getExpandedKey( FACE_FRONT, portraitKey, '-portrait-template' ), true );
-			PortraitList[portraitIndex] = new DefaultPortrait( diy, getExpandedKey( settingsFace, portraitKey, '-portrait-template' ), true );
-			PortraitList[portraitIndex].facesToUpdate = facesArray;
-			PortraitList[portraitIndex].backgroundFilled = false;
-			PortraitList[portraitIndex].installDefault();
-			break;
-		case 'Collection':
-//			setPortraitDefaults( diy, FACE_FRONT, key, portraitKey );
-			setPortraitDefaults( diy, settingsFace, key, portraitKey );
-
-//			PortraitList[portraitIndex] = new DefaultPortrait( diy, getExpandedKey( FACE_FRONT, portraitKey, '-portrait-template' ), false);
-			PortraitList[portraitIndex] = new DefaultPortrait( diy, getExpandedKey( settingsFace, portraitKey, '-portrait-template' ), false);
-			PortraitList[portraitIndex].facesToUpdate = facesArray;
-			PortraitList[portraitIndex].backgroundFilled = false;
-			PortraitList[portraitIndex].installDefault();
-			break;
-		case 'Encounter':
-//			setPortraitDefaults( diy, FACE_FRONT, key, portraitKey );
-			setPortraitDefaults( diy, settingsFace, key, portraitKey );
-
-//			PortraitList[portraitIndex] = new DefaultPortrait( diy, getExpandedKey( FACE_FRONT, portraitKey, '-portrait-template' ), false);
-			PortraitList[portraitIndex] = new DefaultPortrait( diy, getExpandedKey( settingsFace, portraitKey, '-portrait-template' ), false);
-			PortraitList[portraitIndex].facesToUpdate = facesArray;
-			PortraitList[portraitIndex].backgroundFilled = false;
-			PortraitList[portraitIndex].installDefault();
-			break;
-	}
-*/
 	setPortraitDefaults( diy, settingsFace, key, portraitKey );
 	if ( faces == 'Both' ) 	setPortraitDefaults( diy, FACE_BACK, key, portraitKey );
-/*
-	if ( key == 'Portrait1' ) {
-		PortraitList[portraitIndex] = new JavaAdapter(
-			ca.cgjennings.apps.arkham.component.DefaultPortrait,
-			{
-				computeDefaultImagePan: function( image ) {
-					let region = getGuidePortraitRegion( diy, $PositionPortrait1 );
-					if ( region == null ) return Point2D.Float( 0, 0 );
 
-					let clipDimension = this.getClipDimensions();
-			
-					let coveringScale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
-			
-					return Point2D.Float( region.x + (region.width - clipDimension.width) / 2, region.y + (region.height - clipDimension.height) / 2 );
-				},
-				computeDefaultImageScale: function( image ) {
-					let region = getGuidePortraitRegion( diy, $PositionPortrait1 );
-					if ( region == null ) return 1.0;
-
-					return coveringScale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
-				},
-			},
-	
-		diy, getExpandedKey( settingsFace, portraitKey, '-portrait-template' ), allowRotation
-		);	
-	}
-	else if ( key == 'Portrait2' ) {
-		PortraitList[portraitIndex] = new JavaAdapter(
-			ca.cgjennings.apps.arkham.component.DefaultPortrait,
-			{
-				computeDefaultImagePan: function( image ) {
-					let region = getGuidePortraitRegion( diy, $PositionPortrait2 );
-					if ( region == null ) return Point2D.Float( 0, 0 );
-
-					let clipDimension = this.getClipDimensions();
-					
-					let coveringScale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
-			
-					return Point2D.Float( region.x + (region.width - clipDimension.width) / 2, region.y + (region.height - clipDimension.height) / 2 );
-				},
-				computeDefaultImageScale: function( image ) {
-					let region = getGuidePortraitRegion( diy, $PositionPortrait2 );
-					if ( region == null ) return 1.0;
-
-					return coveringScale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
-				},
-			},
-	
-		diy, getExpandedKey( settingsFace, portraitKey, '-portrait-template' ), allowRotation
-		);	
-	}
-	else {
-*/
-		PortraitList[portraitIndex] = new DefaultPortrait( diy, getExpandedKey( settingsFace, portraitKey, '-portrait-template' ), allowRotation );
-//	}
+	PortraitList[portraitIndex] = new DefaultPortrait( diy, getExpandedKey( settingsFace, portraitKey, '-portrait-template' ), allowRotation );
 	
 	PortraitList[portraitIndex].facesToUpdate = facesArray;
 	PortraitList[portraitIndex].backgroundFilled = fillBackground;
@@ -917,17 +810,12 @@ function createPortraits( diy, portraitKeys ) {
 	var AHLCGObject = Eons.namedObjects.AHLCGObject;
 
 	diy.bleedMargin = 0;
-//	diy.customPortraitHandling = true;
-
-//	$PortraitListKey = String(portraitKeys);
 
 	for( let index = 0; index < portraitKeys.length; index++ ) {
 		let fullKey = portraitKeys[index];
 		
 		createPortrait( diy, fullKey );
 	}
-	
-//	$PortraitListCount = getPortraitCount();
 }
 
 function getGuidePortraitRegion( diy, position ) {
@@ -1000,23 +888,20 @@ function getGuidePortraitRegion( diy, position ) {
 function createPortraitStencil( diy, portrait, panel, position, pageType ) {
 	var offset = 30;
 	var pageOffset = 0;
-//	var bodyHeight = 996;
-//	var pageHeight = 996;
 	var bodyWidth = diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ).width;
 	var pageHeight = diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ).height;
 	var bodyHeight = diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'BodyLeft' + pageType + '-region') ).height;
 	var divisions = 3;
 	if ( pageType == 'Title' ) {
-		pageOffset = 307;
-//		bodyHeight = 689;
+		if ( CardTypes[0] == 'Guide75' ) pageOffset = 307;
+		else pageOffset = 346;
+		
 		divisions = 2;
 	}
 
 	var boxWidth = bodyWidth / 2;
 	var boxHeight = bodyHeight / divisions;	
 			
-//	var ds = portrait.getClipDimensions();
-//	var stencil = ImageUtils.create( ds.width, ds.height, true );
 	var stencil = ImageUtils.create( bodyWidth, pageHeight, true );
 	var g = stencil.getGraphics();
 	g.setColor( new Color( 0, 0, 0, 1.0 ) );
@@ -1091,6 +976,8 @@ function updateGuideBodyRegions( diy, bodyRegions ) {
 	var pageOffset = 0;
 	var bodyHeight = 996;
 	var pageHeight = 996;
+//	var bodyHeight = 1196;
+//	var pageHeight = 1196;
 	var divisions = 3;
 	if ( $PageType == 'Title' ) {
 		pageOffset = 307;
@@ -1165,21 +1052,7 @@ function updateGuideBodyRegions( diy, bodyRegions ) {
 	
 	return bodyRegions;
 }
-/*
-function computeGuidePortraitPan() {
-	let region = getGuidePortraitRegion( diy, $PositionPortrait1 );
-	if ( region == null ) return Point2D.Float( 0, 0 );
 
-	let clipDimension = this.getClipDimensions();
-			
-	let coveringScale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
-			
-	return Point2D.Float( region.x + (region.width - clipDimension.width) / 2, region.y + (region.height - clipDimension.height) / 2 );
-}
-
-function computeGuidePortraitScale() {
-}
-*/
 function getPortraitCount() {
 	return PortraitList.length;
 }
@@ -1233,8 +1106,14 @@ function getClassInitial( className ) {
 		case 'Seeker':
 			initial = 'K';
 			break;
+		case 'ParallelSeeker':
+			initial = 'KP';
+			break;
 		case 'Rogue':
 			initial = 'R';
+			break;
+		case 'ParallelRogue':
+			initial = 'RP';
 			break;
 		case 'Mystic':
 			initial = 'M';
@@ -1250,7 +1129,6 @@ function getClassInitial( className ) {
 			initial = 'E';
 			break;
 		case 'Neutral':
-//		case 'Investigator-specific':
 			initial = 'N';
 			break;
 		case 'Story':
@@ -1427,9 +1305,7 @@ const createAlphaInvertedImage = filterFunction(
 function createStencilImage( source, mask )
 {
 	var stencilImage = ImageUtils.resize( ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-' + mask + 'Mask.png'), source.width, source.height );
-//	var filter = new ca.cgjennings.graphics.filters.StencilFilter( stencilImage );
 
-//	var destImage = ImageUtils.resize( stencilImage, source.width, source.height );
 	var destImage = ImageUtils.create( source.width, source.height, true );
 	var g = destImage.createGraphics();
 	g.drawImage( stencilImage, 0, 0, null );

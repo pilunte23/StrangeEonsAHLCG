@@ -6,6 +6,16 @@ importClass( java.awt.font.FontRenderContext );
 importClass( java.awt.Rectangle );
 importClass( java.awt.font.TextLayout );
 
+// The Dream-Eaters TODO:
+//		Entries for prologue investigators
+//		Enemy orientation (Weaver), collection info on side
+
+// Subtitle region for neutrals
+// Label region for certain classes
+// Update card backs
+// Line spacing dependent on OS, ugh
+// Font issues
+
 function drawTemplate( g, sheet, className ) {
 	var faceIndex = sheet.getSheetIndex();
 	var image;
@@ -57,7 +67,6 @@ function drawAssetTemplate( g, diy, sheet, className, className2 ) {
 	}
 
 	// don't draw dual class if the first class isn't a valid one or if the classes match
-//	if ( classInitial == classInitial2 || (classInitial != 'G' && classInitial != 'K' && classInitial != 'R' && classInitial != 'M' && classInitial != 'V' )) {
 	if ( !isDualClass( className, className2 ) ) {
 		drawTemplate( g, sheet, className );
 		return;
@@ -83,8 +92,6 @@ function drawAssetTemplate( g, diy, sheet, className, className2 ) {
 	
 	sheet.paintImage( g, symbolImage1, symbolRegion1 );
 	sheet.paintImage( g, symbolImage2, symbolRegion2 );
-	
-	// don't forget about the skill icons box...
 }
 
 function drawGuideTemplate( g, sheet  ) {
@@ -131,13 +138,13 @@ function drawGuideTemplateA4( g, sheet  ) {
 
 		switch ( locale ) {
 			case 'fr':
-				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-GuideA4Title-' + locale + '.png'), new Region(206, 56, 827, 250) );
+				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Guide75Title-' + locale + '.png'), new Region(206, 56, 827, 250) );
 				break;
 			case 'it':
-				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-GuideA4Title-' + locale + '.png'), new Region(172, 147, 783, 130) );
+				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Guide75Title-' + locale + '.png'), new Region(189, 162, 865, 144) );
 				break;
 			case 'de':
-				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-GuideA4Title-' + locale + '.png'), new Region(172, 147, 783, 130) );
+				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Guide75Title-' + locale + '.png'), new Region(190, 162, 863, 144) );
 				break;
 		}
 	}
@@ -216,6 +223,82 @@ function drawName( g, diy, sheet, nameBox ) {
 	var faceIndex = sheet.getSheetIndex();
 	var title = '';
 	var unique = '';
+
+	// can't make this work without creating a new box
+	// otherwise, you have to edit the text for the color change to happen
+	if ( CardTypes[faceIndex] == 'Investigator') {
+		if ( $CardClass != null && $CardClass.indexOf('Parallel') >= 0) {
+			nameBox = markupBox(sheet);
+			nameBox.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'ParallelName-style'), null);
+			nameBox.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Name-alignment'));
+
+			initBodyTags( diy, nameBox );	
+		}
+	}
+
+	if (faceIndex == FACE_FRONT) title = diy.name;
+	else {
+		title = $( 'Title' + BindingSuffixes[faceIndex] );
+		if ( title == null ) title = diy.name;
+		
+		// locations are the only type that will copy the front title if back is left blank
+		if ( title == '' && CardTypes[faceIndex] == 'LocationBack' ) title = diy.name;
+	}
+	
+	if ( title.length() >  0) {
+		unique = $( 'Unique' + BindingSuffixes[faceIndex] );
+		if ( unique == null ) unique = $Unique;
+		
+		if ( unique == '1' ) {
+			nameBox.markupText = '<uni>' + title;
+		}
+		else {
+			nameBox.markupText = title;
+		}
+	
+		var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Name-region') );
+		if ( $Orientation == 'Reversed' ) region = reverseRegion( region );
+
+		if ( CardTypes[faceIndex] == 'Asset' ) {
+			let class1 = $CardClass;
+			let class2 = $CardClass2;
+		
+			let dual = isDualClass( class1, class2 );
+	
+			// if dual, we should shrink the text box on both sides, to keep it centered, 
+			// but if the name is too long, we can extend the left side back out
+			if ( dual ) {
+				// using measure() is drawing an offset title for some reason, so we create a copy to get the size
+				let testBox = markupBox(sheet);
+				testBox.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Name-style'), null);
+				testBox.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'Name-alignment'));
+				testBox.markupText = nameBox.markupText;
+				
+				region.x += 30;
+				region.width -= 60;
+
+//				let height = nameBox.measure( g, region );
+				let height = testBox.measure( g, region );
+
+				// trying to figure out if it doesn't fit in the region at full size
+				if ( height < 22.0 || ( height > 25.0 && title.length() > 20 ) ) {
+					region.x -= 30;
+					region.width += 30;
+				}
+			}
+		}
+		else if ( CardTypes[faceIndex] == 'Guide75' ) title = title.toUpperCase();	
+		else if ( CardTypes[faceIndex] == 'GuideA4' ) title = title.toUpperCase();
+		else if ( CardTypes[faceIndex] == 'Event' && ( $CardClass == 'Weakness' || $CardClass == 'BasicWeakness' )) region.y -= 3;
+
+		nameBox.drawAsSingleLine( g, region );
+	}
+}
+
+function drawActAgendaName( g, diy, sheet, nameBox ) {
+	var faceIndex = sheet.getSheetIndex();
+	var title = '';
+	var unique = '';
 	
 	if (faceIndex == FACE_FRONT) title = diy.name;
 	else {
@@ -229,45 +312,39 @@ function drawName( g, diy, sheet, nameBox ) {
 	if ( title.length() >  0) {
 		unique = $( 'Unique' + BindingSuffixes[faceIndex] );
 		
-//		if (unique == '1' || CardTypes[faceIndex] == 'Investigator' || CardTypes[faceIndex] == 'InvestigatorBack' ) {
 		if ( unique == '1' ) {
-//			nameBox.markupText = '<uni><b>' + title + '</b>';
 			nameBox.markupText = '<uni>' + title;
 		}
 		else {
-//			nameBox.markupText = '<b>' + title + '</b>';
 			nameBox.markupText = title;
 		}
 	
 		var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Name-region') );
 		if ( $Orientation == 'Reversed' ) region = reverseRegion( region );
-	
-		if ( CardTypes[faceIndex] == 'Asset' ) {
-			let class1 = $CardClass;
-			let class2 = $CardClass2;
-		
-			let dual = isDualClass( class1, class2 );
-	
-			// if dual, we should shrink the text box on both sides, to keep it centered, 
-			// but if the name is too long, we can extend the left side back out
-			if ( dual ) {
-				region.x += 30;
-				region.width -= 60;
-			
-				let height = nameBox.measure( g, region );
 
-				// trying to figure out if it doesn't fit in the region at full size
-				if ( height < 22.0 || ( height > 25.0 && title.length() > 20 ) ) {
-					region.x -= 30;
-					region.width += 30;
-				}
-			}
+		nameBox.markupText = "Size";
+		var lineHeight = nameBox.measure( g, region );
+
+		var lines = diy.name.split('\n');
+		
+		if (lines.length > 1) region.y -= 10;
+		
+		var width = 0;
+		for ( let i = 0; i < lines.length; i++ ) {
+			nameBox.markupText = lines[i];
+			width = nameBox.drawAsSingleLine( g, region );	// return the width of the last line (what we want!)
+
+			region.y += lineHeight * 1.0;
+			region.height -= lineHeight * 1.0;
 		}
-		else if ( CardTypes[faceIndex] == 'Guide75' ) title = title.toUpperCase();	
-		else if ( CardTypes[faceIndex] == 'GuideA4' ) title = title.toUpperCase();
-		else if ( CardTypes[faceIndex] == 'Event' && ( $CardClass == 'Weakness' || $CardClass == 'BasicWeakness' )) region.y -= 3;
-	
-		nameBox.drawAsSingleLine( g, region );
+/*
+		if (lines.length == 1) {
+			// I hope this calculation works everywhere
+			sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HorizLines.png'), 
+				new Region( region.x + (region.width - width) / 2, region.y + 1, width + 2, 6) );
+		}
+*/
+		return region.y + 12;
 	}
 }
 /*
@@ -316,10 +393,26 @@ function drawChaosName( g, diy, sheet, nameBox ) {
 
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Name-region') );
 
-	nameBox.markupText = "Size";
+	nameBox.markupText = "Size";	
 	var lineHeight = nameBox.measure( g, region );
 
-	var lines = diy.name.split('\n');
+	var lines;
+	
+	if (faceIndex == FACE_FRONT) {
+		if ( diy.name ) lines = diy.name.split('\n');
+	}
+	else {
+		if ( $( 'Title' + BindingSuffixes[faceIndex] ) ) {
+			lines = $( 'Title' + BindingSuffixes[faceIndex] ).split('\n');
+		}
+		else {
+			lines = diy.name.split('\n');
+		}
+	}
+
+	// assume 1 line
+	if ( !lines ) return region.y + (lineHeight * 0.8) + 12;
+		
 	var width = 0;
 	for ( let i = 0; i < lines.length; i++ ) {
 		nameBox.markupText = lines[i];
@@ -332,15 +425,23 @@ function drawChaosName( g, diy, sheet, nameBox ) {
 	// I hope this calculation works everywhere
 	sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HorizLines.png'), 
 		new Region( region.x + (region.width - width) / 2, region.y + 1, width + 2, 6) );
-		
+
 	return region.y + 12;
 }
 
 function drawSubtitle( g, diy, sheet, subtitleBox, className, drawBox ) {
 	var faceIndex = sheet.getSheetIndex();
-	
+
 	// not currently supported
 	if ( className == 'Dual' ) return;
+
+	// can't make this work without creating a new box
+	// otherwise, you have to edit the text for the color change to happen
+	if ( className.indexOf('Parallel') >= 0) {
+		subtitleBox = markupBox(sheet);
+		subtitleBox.defaultStyle = diy.settings.getTextStyle(getExpandedKey(faceIndex, 'ParallelSubtitle-style'), null);
+		subtitleBox.alignment = diy.settings.getTextAlignment(getExpandedKey(faceIndex, 'Subtitle-alignment'));
+	}
 
 	if ( drawBox ) {
 		var image = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Subtitle-' + getClassInitial( className )  + '.png');
@@ -360,9 +461,11 @@ function drawSubtitle( g, diy, sheet, subtitleBox, className, drawBox ) {
 	
 	var textRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'SubtitleText' + getClassInitial( className ) + '-region' ) );
 	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) textRegion.y -= 2;
-	
+
 	subtitleBox.markupText = subtitle;
-	subtitleBox.draw( g, textRegion );
+
+//	subtitleBox.draw( g, textRegion );
+	subtitleBox.drawAsSingleLine( g, textRegion );
 }
 
 function drawDifficulty( g, diy, sheet, textBox, text, y ) {
@@ -423,7 +526,7 @@ function drawBody( g, diy, sheet, bodyBox, partsArray ) {
 	if ( AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 2;
 	
 	bodyBox.setLineTightness( $(getExpandedKey(faceIndex, 'Body', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
-	bodyBox.	setTextFitting( FIT_SCALE_TEXT );	
+	bodyBox.setTextFitting( FIT_SCALE_TEXT );	
 	
 	// if there is no trait text, add a little spacing
 	var traitText = $( 'Traits' + BindingSuffixes[faceIndex] );
@@ -521,28 +624,24 @@ function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 	var storyText = [ '', '', '' ];
 	var bodyText = [ '', '', '' ];
 	
-	for ( let i = 0; i < 3; i++ ) {		
-//		if ( i > 0 ) {
-			headerSpacing[i] = parseInt( $( 'Header' + suffixArray[i] + BindingSuffixes[faceIndex] + 'Spacing' ), 10 ) + 4;
-			headerText[i] = $( 'Header' + suffixArray[i] + BindingSuffixes[faceIndex] );
-//		}
+	for ( let i = 0; i < 3; i++ ) {
+		headerSpacing[i] = parseInt( $( 'Header' + suffixArray[i] + BindingSuffixes[faceIndex] + 'Spacing' ), 10 ) + 4;
+		headerText[i] = $( 'Header' + suffixArray[i] + BindingSuffixes[faceIndex] );
 
 		storySpacing[i] = parseInt( $( 'AccentedStory' + suffixArray[i] + BindingSuffixes[faceIndex] + 'Spacing' ), 10 ) + 4;
 		storyText[i] = $( 'AccentedStory' + suffixArray[i] + BindingSuffixes[faceIndex] );
 		let textExists = false;
 				
-//		if ( i > 0 ) {
-			headerBox.markupText = '';	// we are reusing headerBox for each section - this is required to prevent oddness that I admit I don't understand
-			headerBox.markupText = headerText[i];
+		headerBox.markupText = '';	// we are reusing headerBox for each section - this is required to prevent oddness that I admit I don't understand
+		headerBox.markupText = headerText[i];
 	
-			if (headerText[i].length() > 0) {		
-				headerHeight[i] = headerBox.measure( g, fullRegion );
-				totalHeight += headerHeight[i];
-				totalHeight += headerSpacing[i];
+		if (headerText[i].length() > 0) {
+			headerHeight[i] = headerBox.measure( g, fullRegion );
+			totalHeight += headerHeight[i];
+			totalHeight += headerSpacing[i];
 
-				textExists = true;
-			}
-//		}
+			textExists = true;
+		}
 		
 		storyBox.markupText = '';	// we are reusing storyBox for each section - this is required to prevent oddness that I admit I don't understand
 		storyBox.markupText = storyText[i];
@@ -572,7 +671,6 @@ function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 			textExists = true;
 		}
 		
-//		if (i > 0 && textExists) totalHeight += 16;	// for the rule and spacing
 		if (textExists) totalHeight += 16;	// for the rule and spacing
 	}
 	
@@ -595,29 +693,23 @@ function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 		if ( i > 0 ) {
 			if ( headerHeight[i] > 0 || storyHeight[i] > 0 || bodyHeight[i] > 0) {
 				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HRLine.png'), 
-//					new Region( headerRegion.x, headerRegion.y + ( 3 * scale), headerRegion.width, 10) );
 					new Region( headerRegion.x, headerRegion.y + ( horizLineSpace1 * scale * $ScaleModifier / 100.0 ), headerRegion.width, 7) );
 					
-//				headerRegion.y += Math.ceil( 18 * scale );
 				headerRegion.y += Math.ceil( horizLineSpace2 * scale * $ScaleModifier / 100.0 );
 			}
 		}
 		
-			// if we are scaling down, the text won't necessarily fill the box, so we are recalculating the height
-			headerRegion.height = Math.ceil( headerHeight[i] * scale );
-			if (headerText[i].length() > 0) {		
-				headerBox.markupText = '<size ' + headerTextSize + '%>' + headerText[i];
+		// if we are scaling down, the text won't necessarily fill the box, so we are recalculating the height
+		headerRegion.height = Math.ceil( headerHeight[i] * scale );
+		if (headerText[i].length() > 0) {		
+			headerBox.markupText = '<size ' + headerTextSize + '%>' + headerText[i];
 
-				headerHeight[i] = headerBox.measure( g, fullRegion );
-				headerRegion.height = Math.ceil( headerHeight[i] );
-			}
+			headerHeight[i] = headerBox.measure( g, fullRegion );
+			headerRegion.height = Math.ceil( headerHeight[i] );
+		}
 		
-			storyRegion.y = headerRegion.y + headerRegion.height + Math.ceil( headerSpacing[i] * scale );
-			storyRegion.height = Math.ceil( storyHeight[i] * scale );
-//		}
-//		else {
-//			storyRegion.height = Math.ceil( storyHeight[i] * scale );
-//		}
+		storyRegion.y = headerRegion.y + headerRegion.height + Math.ceil( headerSpacing[i] * scale );
+		storyRegion.height = Math.ceil( storyHeight[i] * scale );
 
 		if (storyText[i].length() > 0) {		
 			storyBox.markupText = '<size ' + storyTextSize + '%>' + storyText[i];
@@ -647,7 +739,6 @@ function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 			storyBox.draw( g, storyRegion );
 		
 			sheet.paintImage( g, createDarkenedImage( ImageUtils.get('ArkhamHorrorLCG/images/Lines.png') ), 
-//				new Region( storyRegion.x - 18, storyRegion.y + 2, 6, storyRegion.height - 4) );
 				new Region( storyRegion.x - 18, storyRegion.y, 6, storyRegion.height - 2) );
 		}
 	
@@ -724,8 +815,6 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 					sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HorizLines.png'), 
 						new Region( bodyRegion.x, bodyRegion.y + sectionHeight - 2, bodyRegion.width + 2, 6) );
 
-//					bodyRegion.y += sectionHeight - 8;
-//					bodyRegion.height -= (sectionHeight - 8);
 					bodyRegion.y += sectionHeight - 4;
 					bodyRegion.height -= (sectionHeight - 4);
 
@@ -1028,11 +1117,16 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 	}
 }
 
-function drawChaosBody( g, diy, sheet, textBoxes, y ) {
+// header = story/chaos
+function drawChaosBody( g, diy, sheet, textBoxes, headerBox, y ) {
 	var tokenName = [ 'Skull', 'Cultist', 'Tablet', 'ElderThing' ];
 	var faceIndex = sheet.getSheetIndex();
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region' ) );
-	
+	var headerRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Header-region' ) );
+//	var trackingHeader = $( 'TrackerBox' + BindingSuffixes[faceIndex] );
+
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
 	var difference = y - region.y;
 	if ( difference < 0 ) difference = 0;
 	else {
@@ -1040,15 +1134,36 @@ function drawChaosBody( g, diy, sheet, textBoxes, y ) {
 		region.height -= difference;
 	}
 	
+	if ( headerBox ) {
+		difference = y - headerRegion.y;
+
+		if ( $TrackerBox.length == 0 ) difference += 12;
+		else difference += 2;
+		
+		headerRegion.y += difference;
+		headerRegion.height -= difference;
+
+		headerBox.markupText = $HeaderBack;
+		
+		let newY = headerBox.draw( g, headerRegion );
+		let dy = newY - region.y;
+
+		if ( $TrackerBox.length == 0 ) difference = 15;
+		else difference = 5;
+			
+		region.y = newY + difference;
+		region.height -= dy + difference;
+	}
+	
 	var iconRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'BodyIcon-region' ) );
 
 	if ( $TrackerBox.length > 0 ) {
-		region.height -= 95;
+//			region.height -= 95;
+			region.height -= 90;
 	}
-//g.setPaint(Color.RED);
-//g.drawRect(region.x, region.y, region.width, region.height);
 
-	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+//g.setPaint(Color.WHITE);
+//g.drawRect(region.x, region.y, region.width, region.height);
 
 	var tokenRegion = [];
 	var tokenText = [];
@@ -1067,7 +1182,6 @@ function drawChaosBody( g, diy, sheet, textBoxes, y ) {
 	if ( $TrackerBox.length > 0 ) {
 		minHeight = [ 48, 100, 152, 204 ];
 		minCenterSpacing = [ 115, 82, 68, 52 ];
-//		var startingOffset = [ 50, 15, 0, 0 ];
 		minSpacing = 7;
 		maxSpacing = 62;
 		useOffsetPct = 0.6;
@@ -1075,7 +1189,6 @@ function drawChaosBody( g, diy, sheet, textBoxes, y ) {
 	else {
 		minHeight = [ 48, 100, 152, 204 ];
 		minCenterSpacing = [ 115, 102, 85, 65 ];
-//		var startingOffset = [ 40, 40, 0, 0 ];	
 		minSpacing = 15;
 		maxSpacing = 62;
 		useOffsetPct = 0.6;
@@ -1083,7 +1196,7 @@ function drawChaosBody( g, diy, sheet, textBoxes, y ) {
 		
 	var index = 0;
 	var mergeIndex = 0;
-	var startingOffset = 0;
+//	var startingOffset = 0;
 
 	// eliminate tokens with no text
 	for ( let i = 0; i < 4; i++ ) {
@@ -1177,6 +1290,7 @@ function drawChaosBody( g, diy, sheet, textBoxes, y ) {
 	var firstBlockOffset = 0;
 	
 	for (let i = 0; i < groupCount; i++) {
+		// if we don't use a separate box, it draws twice, another thing I don't really understand
 		let Test_box = markupBox(sheet);
 		Test_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(faceIndex, 'Body-style'), null);
 		Test_box.alignment = diy.settings.getTextAlignment(getExpandedKey(faceIndex, 'Body-alignment'));
@@ -1187,7 +1301,7 @@ function drawChaosBody( g, diy, sheet, textBoxes, y ) {
 		tokenHeight[i] = Test_box.measure( g, tokenRegion[i] );
 
 		// if there's a tracking box, this lets the icon extend up above the normal region top, so the text is at the top of the region, to save space
-		if ( i == 0 && tokenHeight[i] < iconRegion.height ) {
+		if ( !headerBox && i == 0 && tokenHeight[i] < iconRegion.height ) {
 			firstBlockOffset = (iconRegion.height - tokenHeight[i]) / 2;
 			if (firstBlockOffset > 10) firstBlockOffset = 10;
 		}
@@ -1196,6 +1310,8 @@ function drawChaosBody( g, diy, sheet, textBoxes, y ) {
 
 		totalHeight += tokenHeight[i];
 	}
+
+	if ( $TrackerBox.length > 0 || headerBox ) firstBlockOffset = 0;
 
 	// calculate the maximum spacing between box centers
 	if ( groupCount > 1 ) {
@@ -1217,6 +1333,7 @@ function drawChaosBody( g, diy, sheet, textBoxes, y ) {
 
 	if ( totalEqualHeight <= region.height ) {
 		spacingType = 0;
+
 		totalHeight = totalEqualHeight;
 		
 		if (totalHeight <= region.height*useOffsetPct)
@@ -1231,10 +1348,12 @@ function drawChaosBody( g, diy, sheet, textBoxes, y ) {
 	// if rescaling needed, we're going to keep decreasing scale until it fits
 	// just calculating a ratio and using that significantly overestimated the reduction of scale needed
 	if (region.height < totalHeight) {
-		region.y -= 5;
-		region.height += 5;
-		region.y -= firstBlockOffset;
-		region.height += firstBlockOffset;
+		if ( !headerBox ) {
+			region.y -= 5;
+			region.height += 5;
+			region.y -= firstBlockOffset;
+			region.height += firstBlockOffset;
+		}
 
 		var minTotalHeight = 0;
 		for ( let i = 0; i < groupCount; i++ ) {
@@ -1398,6 +1517,7 @@ function drawChaosTrackerBox( g, diy, sheet, box ) {
 	
 	sheet.paintImage( g, image, region );
 	
+//	box.markupText = $( 'TrackerBox' + BindingSuffixes[faceIndex] );
 	box.markupText = $TrackerBox;
 	box.drawAsSingleLine( g, diy.settings.getRegion( getExpandedKey( faceIndex, 'TrackerName-region') ) );
 }
@@ -1445,7 +1565,6 @@ function drawVictory( g, diy, sheet ) {
 	var faceIndex = sheet.getSheetIndex();
 
 	Victory_box.markupText = '<b>' + $( 'Victory' + BindingSuffixes[faceIndex] ) + '</b>';
-//	Victory_box.drawAsSingleLine( g, diy.settings.getRegion( getExpandedKey( faceIndex, 'Victory-region') ) );
 	Victory_box.draw( g, diy.settings.getRegion( getExpandedKey( faceIndex, 'Victory-region') ) );
 }
 
@@ -1609,10 +1728,22 @@ function drawSlots( g, diy, sheet ) {
 
 function drawSkills( g, diy, sheet, boxArray, nameArray ) {
 	var faceIndex = sheet.getSheetIndex();
-
+	var skillBox;
+	
 	for ( let i = 0; i < boxArray.length; i++ ) {
-		boxArray[i].markupText = $( nameArray[i] + BindingSuffixes[faceIndex] );
-		boxArray[i].drawAsSingleLine( g, diy.settings.getRegion( getExpandedKey( faceIndex, nameArray[i] + '-region' ) ) );
+		skillBox = boxArray[i];
+		
+		// can't make this work without creating a new box
+		// otherwise, you have to edit the text for the color change to happen
+		if ( $CardClass != null && $CardClass.indexOf('Parallel') >= 0) {
+			skillBox = markupBox(sheet);
+			skillBox.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'ParallelSkill-style'), null);
+			skillBox.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Skill-alignment'));	
+		}
+
+		skillBox.markupText = $( nameArray[i] + BindingSuffixes[faceIndex] );
+		
+		skillBox.drawAsSingleLine( g, diy.settings.getRegion( getExpandedKey( faceIndex, nameArray[i] + '-region' ) ) );
 	}
 }
 
@@ -1656,7 +1787,6 @@ function drawCollectionNumber( g, diy, sheet, drawSuffix ) {
 	}
 	
 	var width = Collection_box.drawAsSingleLine( g, region );
-//	if ( width < 19) width = 19;
 	
 	return region.x + region.width - width;	// return left edge
 }
@@ -1700,8 +1830,16 @@ function drawCollectionIcon( g, diy, sheet, collectorX ) {
 }
 
 function drawEncounterInfo( g, diy, sheet, collectorX ) {
-	var faceIndex = sheet.getSheetIndex();
+	var encounterNumber = $( 'EncounterNumber' + BindingSuffixes[faceIndex] );
+	if (encounterNumber == null) encounterNumber = $EncounterNumber;
 
+	var encounterTotal = $( 'EncounterTotal' + BindingSuffixes[faceIndex] );
+	if (encounterTotal == null) encounterTotal = $EncounterTotal;
+
+	if ( encounterNumber == '' && encounterTotal == '' ) return 0;
+
+	var faceIndex = sheet.getSheetIndex();
+	
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'EncounterNumber-region' ) );
 	if ( $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );	
 
@@ -1713,13 +1851,13 @@ function drawEncounterInfo( g, diy, sheet, collectorX ) {
 
 	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 1;
 
-	var encounterNumber = $( 'EncounterNumber' + BindingSuffixes[faceIndex] );
-	if (encounterNumber == null) encounterNumber = $EncounterNumber;
-
-	var encounterTotal = $( 'EncounterTotal' + BindingSuffixes[faceIndex] );
-	if (encounterTotal == null) encounterTotal = $EncounterTotal;
-
-	Encounter_box.markupText = encounterNumber + '\u200a/\u200a' + encounterTotal;
+	if ( Eons.namedObjects.AHLCGObject.OS == 'Mac' ) {
+		Encounter_box.markupText = encounterNumber + '\u200a/\u200a' + encounterTotal;
+	}
+	else {
+		Encounter_box.markupText = encounterNumber + ' / ' + encounterTotal;
+	}
+	
 	var width = Encounter_box.drawAsSingleLine( g, region );
 
 	return region.x + region.width - width;		// return left edge
@@ -1769,7 +1907,7 @@ function drawEncounterIcon( g, diy, sheet ) {
 				// [0] because that is the type the portrait is reading its setting from
 //				diy.settings.setRegion( 'AHLCG-' + CardTypes[0] + '-Encounter-portrait-clip-region', region );
 //				PortraitList[getPortraitIndex( 'Encounter' )].paint( g, sheet.getRenderTarget() );
-//println( PortraitList[getPortraitIndex( 'Encounter' )].getSource() );
+
 //				sheet.paintImage( g, createReturnToImage( PortraitList[getPortraitIndex( 'Encounter' )].getImage() ), region );		
 			}
 		}
@@ -1829,9 +1967,16 @@ function drawEnemyHealth( g, diy, sheet ) {
 	var perInvestigator = $( 'PerInvestigator' + BindingSuffixes[faceIndex] );
 	var health = $( 'Health' + BindingSuffixes[faceIndex] );
 	
-	if (perInvestigator == '1') {
-		var healthRegion = diy.settings.getRegion( getExpandedKey(faceIndex, 'HealthPerInv-region' ) );
-		var healthPerInvRegion = diy.settings.getRegion( getExpandedKey(faceIndex, 'PerInv-region' ) );
+	if ( health == '-' ) {
+		let healthRegion = diy.settings.getRegion( getExpandedKey(faceIndex, 'HealthPerInv-region' ) );
+		healthRegion.x += 5.0;
+		healthRegion.y += 6.0;
+			
+		sheet.drawOutlinedTitle( g, '\u2014', healthRegion, Eons.namedObjects.AHLCGObject.costFont, 11.5, 0.8, new Color(1, 1, 1), new Color(0, 0, 0), 0, true );	
+	}
+	else if (perInvestigator == '1') {
+		let healthRegion = diy.settings.getRegion( getExpandedKey(faceIndex, 'HealthPerInv-region' ) );
+		let healthPerInvRegion = diy.settings.getRegion( getExpandedKey(faceIndex, 'PerInv-region' ) );
 		
 		if ( health == 'X' ) {
 			healthRegion.x += 2;
