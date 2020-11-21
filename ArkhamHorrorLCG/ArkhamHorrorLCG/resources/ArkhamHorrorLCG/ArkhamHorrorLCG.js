@@ -447,7 +447,7 @@ function gameObject( masterSettings ) {
 		[ 'NaomisCrew', 1, 'naocrw', 17 ],
 		[ 'NeuroticFear', 11, 'neufr', 132 ],
 		[ 'Nightgaunts', 0, 'ntgnts', 18 ],
-		[ 'PillarsOfJudgement', 5, 'piljdg', 72 ],
+		[ 'PillarsOfJudgment', 5, 'piljdg', 72 ],
 		[ 'PnakoticBrotherhood', 5, 'pnabro', 61 ],
 		[ 'PointOfNoReturn', 12, 'ponr', 152 ],
 		[ 'Poison', 5, 'poison', 62 ],
