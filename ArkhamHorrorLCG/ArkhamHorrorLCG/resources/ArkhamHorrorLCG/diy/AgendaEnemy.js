@@ -192,6 +192,14 @@ function createBackPainter( diy, sheet ) {
 	BackCopyright_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Copyright-alignment'));
 
 	initCopyrightTags( diy, BackCopyright_box );	
+
+	BackCollection_box = markupBox(sheet);
+	BackCollection_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'CollectionNumber-style'), null);
+	BackCollection_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'CollectionNumber-alignment'));
+
+	BackEncounter_box = markupBox(sheet);
+	BackEncounter_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'EncounterNumber-style'), null);
+	BackEncounter_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'EncounterNumber-alignment'));
 }
 
 function paintFront( g, diy, sheet ) {
@@ -207,7 +215,8 @@ function paintFront( g, diy, sheet ) {
 
 	drawDoom( g, diy, sheet );
 
-	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+//	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+	drawCollectorInfo( g, diy, sheet, Collection_box, true, Encounter_box, true, Copyright_box, Artist_box );
 			
 	drawScenarioIndexFront( g, diy, sheet, #AHLCG-Label-Agenda, Index_box );
 }
@@ -232,7 +241,8 @@ function paintBack( g, diy, sheet ) {
 	if ( $DamageBack > 0 )  drawDamage( g, diy, sheet );
 	if ( $HorrorBack > 0 )	drawHorror( g, diy, sheet );
 
-	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+//	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+	drawCollectorInfo( g, diy, sheet, BackCollection_box, true, BackEncounter_box, true, BackCopyright_box, BackArtist_box );
 } 
 
 function onClear() {

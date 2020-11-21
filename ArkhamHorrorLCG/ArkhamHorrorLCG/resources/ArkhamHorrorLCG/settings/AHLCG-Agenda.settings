@@ -17,12 +17,12 @@ AHLCG-AgendaBack-Header-alignment = left
 AHLCG-AgendaBack-Header-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WIDTH: {Eons.namedObjects.AHLCGObject.bodyFontSpacing}; WEIGHT: WEIGHT_BOLD; FOREGROUND: #000000
 AHLCG-AgendaBack-Header-tightness = 1.0
 
-AHLCG-AgendaBack-Story-region = 128,34,355,310
+AHLCG-AgendaBack-Story-region = 128,36,355,312
 AHLCG-AgendaBack-Story-alignment = left
 AHLCG-AgendaBack-Story-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WEIGHT: WEIGHT_MEDIUM; WIDTH: {Eons.namedObjects.AHLCGObject.bodyFontSpacing}; FOREGROUND: #000000; POSTURE: OBLIQUE
 AHLCG-AgendaBack-Story-tightness = 1.0
 
-AHLCG-AgendaBack-Body-region = 113,34,370,310
+AHLCG-AgendaBack-Body-region = 113,36,370,312
 AHLCG-AgendaBack-Body-alignment = left
 AHLCG-AgendaBack-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WEIGHT: WEIGHT_MEDIUM; WIDTH: {Eons.namedObjects.AHLCGObject.bodyFontSpacing}; FOREGROUND: #000000
 AHLCG-AgendaBack-Body-tightness = 1.0

@@ -262,7 +262,8 @@ function paintFront( g, diy, sheet ) {
 		drawLocationIcon( g, diy, sheet, 'Connection' + index + 'Icon', false );
 	}
 
-	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+//	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+	drawCollectorInfo( g, diy, sheet, Collection_box, true, Encounter_box, true, Copyright_box, Artist_box );
 }
 
 function paintBack( g, diy, sheet ) {
@@ -295,7 +296,8 @@ function paintBack( g, diy, sheet ) {
 		drawLocationIcon( g, diy, sheet, 'Connection' + index + 'Icon', false );
 	}
 
-	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+//	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+	drawCollectorInfo( g, diy, sheet, BackCollection_box, true, BackEncounter_box, true, BackCopyright_box, BackArtist_box );
 }
 
 function onClear() {

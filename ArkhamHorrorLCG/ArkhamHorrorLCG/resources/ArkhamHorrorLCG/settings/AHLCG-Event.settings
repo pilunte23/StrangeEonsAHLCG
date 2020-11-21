@@ -1,7 +1,7 @@
 AHLCG-Event-Default-template = ArkhamHorrorLCG/templates/AHLCG-Event-G.jp2
 AHLCG-EventBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-PlayerBack.jp2
 
-AHLCG-Event-Label-region = 21,62,36,14
+AHLCG-Event-Label-region = 21,61,36,14
 AHLCG-Event-Label-alignment = center, middle
 AHLCG-Event-Label-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.smallLabelSize}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.92; FOREGROUND: #000000
 

@@ -261,7 +261,10 @@ function paintFront( g, diy, sheet ) {
 	var collectionSuffix = false;
 	if ( $ShowCollectionNumberFront == '1' && $ShowCollectionNumberBack == '1' ) collectionSuffix = true;
 
-	drawCollectorInfo( g, diy, sheet, $ShowCollectionNumberFront == '1', collectionSuffix, false, false, true );
+	var collectionBox =  $ShowCollectionNumberFront == '1' ? Collection_box : null;
+
+//	drawCollectorInfo( g, diy, sheet, $ShowCollectionNumberFront == '1', collectionSuffix, false, false, true );
+	drawCollectorInfo( g, diy, sheet, collectionBox, collectionSuffix, null, false, Copyright_box, Artist_box );
 }
 
 function paintBack( g, diy, sheet ) {
@@ -301,7 +304,11 @@ function paintBack( g, diy, sheet ) {
 	var collectionSuffix = false;
 	if ( $ShowCollectionNumberFront == '1' && $ShowCollectionNumberBack == '1' ) collectionSuffix = true;
 
-	drawCollectorInfo( g, diy, sheet, $ShowCollectionNumberBack == '1', collectionSuffix, false, false, true );
+	
+	var collectionBox =  $ShowCollectionNumberBack == '1' ? BackCollection_box : null;
+	
+//	drawCollectorInfo( g, diy, sheet, $ShowCollectionNumberBack == '1', collectionSuffix, false, false, true );
+	drawCollectorInfo( g, diy, sheet, collectionBox, collectionSuffix, null, false, BackCopyright_box, BackArtist_box );
 }
 
 function onClear() {

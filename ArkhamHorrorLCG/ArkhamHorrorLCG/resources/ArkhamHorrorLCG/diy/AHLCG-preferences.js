@@ -516,7 +516,8 @@ function loadAHLCGPreferences( data ) {
 	for( index = 0; index < AHLCGObject.standardEncounterList.length; index++ ) {
 		let entry = AHLCGObject.standardEncounterList[index];
 		let collection = AHLCGObject.standardCollectionList[ entry[1] ];
-		let used = loadUsedValue( 'Encounter', entry[3] );
+
+				let used = loadUsedValue( 'Encounter', entry[3] );
 
 		data.seTableModel.addRow( [ used, @( 'AHLCG-' + entry[0] ), @( 'AHLCG-' + collection[0] ), entry[2] ] );	
 	}	
@@ -537,6 +538,7 @@ function loadAHLCGPreferences( data ) {
 	
 	for( index = 0; index < AHLCGObject.standardCollectionList.length; index++ ) {
 		let entry = AHLCGObject.standardCollectionList[index];
+ 
 		let used = loadUsedValue( 'Collection', index );
 		
 		data.scTableModel.addRow( [ used, @( 'AHLCG-' + entry[0] ), entry[1] ] );						

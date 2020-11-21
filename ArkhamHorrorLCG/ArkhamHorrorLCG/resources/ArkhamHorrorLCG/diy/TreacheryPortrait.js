@@ -139,7 +139,8 @@ function paintFront( g, diy, sheet ) {
 
 	drawBody( g, diy, sheet, Body_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ) );
 
-	drawCollectorInfo( g, diy, sheet, true, false, true, true, true );
+//	drawCollectorInfo( g, diy, sheet, true, false, true, true, true );
+	drawCollectorInfo( g, diy, sheet, Collection_box, false, Encounter_box, true, Copyright_box, Artist_box );
 }
 
 function paintBack( g, diy, sheet ) {

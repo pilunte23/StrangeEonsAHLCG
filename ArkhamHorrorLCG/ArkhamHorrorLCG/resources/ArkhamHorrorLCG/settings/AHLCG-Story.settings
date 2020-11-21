@@ -35,4 +35,24 @@ AHLCG-Story-DefaultEncounter-portrait-clip-region = 308,27,36,36
 AHLCG-Story-ReturnEncounter-portrait-clip-region = 302,23,49,48
 AHLCG-Story-DefaultReturnEncounter-portrait-clip-region = 301,20,49,48
 
+AHLCG-Story-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-Story-Collection-portrait-pany = 0
+
+AHLCG-Story-DefaultCollection-portrait-clip-region = 277,491,13,13
+AHLCG-Story-Collection-portrait-clip-region = 277,491,13,13
+AHLCG-StoryBack-DefaultCollection-portrait-clip-region = 277,491,13,13
+AHLCG-StoryBack-Collection-portrait-clip-region = 277,491,13,13
+
+AHLCG-Story-Copyright-region = 70,495,86,10
+AHLCG-Story-Copyright-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize*1.05}; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
+AHLCG-Story-Copyright-alignment = left, middle
+
+AHLCG-Story-CollectionNumber-region = 269,494,37,10
+AHLCG-Story-CollectionNumber-alignment = right, middle
+AHLCG-Story-CollectionNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
+
+AHLCG-Story-EncounterNumber-region = 204,494,55,10
+AHLCG-Story-EncounterNumber-alignment = right, middle
+AHLCG-Story-EncounterNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 4.5; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
+
 AHLCG-Story-Dash-tint = 38.0, 0.14, 1.0

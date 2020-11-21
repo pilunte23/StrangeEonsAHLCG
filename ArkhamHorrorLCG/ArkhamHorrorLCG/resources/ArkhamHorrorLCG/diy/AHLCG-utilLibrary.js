@@ -280,7 +280,7 @@ function storeUsedValue( type, index, value ) {
 	var usedIndex = Math.floor( ( index / 40 ) + 1 );
 	var usedString = Settings.getUser().get( 'AHLCG-Use' + type + usedIndex, 0 );
 
-		usedString = usedString.substring( 0, index % 40 ) + charToInsert + usedString.substring( ( index % 40 ) + 1 );
+	usedString = usedString.substring( 0, index % 40 ) + charToInsert + usedString.substring( ( index % 40 ) + 1 );
 
 	Settings.getUser().set('AHLCG-Use' + type + usedIndex, usedString );
 }
@@ -303,7 +303,7 @@ function updateCollection() {
 	if ( $Collection == 'StrangeEonsLight' ) $Collection = 'StrangeEons';
 
 	var settings = Settings.getUser();
-//println($Collection);
+
 	if ( $Collection == 'CustomCollection' ) {
 		$CollectionType = '-1';
 		return;
@@ -317,7 +317,7 @@ function updateCollection() {
 			return;
 		}
 	}
-//println(AHLCGObject.standardCollectionList);
+
 	for ( let index = 0; index < AHLCGObject.standardCollectionList.length; index++ ) {
 		let entry = AHLCGObject.standardCollectionList[index];
 
@@ -579,9 +579,7 @@ function addTextPart( faceIndex, text, key, diy ) {
 				alignment = diy.settings.get('AHLCG-SmallStory-alignment','<left>');
 				break;
 			}
-//println(key);
-//println(text + ' / ' + alignment + ' / ' + format + ' / ' + entryText + ' / ' + formatEnd);
-//println('End');
+
 		return text + alignment + format + entryText + formatEnd;
 	}
 	else {
@@ -593,7 +591,7 @@ function getExpandedKey( faceIndex, key, appendix ) {
 	var fullKey = null;
 	
 	if ( appendix == null ) appendix = '';
-	
+
 	if ( $( 'AHLCG-' + CardTypes[faceIndex] + '-' + key + appendix ) != null ) fullKey = 'AHLCG-' + CardTypes[faceIndex] + '-' + key;
 	else fullKey = 'AHLCG-' + key;
 
@@ -795,7 +793,8 @@ function createPortrait( diy, fullKey ) {
 
 	setPortraitDefaults( diy, settingsFace, key, portraitKey );
 	if ( faces == 'Both' ) 	setPortraitDefaults( diy, FACE_BACK, key, portraitKey );
-
+//println(getExpandedKey( settingsFace, portraitKey, '-portrait-template' ));
+//println($(getExpandedKey( settingsFace, portraitKey, '-portrait-template' )));
 	PortraitList[portraitIndex] = new DefaultPortrait( diy, getExpandedKey( settingsFace, portraitKey, '-portrait-template' ), allowRotation );
 	
 	PortraitList[portraitIndex].facesToUpdate = facesArray;

@@ -211,7 +211,8 @@ function paintFront( g, diy, sheet ) {
 
 	drawClues( g, diy, sheet );
 
-	drawCollectorInfo( g, diy, sheet, true, false, true, true, true );
+//	drawCollectorInfo( g, diy, sheet, true, false, true, true, true );
+	drawCollectorInfo( g, diy, sheet, Collection_box, false, Encounter_box, true, Copyright_box, Artist_box );
 	
 	drawScenarioIndexFront( g, diy, sheet, #AHLCG-Label-Act, Index_box );
 }
@@ -223,7 +224,7 @@ function paintBack( g, diy, sheet ) {
 	
 	drawRotatedName( g, diy, sheet );
 
-	drawIndentedStoryBody( g, diy, sheet, BackHeader_box, BackStory_box, BackBody_box );
+	drawIndentedStoryBody( g, diy, sheet, null, BackHeader_box, BackStory_box, BackBody_box );
 
 	drawScenarioIndexBack( g, diy, sheet, #AHLCG-Label-Act, BackIndex_box );
 	drawEncounterIcon( g, diy, sheet );	

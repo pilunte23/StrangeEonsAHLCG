@@ -182,7 +182,10 @@ function paintFront( g, diy, sheet ) {
 	if ( $Damage > 0)  drawDamage( g, diy, sheet );
 	if ( $Horror > 0 )	drawHorror( g, diy, sheet );
 
-	drawCollectorInfo( g, diy, sheet, true, false, $Subtype == 'StoryWeakness', $Subtype == 'StoryWeakness', true );
+	var encounterBox = $Subtype == 'StoryWeakness' ? Encounter_box : null;
+
+//	drawCollectorInfo( g, diy, sheet, true, false, $Subtype == 'StoryWeakness', $Subtype == 'StoryWeakness', true );
+	drawCollectorInfo( g, diy, sheet, Collection_box, false, encounterBox, $Subtype == 'StoryWeakness', Copyright_box, Artist_box );
 }
 
 function paintBack( g, diy, sheet ) {

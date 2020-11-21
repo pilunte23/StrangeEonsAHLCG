@@ -51,3 +51,4 @@
     @AHLCG-StoryLocation = diy:ArkhamHorrorLCG/diy/StoryLocation.js | ArkhamHorrorLCG/icons/AHLCG-Story.png | AHLCG
     @AHLCG-StoryChaos = diy:ArkhamHorrorLCG/diy/StoryChaos.js | ArkhamHorrorLCG/icons/AHLCG-Story.png | AHLCG
     @AHLCG-StoryTreachery = diy:ArkhamHorrorLCG/diy/StoryTreachery.js | ArkhamHorrorLCG/icons/AHLCG-Story.png | AHLCG
+    @AHLCG-StoryStory = diy:ArkhamHorrorLCG/diy/StoryStory.js | ArkhamHorrorLCG/icons/AHLCG-Story.png | AHLCG

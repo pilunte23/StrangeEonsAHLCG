@@ -577,12 +577,13 @@ function drawBodyWithRegionName( g, diy, sheet, bodyBox, partsArray, regionName 
 	bodyBox.draw( g, region );
 }
 
-function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
+function drawIndentedStoryBody( g, diy, sheet, traitsBox, headerBox, storyBox, bodyBox ) {
 	var faceIndex = sheet.getSheetIndex();
 
 	var AHLCGObject = Eons.namedObjects.AHLCGObject;
 	
 	var fullRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region' ) );
+	var traitsRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region' ) );
 	var headerRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region' ) );
 	var bodyRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region' ) );
 	var fullStoryRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Story-region' ) );
@@ -602,6 +603,11 @@ function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 		horizLineSpace2 = 14;
 	}
 	
+	if ( traitsBox ) {
+		traitsBox.setLineTightness( $(getExpandedKey(faceIndex, 'Header', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
+		traitsBox.setTextFitting( FIT_SCALE_TEXT );	
+	}
+	
 	headerBox.setLineTightness( $(getExpandedKey(faceIndex, 'Header', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
 	headerBox.setTextFitting( FIT_SCALE_TEXT );	
 	storyBox.setLineTightness( $(getExpandedKey(faceIndex, 'Story', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
@@ -609,10 +615,12 @@ function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 	bodyBox.setLineTightness( $(getExpandedKey(faceIndex, 'Body', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
 	bodyBox.setTextFitting( FIT_SCALE_TEXT );	
 
-	var defaultSpacing = 8;
+//	var defaultSpacing = 8;
 	
 	var suffixArray = [ 'A', 'B', 'C' ];
 	
+	var traitsHeight = 0;
+	var traitsSpacing = 0;
 	var headerHeight = [ 0, 0, 0 ];
 	var headerSpacing = [ 0, 0, 0 ];
 	var storyHeight = [ 0, 0, 0 ];
@@ -620,10 +628,26 @@ function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 	var bodyHeight = [ 0, 0, 0 ];
 	var fullHeight = fullRegion.height;
 	var totalHeight = 0;
+	var traitsText = '';
 	var headerText = [ '', '', ''];
 	var storyText = [ '', '', '' ];
 	var bodyText = [ '', '', '' ];
 	
+	var scaleModifier = $( 'ScaleModifier' + BindingSuffixes[faceIndex], 100 );
+	if ( scaleModifier == null ) scaleModifier = $ScaleModifier;
+	
+	if ( traitsBox ) {
+		traitsSpacing = parseInt( $( 'TraitsA' + BindingSuffixes[faceIndex] + 'Spacing' ), 10 ) + 4;
+		traitsText = $( 'TraitsA' + BindingSuffixes[faceIndex] );
+		traitsBox.markupText = '<center><ts>' + traitsText + '</ts>';
+
+		if ( traitsText.length() > 0 ) {
+			traitsHeight = traitsBox.measure( g, fullRegion );
+			totalHeight += traitsHeight;
+			totalHeight += traitsSpacing;
+		}
+	}
+
 	for ( let i = 0; i < 3; i++ ) {
 		headerSpacing[i] = parseInt( $( 'Header' + suffixArray[i] + BindingSuffixes[faceIndex] + 'Spacing' ), 10 ) + 4;
 		headerText[i] = $( 'Header' + suffixArray[i] + BindingSuffixes[faceIndex] );
@@ -639,6 +663,8 @@ function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 			headerHeight[i] = headerBox.measure( g, fullRegion );
 			totalHeight += headerHeight[i];
 			totalHeight += headerSpacing[i];
+
+			if ( i == 0 ) totalHeight += 4;	// if there's a first header, it needs to be moved down a bit
 
 			textExists = true;
 		}
@@ -681,16 +707,33 @@ function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 	var bodyTextSize = 1.0;
 	var storyTextSize = 1.0;
 	var headerTextSize = 1.0;
+	var traitsTextSize = 1.0;
 	
 	// this is more or less a guess that works so far
 	var textScale = Math.sqrt( scale ) * 0.93;
 
-	bodyTextSize = textScale * $ScaleModifier;
-	storyTextSize = textScale * $ScaleModifier;
-	headerTextSize = textScale * $ScaleModifier;
+	bodyTextSize = textScale * scaleModifier;
+	storyTextSize = textScale * scaleModifier;
+	headerTextSize = textScale * scaleModifier;
+	traitsTextSize = textScale * scaleModifier;
+	
+	if ( traitsBox && traitsText.length() > 0 ) {
+		traitsRegion.height = Math.ceil( traitsHeight * scale );
+		traitsBox.markupText = '<center><ts><size ' + traitsTextSize + '%>' + traitsText + '</ts>';
+
+		traitsHeight = headerBox.measure( g, fullRegion );
+		traitsRegion.height = Math.ceil( traitsHeight );
+
+		traitsBox.draw( g, traitsRegion );
+
+		headerRegion.y += traitsHeight + Math.ceil( traitsSpacing * scale );
+	}
 
 	for ( let i = 0; i < 3; i++ ) {	
-		if ( i > 0 ) {
+		if ( i == 0 ) {
+			if ( headerText[i].length() > 0 ) headerRegion.y += 4; // if there's a first header, it needs to be moved down a bit
+		}
+		else {
 			if ( headerHeight[i] > 0 || storyHeight[i] > 0 || bodyHeight[i] > 0) {
 				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HRLine.png'), 
 					new Region( headerRegion.x, headerRegion.y + ( horizLineSpace1 * scale * $ScaleModifier / 100.0 ), headerRegion.width, 7) );
@@ -749,7 +792,7 @@ function drawIndentedStoryBody( g, diy, sheet, headerBox, storyBox, bodyBox ) {
 		}
 		
 		// update regions (everything is based off of headerRegion.y)
-		headerRegion.y = bodyRegion.y + bodyRegion.height + ( 2 * scale);
+		headerRegion.y = bodyRegion.y + bodyRegion.height + ( 2 * scale );
 	}
 }
 
@@ -1585,7 +1628,7 @@ function drawArtist( g, diy, sheet ) {
 
 function drawCopyright( g, diy, sheet, collectorX ) {
 	var faceIndex = sheet.getSheetIndex();
-	
+
 	var copyright = $Copyright;
 
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Copyright-region' ) );
@@ -1606,13 +1649,14 @@ function drawCopyright( g, diy, sheet, collectorX ) {
 }
 
 // draws collection, encounter, and copyright info, keeps track of offset because of Threads of Fate style regions
-function drawCollectorInfo( g, diy, sheet, collectionNumber, collectionSuffix, encounterNumber, encounterIcon, artistName ) {	
+//function drawCollectorInfo( g, diy, sheet, collectionNumber, collectionSuffix, encounterNumber, encounterIcon, artistName ) {	
+function drawCollectorInfo( g, diy, sheet, collectionNumberBox, collectionSuffix, encounterNumberBox, encounterIcon, copyrightBox, artistBox ) {	
 	var faceIndex = sheet.getSheetIndex();
 
 	var collectorX = sheet.getTemplateWidth();
 	
-	if ( collectionNumber ) {
-		collectorX = drawCollectionNumber( g, diy, sheet, collectionSuffix );
+	if ( collectionNumberBox ) {
+		collectorX = drawCollectionNumber( g, diy, sheet, collectionNumberBox, collectionSuffix );
 		collectorX -= 3;
 	}
 
@@ -1623,14 +1667,14 @@ function drawCollectorInfo( g, diy, sheet, collectionNumber, collectionSuffix, e
 		drawEncounterIcon( g, diy, sheet );
 	}
 	
-	if ( encounterNumber ) {
-		collectorX = drawEncounterInfo( g, diy, sheet, collectorX );
+	if ( encounterNumberBox ) {
+		collectorX = drawEncounterInfo( g, diy, sheet, encounterNumberBox, collectorX );
 		collectorX -= 20;
 	}
 	
-	collectorX = drawCopyright( g, diy, sheet, collectorX );
+	if ( copyrightBox ) collectorX = drawCopyright( g, diy, sheet, copyrightBox, collectorX );
 	
-	if ( artistName ) drawArtist( g, diy, sheet );
+	if ( artistBox ) drawArtist( g, diy, sheet, artistBox );
 }
 
 function drawSubtype( g, diy, sheet, box, text ) {
@@ -1769,7 +1813,7 @@ function drawSanity( g, diy, sheet ) {
 	}
 }
 
-function drawCollectionNumber( g, diy, sheet, drawSuffix ) {
+function drawCollectionNumber( g, diy, sheet, collectionNumberBox, drawSuffix ) {
 	var faceIndex = sheet.getSheetIndex();
 
 	var collectionNumber = $( 'CollectionNumber' + BindingSuffixes[faceIndex] );
@@ -1779,14 +1823,14 @@ function drawCollectionNumber( g, diy, sheet, drawSuffix ) {
 	if ( $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );
 	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 1;
 
-	Collection_box.markupText = collectionNumber;
+	collectionNumberBox.markupText = collectionNumber;
 	
 	if (drawSuffix) {
-		if (faceIndex == FACE_FRONT) Collection_box.markupText += 'a';
-		else Collection_box.markupText += 'b';
+		if (faceIndex == FACE_FRONT) collectionNumberBox.markupText += 'a';
+		else collectionNumberBox.markupText += 'b';
 	}
 	
-	var width = Collection_box.drawAsSingleLine( g, region );
+	var width = collectionNumberBox.drawAsSingleLine( g, region );
 	
 	return region.x + region.width - width;	// return left edge
 }
@@ -1811,7 +1855,9 @@ function drawCollectionIcon( g, diy, sheet, collectorX ) {
 
 	// resource
 	if ( $CollectionType == '0' ) {
-		icon = createInvertedImage( ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-' + iconName + '.png') );
+		// story collection icons are black
+		if ( CardTypes[faceIndex] == 'Story' ) icon = ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-' + iconName + '.png');
+		else icon = createInvertedImage( ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-' + iconName + '.png') );
 				
 		sheet.paintImage( g, icon, region );		
 	}
@@ -1829,7 +1875,9 @@ function drawCollectionIcon( g, diy, sheet, collectorX ) {
 	return region.x;
 }
 
-function drawEncounterInfo( g, diy, sheet, collectorX ) {
+function drawEncounterInfo( g, diy, sheet, encounterInfoBox, collectorX ) {
+	var faceIndex = sheet.getSheetIndex();
+
 	var encounterNumber = $( 'EncounterNumber' + BindingSuffixes[faceIndex] );
 	if (encounterNumber == null) encounterNumber = $EncounterNumber;
 
@@ -1838,9 +1886,10 @@ function drawEncounterInfo( g, diy, sheet, collectorX ) {
 
 	if ( encounterNumber == '' && encounterTotal == '' ) return 0;
 
-	var faceIndex = sheet.getSheetIndex();
+//?	var faceIndex = sheet.getSheetIndex();
 	
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'EncounterNumber-region' ) );
+
 	if ( $Orientation == 'Reversed' ) region = shiftRegion( region, CardTypes[faceIndex] );	
 
 	// x = left edge of region, using collectorX
@@ -1852,13 +1901,13 @@ function drawEncounterInfo( g, diy, sheet, collectorX ) {
 	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 1;
 
 	if ( Eons.namedObjects.AHLCGObject.OS == 'Mac' ) {
-		Encounter_box.markupText = encounterNumber + '\u200a/\u200a' + encounterTotal;
+		encounterInfoBox.markupText = encounterNumber + '\u200a/\u200a' + encounterTotal;
 	}
 	else {
-		Encounter_box.markupText = encounterNumber + ' / ' + encounterTotal;
+		encounterInfoBox.markupText = encounterNumber + ' / ' + encounterTotal;
 	}
-	
-	var width = Encounter_box.drawAsSingleLine( g, region );
+
+	var width = encounterInfoBox.drawAsSingleLine( g, region );
 
 	return region.x + region.width - width;		// return left edge
 }

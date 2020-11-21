@@ -995,14 +995,14 @@ function layoutText( bindings, parts, suffix, faceIndex ) {
 				tipCount = 0;
 				break;
 			case 'Victory':
-				if ( CardTypes[faceIndex] == 'Location' ) {
+//				if ( CardTypes[faceIndex] == 'Location' ) {
 					field = new textArea( '', 2, 30 );
 					bindings.add( key + BindingSuffixes[faceIndex], field, [ faceIndex ] );
-				}
-				else {
-					field = new textField( '', 30 );
-					bindings.add( key + BindingSuffixes[faceIndex], field, [ faceIndex ] );
-				}
+//				}
+//				else {
+//					field = new textField( '', 30 );
+//					bindings.add( key + BindingSuffixes[faceIndex], field, [ faceIndex ] );
+//				}
 				
 				tipCount = 1;
 				break;
@@ -1436,7 +1436,10 @@ function layoutCollection( bindings, portraitPanel, useSpinner, selectFaces, fac
 
 				PortraitList[ getPortraitIndex( 'Collection' ) ].setSource( icon );
 //				image = createInvertedImage( PortraitList[getPortraitIndex( 'Collection' )].getImage() );
-				image = createInvertedImage( ImageUtils.read( icon ) );
+				
+				if ( CardTypes[1] == 'Story') image = ImageUtils.read( icon );	// story/story
+				else image = createInvertedImage( ImageUtils.read( icon ) );
+				
 				PortraitList[ getPortraitIndex( 'Collection' ) ].setImage( icon, image );
 				portraitPanel.updatePanel();
 				setPortraitPanelFileFieldEnabled( portraitPanel, false );				

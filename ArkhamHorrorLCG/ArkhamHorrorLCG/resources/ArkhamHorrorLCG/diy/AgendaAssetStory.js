@@ -228,7 +228,8 @@ function paintFront( g, diy, sheet ) {
 
 	drawDoom( g, diy, sheet );
 
-	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+//	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+	drawCollectorInfo( g, diy, sheet, Collection_box, true, Encounter_box, true, Copyright_box, Artist_box );
 		
 	drawScenarioIndexFront( g, diy, sheet, #AHLCG-Label-Agenda, Index_box );
 }
@@ -258,7 +259,8 @@ function paintBack( g, diy, sheet ) {
 	
 	drawBody( g, diy, sheet, BackBody_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ) );
 
-	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+//	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+	drawCollectorInfo( g, diy, sheet, BackCollection_box, true, BackEncounter_box, true, BackCopyright_box, BackArtist_box );
 } 
 
 function onClear() {

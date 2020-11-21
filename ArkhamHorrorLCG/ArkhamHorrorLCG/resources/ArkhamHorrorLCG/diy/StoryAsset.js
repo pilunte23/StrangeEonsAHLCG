@@ -25,11 +25,12 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 	
-	diy.version = 11;
+	diy.version = 12;
 }
 
 function setDefaults() {
 	// front
+	$TraitsA = '';
 	$HeaderA = '';
 	$AccentedStoryA = '';
 	$RulesA = '';
@@ -40,6 +41,7 @@ function setDefaults() {
 	$AccentedStoryC = '';
 	$RulesC = '';
 
+	$TraitsASpacing = '0';
 	$HeaderASpacing = '0';
 	$AccentedStoryASpacing = '0';
 	$HeaderBSpacing = '0';
@@ -99,7 +101,7 @@ function createInterface( diy, editor ) {
 	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', BackTitlePanel, 'wrap, pushx, growx', BackStatsPanel, 'wrap, pushx, growx', CopyrightPanel, 'wrap, pushx, growx' );
 	StatisticsTab.addToEditor( editor , @AHLCG-General );
 
-	var TextPanelA = layoutText( bindings, [ 'Header', 'AccentedStory', 'Rules' ], 'A', FACE_FRONT );
+	var TextPanelA = layoutText( bindings, [ 'Traits', 'Header', 'AccentedStory', 'Rules' ], 'A', FACE_FRONT );
 	TextPanelA.setTitle( @AHLCG-Rules + ' (' + @AHLCG-Part + ' A)' );
 	TextPanelA.editorTabScrolling = true;
 
@@ -160,6 +162,10 @@ function createFrontPainter( diy, sheet ) {
 	Header_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Header-style'), null);
 	Header_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Header-alignment'));
 
+	Traits_box = markupBox(sheet);
+	Traits_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Header-style'), null);
+	Traits_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Header-alignment'));
+
 	Story_box = markupBox(sheet);
 	Story_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Story-style'), null);
 	Story_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Story-alignment'));
@@ -168,6 +174,7 @@ function createFrontPainter( diy, sheet ) {
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
 
+	initBodyTags( diy, Traits_box );	
 	initBodyTags( diy, Header_box );	
 	initBodyTags( diy, Story_box );	
 	initBodyTags( diy, Body_box );	
@@ -181,14 +188,6 @@ function createFrontPainter( diy, sheet ) {
 	Copyright_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'Copyright-alignment'));
  
 	initCopyrightTags( diy, Copyright_box );	
-
-	Collection_box = markupBox(sheet);
-	Collection_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'CollectionNumber-style'), null);
-	Collection_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'CollectionNumber-alignment'));
-
-	Encounter_box = markupBox(sheet);
-	Encounter_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'EncounterNumber-style'), null);
-	Encounter_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'EncounterNumber-alignment'));
 }
 
 function createBackPainter( diy, sheet ) {
@@ -229,6 +228,14 @@ function createBackPainter( diy, sheet ) {
 	BackCopyright_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_BACK, 'Copyright-alignment'));
  
 	initCopyrightTags( diy, BackCopyright_box );	
+
+	BackCollection_box = markupBox(sheet);
+	BackCollection_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_BACK, 'CollectionNumber-style'), null);
+	BackCollection_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_BACK, 'CollectionNumber-alignment'));
+
+	BackEncounter_box = markupBox(sheet);
+	BackEncounter_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'EncounterNumber-style'), null);
+	BackEncounter_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'EncounterNumber-alignment'));
 }
 
 function paintFront( g, diy, sheet ) {
@@ -238,7 +245,7 @@ function paintFront( g, diy, sheet ) {
 	drawLabel( g, diy, sheet, Label_box, #AHLCG-Label-Story );
 	drawName( g, diy, sheet, Name_box );
 
-	drawIndentedStoryBody( g, diy, sheet, Header_box, Story_box, Body_box );
+	drawIndentedStoryBody( g, diy, sheet, Traits_box, Header_box, Story_box, Body_box );
 
 	drawEncounterIcon( g, diy, sheet );	
 }
@@ -268,7 +275,8 @@ function paintBack( g, diy, sheet ) {
 	
 	drawBody( g, diy, sheet, BackBody_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ) );
 
-	drawCollectorInfo( g, diy, sheet, true, false, true, true, true );
+//	drawCollectorInfo( g, diy, sheet, true, false, true, true, true );
+	drawCollectorInfo( g, diy, sheet, BackCollection_box, false, BackEncounter_box, true, BackCopyright_box, BackArtist_box );
 }
 
 function onClear() {
@@ -294,11 +302,15 @@ function onRead(diy, oos) {
 	if ( diy.version < 11 ) {
 		$Slot2Back = 'None';
 	}
+	if ( diy.version < 12) {
+		$TraitsA = '';
+		$TraitsASpacing = '0';
+	}
 	
 	updateCollection();
 	updateEncounter();
 	
-	diy.version = 11;
+	diy.version = 12;
 }
 
 function onWrite( diy, oos ) {

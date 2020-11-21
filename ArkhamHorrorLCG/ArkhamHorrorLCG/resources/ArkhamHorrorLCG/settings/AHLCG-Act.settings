@@ -22,13 +22,13 @@ AHLCG-ActBack-Header-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily};
 AHLCG-ActBack-Header-tightness = 1.0
 
 #AHLCG-ActBack-Story-region = 127,38,355,310
-AHLCG-ActBack-Story-region = 127,34,355,310
+AHLCG-ActBack-Story-region = 127,32,355,316
 AHLCG-ActBack-Story-alignment = left
 AHLCG-ActBack-Story-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WIDTH: {Eons.namedObjects.AHLCGObject.bodyFontSpacing}; POSTURE: OBLIQUE; FOREGROUND: #000000
 AHLCG-ActBack-Story-tightness = 1.0
 
 #AHLCG-ActBack-Body-region = 112,38,370,310
-AHLCG-ActBack-Body-region = 112,34,370,310
+AHLCG-ActBack-Body-region = 112,32,370,316
 AHLCG-ActBack-Body-alignment = left
 #AHLCG-ActBack-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 7.8; WEIGHT: WEIGHT_MEDIUM; WIDTH: 1.05; FOREGROUND: #000000
 AHLCG-ActBack-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WEIGHT: WEIGHT_MEDIUM; WIDTH: {Eons.namedObjects.AHLCGObject.bodyFontSpacing}; FOREGROUND: #000000

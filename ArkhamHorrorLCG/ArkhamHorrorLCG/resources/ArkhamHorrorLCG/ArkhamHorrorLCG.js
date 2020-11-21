@@ -350,18 +350,21 @@ function gameObject( masterSettings ) {
 		'CustomEncounterSet',
 		'StrangeEons'
 	);
-
-	// Highest = 166
+				
+	// Highest = 198 (TIC)
 	// NameKey, CollectionID, Tag, Index into select keys
 	this.standardEncounterList = new Array(
+		[ 'APhantomOfTruth', 4, 'phntm', 50 ],
 		[ 'AbyssalGifts', 8, 'abygfts', 87 ],
 		[ 'AbyssalTribute', 8, 'abytrib', 88 ],
 		[ 'AlienInterference', 13, 'alnint', 161 ],
-		[ 'APhantomOfTruth', 4, 'phntm', 50 ],
+		[ 'AllOrNothing', 14, 'allornothing', 168 ],
 		[ 'AgentsOfAtlachNacha', 12, 'agtan', 141 ],
 		[ 'AgentsOfAzathoth', 10, 'agtaz', 107 ],
 		[ 'AgentsOfCthulhu', 0, 'agtcth', 0 ],
+		[ 'AgentsOfDagon', 22, 'agtdag', 187 ],
 		[ 'AgentsOfHastur', 0, 'agthas', 1 ],
+		[ 'AgentsOfHydra', 22, 'agyhyd', 188 ],
 		[ 'AgentsOfNyarlathotep', 12, 'agtnya', 142 ],
 		[ 'AgentsOfShubNiggurath', 0, 'agtshb', 2 ],
 		[ 'AgentsOfYig', 5, 'agtyig', 56 ],
@@ -385,8 +388,10 @@ function gameObject( masterSettings ) {
 		[ 'ChillingCold', 0, 'chlcld', 9 ],
 		[ 'CityOfSins', 10, 'ctysins', 111 ],
 		[ 'Corsairs', 12, 'cors', 145 ],
+		[ 'CreaturesOfTheDeep', 22, 'credeep', 189 ],
 		[ 'CreaturesOfTheUnderworld', 12, 'cotu', 146 ],
 		[ 'CreepingCold', 9, 'crpcld', 94 ],
+		[ 'CultOfPnakotus', 16, 'cltpna', 171 ],
 		[ 'CultOfTheYellowSign', 4, 'cltyel', 37 ],
 		[ 'CultOfUmordhoth', 0, 'cltumh', 10 ],
 		[ 'ReturnToCultOfUmordhoth', 7, 'cltumhr', 81 ],
@@ -403,6 +408,7 @@ function gameObject( masterSettings ) {
 		[ 'DescentIntoThePitch', 12, 'ditp', 148 ],
 		[ 'DimCarcosa', 4, 'dimcar', 55 ],
 		[ 'DisappearanceAtTheTwilightEstate', 10, 'datte', 112 ],
+		[ 'DoomedExpedition', 16, 'dmdexp', 172 ],
 		[ 'DreamersCurse', 12, 'drmcur', 149 ],
 		[ 'Dreamlands', 12, 'drmlnds', 150 ],
 		[ 'Dunwich', 1, 'dunwch', 32 ],
@@ -413,6 +419,8 @@ function gameObject( masterSettings ) {
 		[ 'ExcelsiorManagement', 13, 'exman', 163 ],
 		[ 'Expedition', 5, 'exped', 58 ],
 		[ 'ExtracurricularActivity', 1, 'extact', 13 ],
+		[ 'FloodedCaverns', 22, 'flocav', 190 ],
+		[ 'FogOverInnsmouth', 22, 'foginn', 191 ],
 		[ 'ForgottenRuins', 5, 'fruins', 59 ],
 		[ 'ForTheGreaterGood', 10, 'ftgg', 113 ],
 		[ 'Ghouls', 0, 'ghouls', 14 ],
@@ -423,6 +431,7 @@ function gameObject( masterSettings ) {
 		[ 'Hauntings', 4, 'haunt', 43 ],
 		[ 'HeartOfTheElders', 5, 'hrteld', 71 ],
 		[ 'HideousAbominations', 1, 'hidabo', 15 ],
+//		[ 'InTooDeep', 22, 'indeep', 199 ],
 		[ 'InexorableFate', 10, 'inexft', 114 ],
 		[ 'InhabitantsOfCarcosa', 4, 'inhcar', 49 ],
 		[ 'InTheClutchesOfChaos', 10, 'itcoc', 115 ],
@@ -430,7 +439,9 @@ function gameObject( masterSettings ) {
 		[ 'LockedDoors', 0, 'lckdrs', 16 ],
 		[ 'LostInTimeAndSpace', 1, 'litas', 36 ],
 		[ 'MaddeningDelusions', 11, 'maddel', 131 ],
+		[ 'Malfunction', 22, 'malfctn', 192 ],
 		[ 'MergingRealities', 12, 'merreal', 151 ],
+		[ 'MiGoIncursion', 15, 'migoinc', 170 ],
 		[ 'MurderAtTheExcelsiorHotelE', 13, 'matehe', 164 ],
 		[ 'MusicOfTheDamned', 10, 'motd', 116 ],
 		[ 'NaomisCrew', 1, 'naocrw', 17 ],
@@ -442,6 +453,7 @@ function gameObject( masterSettings ) {
 		[ 'Poison', 5, 'poison', 62 ],
 		[ 'Rainforest', 5, 'rainfst', 63 ],
 		[ 'Rats', 0, 'rats', 19 ],
+		[ 'ReadOrDie', 14, 'readordie', 167 ],
 		[ 'RealmOfDeath', 10, 'rlmdth', 117 ],
 		[ 'ResurgentEvils', 9, 'resevl', 96 ],
 		[ 'ReturnToAPhantomOfTruth', 11, 'rphntm', 133 ],
@@ -451,9 +463,18 @@ function gameObject( masterSettings ) {
 		[ 'ReturnToDimCarcosa', 11, 'rdimcar', 136 ],
 		[ 'ReturnToEchoesOfThePast', 11, 'rechoes', 137 ],
 		[ 'ReturnToExtracurricularActivities', 9, 'rextact', 98 ],
+		[ 'ReturnToHeartOfTheElders', 16, 'rhrteld', 173 ],
+		[ 'ReturnToKnYan', 16, 'rknyan', 174 ],
 		[ 'ReturnToLostInTimeAndSpace', 9, 'rtlitas', 99 ],
+		[ 'ReturnToPillarsOfJudgement', 16, 'rpiljdg', 175 ],
+		[ 'ReturnToShatteredAeons', 16, 'rshaaon', 176 ],
+		[ 'ReturnToTheBoundaryBeyond', 16, 'rbndry', 177 ],
+		[ 'ReturnToTheCityOfArchives', 16, 'rctyarc', 178 ],
+		[ 'ReturnToTheDepthsOfYoth', 16, 'rtdoy', 179 ],
 		[ 'ReturnToTheDevourerBelow', 7, 'rdevbel', 83 ],
+		[ 'ReturnToTheDoomOfEztli', 16, 'rdmeztli', 180 ],
 		[ 'ReturnToTheEssexCountyExpress', 9, 'resxexp', 100 ],
+		[ 'ReturnToTheRainforest', 16, 'rrainfst', 181 ],
 		[ 'ReturnToTheGathering', 7, 'rgather', 84 ],
 		[ 'ReturnToTheHouseAlwaysWins', 9, 'rhsewin', 101 ],
 		[ 'ReturnToTheLastKing', 11, 'rlstkng', 138 ],
@@ -461,13 +482,18 @@ function gameObject( masterSettings ) {
 		[ 'ReturnToTheMiskatonicMuseum', 9, 'rmskmus', 102 ],
 		[ 'ReturnToThePallidMask', 11, 'rpalmsk', 139 ],
 		[ 'ReturnToTheUnspeakableOath', 11, 'runspk', 140 ],	
+		[ 'ReturnToTheUntamedWilds', 16, 'runtmdwld', 182 ],
+		[ 'ReturnToThreadsOfFate', 16, 'rtof', 183 ],
+		[ 'ReturnToTurnBackTime', 16, 'rtbt', 184 ],
 		[ 'ReturnToUndimensionedAndUnseen', 9, 'rundim', 103 ],
 		[ 'ReturnToWhereDoomAwaits', 9, 'rtwda', 104 ],
+		[ 'RisingTide', 22, 'ristide', 193 ],
 		[ 'SandsOfEgypt', 8, 'sdsegpt', 90 ],
 		[ 'SecretDoors', 9, 'scrtdr', 105 ],
 		[ 'SecretsOfTheUniverse', 10, 'sotu', 118 ],
 		[ 'Serpents', 5, 'serpent', 64 ],
 		[ 'ShatteredAeons', 5, 'shaaon', 76 ],
+		[ 'ShatteredMemories', 22, 'shamem', 194 ],
 		[ 'SilverTwilightLodge', 10, 'siltwil', 119 ],
 		[ 'SingleGroup', 6, 'singrp', 80 ],
 		[ 'SinsOfThePast', 13, 'sotp', 165 ],
@@ -475,10 +501,13 @@ function gameObject( masterSettings ) {
 		[ 'SpectralPredators', 10, 'specpred', 120 ],
 		[ 'Spiders', 12, 'spdrs', 153 ],
 		[ 'StrikingFear', 0, 'strfr', 21 ],
+		[ 'Syzygy', 22, 'syzygy', 195 ],
 		[ 'TemporalFlux', 5, 'temflx', 65 ],
+		[ 'TemporalHunters', 16, 'tmphnt', 185 ],
 		[ 'TerrorOfTheVale', 12, 'totv', 154 ],
 		[ 'TheBayou', 2, 'bayou', 22 ],
 		[ 'TheBeyond', 1, 'beyond', 23 ],
+		[ 'TheBlobThatAteEverythingE', 15, 'blob', 169 ],
 		[ 'TheBoundaryBeyond', 5, 'bndry', 70 ],
 		[ 'TheCityOfArchives', 5, 'ctyarc', 75 ],	// this is out of order, cuz I'm dumb
 		[ 'TheDepthsOfYoth', 5, 'tdoy', 74 ],
@@ -492,15 +521,18 @@ function gameObject( masterSettings ) {
 		[ 'TheHouseAlwaysWins', 1, 'hsewin', 27 ],
 		[ 'TheLabyrinthsOfLunacyE', 6, 'lablun', 78 ],
 		[ 'TheLastKing', 4, 'lstkng', 44 ],
+		[ 'TheLocals', 22, 'locals', 196 ],
 		[ 'TheMidnightMasks', 0, 'midmsk', 28 ],
 		[ 'TheMiskatonicMuseum', 1, 'mskmus', 29 ],
 		[ 'TheNightsUsurper', 8, 'ntusrpr', 92 ],
 		[ 'ThePallidMask', 4, 'palmsk', 51 ],		
+		[ 'ThePitOfDespair', 22, 'pitdes', 197 ],
 		[ 'TheSearchForKadath', 12, 'tsfk', 155 ],
 		[ 'TheSecretName', 10, 'secrtnm', 121 ],
 		[ 'TheStranger', 4, 'strngr', 45 ],
 		[ 'TheUnspeakableOath', 4, 'unspk', 47 ],
 		[ 'TheUntamedWilds', 5, 'untmdwld', 67 ],
+		[ 'TheVanishingOfElinaHarper', 22, 'vaneh', 198],
 		[ 'TheVortexAbove', 4, 'vortex', 54 ],
 		[ 'TheWagesOfSin', 10, 'twos', 122 ],
 		[ 'TheWatcher', 10, 'watcher', 123 ],
@@ -510,6 +542,7 @@ function gameObject( masterSettings ) {
 		[ 'TurnBackTime', 5, 'tbt', 77 ],
 		[ 'UndimensionedAndUnseen', 1, 'undim', 34 ],
 		[ 'UnionAndDisillusion', 10, 'undis', 126 ],
+		[ 'VenomousHate', 16, 'vnmhate', 186 ],
 		[ 'VileExperiments', 13, 'vileex', 166 ],
 		[ 'WakingNightmare', 12, 'wkngnm', 156 ],
 		[ 'WeaverOfTheCosmos', 12, 'wotc', 157 ],
@@ -541,10 +574,19 @@ function gameObject( masterSettings ) {
 		[ 'ReturnToTheDunwichLegacy', 'rttdl' ],		//  9
 		[ 'TheCircleUndone', 'cirund' ],				// 10
 		[ 'ReturnToThePathToCarcosa', 'rttptc' ],		// 11
-		[ 'TheDreamEaters', 'dreeat' ],				// 12
-		[ 'MurderAtTheExcelsiorHotel', 'mateh' ]		// 13
+		[ 'TheDreamEaters', 'dreeat' ],					// 12
+		[ 'MurderAtTheExcelsiorHotel', 'mateh' ],		// 13
+		[ 'ParallelInvestigators', 'parallel' ],		// 14
+		[ 'TheBlobThatAteEverything', 'blob' ],			// 15
+		[ 'ReturnToTheForgottenAge', 'rttfa' ],			// 16
+		[ 'NathanielCho', 'natcho' ],					// 17
+		[ 'HarveyWalters', 'harwal' ],					// 18
+		[ 'WinifredHabbamock', 'winhab' ],				// 19
+		[ 'JacquelineFine', 'jacfin' ],					// 20
+		[ 'StellaClark', 'stecla' ],					// 21
+		[ 'TheInnsmouthConspiracy', 'tic' ]				// 22
 	);
-
+	
 	this.encounterTypes = new Array();
 	this.collectionTypes = new Array();
 
