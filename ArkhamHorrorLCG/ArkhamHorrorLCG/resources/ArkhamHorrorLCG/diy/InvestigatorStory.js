@@ -23,7 +23,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 	
-	diy.version = 12;
+	diy.version = 13;
 }
 
 function setDefaults() {
@@ -44,7 +44,33 @@ function setDefaults() {
 	$TraitsSpacing = '0';
 	$KeywordsSpacing = '0';
 	$RulesSpacing = '0';
-		
+
+	$Text1NameBack = 'Deck Size';
+	$Text1Back = '30.';
+	$Text1BackSpacing = '0';
+	$Text2NameBack = 'Secondary Class Choice';
+	$Text2Back = '';
+	$Text2BackSpacing = '0';
+	$Text3NameBack = 'Deckbuilding Options';
+	$Text3Back = '';
+	$Text3BackSpacing = '0';
+	$Text4NameBack = 'Deckbuilding Requirements</b> (do not count toward deck size)';
+	$Text4Back = '';
+	$Text4BackSpacing = '0';
+	$Text5NameBack = 'Deckbuilding Restrictions';
+	$Text5Back = '';
+	$Text5BackSpacing = '0';
+	$Text6NameBack = 'Additional Requirements';
+	$Text6Back = '';
+	$Text6BackSpacing = '0';
+	$Text7NameBack = 'Additional Restrictions';
+	$Text7Back = '';
+	$Text7BackSpacing = '0';
+	$Text8NameBack = '';
+	$Text8Back = '';
+
+	$InvStoryBack = '';
+/*	
 	$DeckSizeBack = '30';
 	$SecondaryClassBack = '';
 	$DeckOptionsBack = '';
@@ -54,7 +80,6 @@ function setDefaults() {
 	$SetupBack = '';
 	$StartingPlayAreaBack = '';
 	$OpeningHandBack = '';
-	$InvStoryBack = '';
 
 	$DeckSizeBackSpacing = '0';
 	$SecondaryClassBackSpacing = '0';
@@ -65,7 +90,7 @@ function setDefaults() {
 	$SetupBackSpacing = '0';
 	$StartingPlayAreaBackSpacing = '0';
 	$OpeningHandBackSpacing = '0';
-
+*/
 	$Artist = '';
 	$Copyright = '';
 
@@ -90,8 +115,10 @@ function createInterface( diy, editor ) {
 	TextTab.editorTabScrolling = true;
 	TextTab.addToEditor( editor, @AHLCG-Rules + ': ' + @AHLCG-Front );
 
-	var BackTextTab = layoutInvestigatorTextBack( bindings, FACE_BACK );
-	BackTextTab.editorTabScrolling = true;	
+	var BackTextArray = layoutInvestigatorTextBack( diy, bindings, FACE_BACK );
+	var BackTextTab = new Grid();
+	BackTextTab.editorTabScrolling = true;
+	BackTextTab.place(BackTextArray[0], 'wrap, pushx, growx', BackTextArray[1], 'wrap, pushx, growx' );
 	BackTextTab.addToEditor( editor, @AHLCG-Rules + ': ' + @AHLCG-Back );
 
 	PortraitTab = layoutPortraits( diy, bindings, 'TransparentPortrait', 'Portrait', true, false, false );
@@ -173,7 +200,8 @@ function createBackPainter( diy, sheet ) {
 	BackBody_box = markupBox(sheet);
 	BackBody_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Body-style'), null);
 	BackBody_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Body-alignment'));
-	createBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ), 'Neutral' );
+//	createBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ), 'Neutral' );
+	setBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ), 'Neutral' );
 
 	BackEncounter_box = markupBox(sheet);
 	BackEncounter_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'EncounterNumber-style'), null);
@@ -215,7 +243,8 @@ function paintBack( g, diy, sheet ) {
 
 	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, BackSubtitle_box, 'Neutral', false );
 
-	drawBody( g, diy, sheet, BackBody_box, new Array( 'DeckSize', 'SecondaryClass', 'DeckOptions', 'DeckRequirements', 'DeckRestrictions', 'AdditionalRequirements', 'Setup', 'StartingPlayArea', 'OpeningHand', 'InvStory' ) );
+//	drawBody( g, diy, sheet, BackBody_box, new Array( 'DeckSize', 'SecondaryClass', 'DeckOptions', 'DeckRequirements', 'DeckRestrictions', 'AdditionalRequirements', 'Setup', 'StartingPlayArea', 'OpeningHand', 'InvStory' ) );
+	drawInvBackBody( g, diy, sheet, BackBody_box, new Array( 'Text1', 'Text2', 'Text3', 'Text4', 'Text5', 'Text6', 'Text7', 'Text8', 'InvStory' ) );
 	
 	drawEncounterIcon( g, diy, sheet );
 } 
@@ -223,7 +252,7 @@ function paintBack( g, diy, sheet ) {
 function onClear() {
 	setDefaults();
 }
-
+/*
 function getPathPointArrays( className ) {
 	pointArray = [];
 
@@ -280,6 +309,12 @@ function createBackTextShape( textBox, textRegion, className ) {
 		
 	textBox.pageShape = PageShape.GeometricShape( path, textRegion );
 }
+*/
+function setBackTextShape( box, region, className ) {
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	box.pageShape = AHLCGObject.getInvestigatorBackTextShape( region, className );
+}
 
 // These can be used to perform special processing during open/save.
 // For example, you can seamlessly upgrade from a previous version
@@ -303,17 +338,44 @@ function onRead(diy, oos) {
 		$SecondaryClassBackSpacing = '0';
 	}
 	if ( diy.version < 12 ) {
-		$StartingPlayAreaBack = '';
-		$OpeningHandBack = '';
-		$InvStoryBack = '';
-		$SetupBackSpacing = '0';
-		$StartingPlayAreaBackSpacing = '0';
-		$OpeningHandBackSpacing = '0';
+//		$StartingPlayAreaBack = '';
+//		$OpeningHandBack = '';
+//		$InvStoryBack = '';
+//		$SetupBackSpacing = '0';
+//		$StartingPlayAreaBackSpacing = '0';
+//		$OpeningHandBackSpacing = '0';
+	}
+	if ( diy.version < 13 ) {
+		$Text1NameBack = 'Deck Size';
+		$Text2NameBack = 'Secondary Class Choice';
+		$Text3NameBack = 'Deckbuilding Options';
+		$Text4NameBack = 'Deckbuilding Requirements</b> (do not count toward deck size)';
+		$Text5NameBack = 'Deckbuilding Restrictions';
+		$Text6NameBack = 'Additional Requirements';
+		$Text7NameBack = 'Additional Restrictions';
+		$Text8NameBack = '';
+
+		$Text1Back = $DeckSizeBack;
+		$Text2Back = $SecondaryClassBack;
+		$Text3Back = $DeckOptionsBack;
+		$Text4Back = $DeckRequirementsBack;
+		$Text5Back = $DeckRestrictionsBack;
+		$Text6Back = $AdditionalReqirementsBack;
+		$Text7Back = '';
+		$Text8Back = '';
+
+		$Text1BackSpacing = $DeckSizeBackSpacing;
+		$Text2BackSpacing = $SecondaryClassBackSpacing;
+		$Text3BackSpacing = $DeckOptionsBackSpacing;
+		$Text4BackSpacing = $DeckRequirementsBackSpacing;
+		$Text5BackSpacing = $DeckRestrictionsBackSpacing;
+		$Text6BackSpacing = $AdditionalRequirementsBackSpacing;
+		$Text7BackSpacing = '0';
 	}
 	
 	updateCollection();
 	
-	diy.version = 12;
+	diy.version = 13;
 }
 
 function onWrite( diy, oos ) {

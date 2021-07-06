@@ -179,7 +179,8 @@ function createBackPainter( diy, sheet ) {
 	BackBody_box = markupBox(sheet);
 	BackBody_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Body-style'), null);
 	BackBody_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Body-alignment'));
-	createBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ) );
+//	createBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ) );
+	setBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ) );
 
 	initBodyTags( diy, BackBody_box );	
 	
@@ -248,7 +249,7 @@ function paintBack( g, diy, sheet ) {
 function onClear() {
 	setDefaults();
 }
-
+/*
 function createTextShape( textBox, textRegion, reverse ) {
 	var x = textRegion.x;
 	var y = textRegion.y;
@@ -315,6 +316,18 @@ function createBackTextShape( textBox, textRegion ) {
 	path.lineTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
 		
 	textBox.pageShape = PageShape.GeometricShape( path, textRegion );
+}
+*/
+function setTextShape( box, region, reverse ) {
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	box.pageShape = AHLCGObject.getAgendaTextShape( region, reverse );
+}
+
+function setBackTextShape( box, region ) {
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	box.pageShape = AHLCGObject.getEnemyTextShape( region );
 }
 
 // These can be used to perform special processing during open/save.

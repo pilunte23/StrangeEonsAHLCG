@@ -22,7 +22,7 @@ function create( diy ) {
 	createPortraits( diy, PortraitTypeList );
 	setDefaultCollection();
 	
-	diy.version = 11;
+	diy.version = 12;
 }
 
 function setDefaults() {
@@ -44,7 +44,33 @@ function setDefaults() {
 	$TraitsSpacing = '0';
 	$KeywordsSpacing = '0';
 	$RulesSpacing = '0';
-		
+	
+	$Text1NameBack = 'Deck Size';
+	$Text1Back = '30.';
+	$Text1BackSpacing = '0';
+	$Text2NameBack = 'Secondary Class Choice';
+	$Text2Back = '';
+	$Text2BackSpacing = '0';
+	$Text3NameBack = 'Deckbuilding Options';
+	$Text3Back = '';
+	$Text3BackSpacing = '0';
+	$Text4NameBack = 'Deckbuilding Requirements</b> (do not count toward deck size)';
+	$Text4Back = '';
+	$Text4BackSpacing = '0';
+	$Text5NameBack = 'Deckbuilding Restrictions';
+	$Text5Back = '';
+	$Text5BackSpacing = '0';
+	$Text6NameBack = 'Additional Requirements';
+	$Text6Back = '';
+	$Text6BackSpacing = '0';
+	$Text7NameBack = 'Additional Restrictions';
+	$Text7Back = '';
+	$Text7BackSpacing = '0';
+	$Text8NameBack = '';
+	$Text8Back = '';	
+
+	$InvStoryBack = '';	
+/*
 	$DeckSizeBack = '30';
 	$SecondaryClassBack = '';
 	$DeckOptionsBack = '';
@@ -59,7 +85,7 @@ function setDefaults() {
 	$DeckRequirementsBackSpacing = '0';
 	$DeckRestrictionsBackSpacing = '0';
 	$AdditionalRequirementsBackSpacing = '0';
-	
+*/
 	$Artist = '';
 	$Copyright = '';
 
@@ -84,8 +110,10 @@ function createInterface( diy, editor ) {
 	TextTab.editorTabScrolling = true;
 	TextTab.addToEditor( editor, @AHLCG-Rules + ': ' + @AHLCG-Front );
 
-	var BackTextTab = layoutInvestigatorTextBack( bindings, FACE_BACK );
-	BackTextTab.editorTabScrolling = true;	
+	var BackTextArray = layoutInvestigatorTextBack( diy, bindings, FACE_BACK );
+	var BackTextTab = new Grid();
+	BackTextTab.editorTabScrolling = true;
+	BackTextTab.place(BackTextArray[0], 'wrap, pushx, growx', BackTextArray[1], 'wrap, pushx, growx' );
 	BackTextTab.addToEditor( editor, @AHLCG-Rules + ': ' + @AHLCG-Back );
 
 	PortraitTab = layoutPortraits( diy, bindings, 'TransparentPortrait', 'Portrait', true, false, false );
@@ -155,7 +183,8 @@ function createBackPainter( diy, sheet ) {
 	BackBody_box = markupBox(sheet);
 	BackBody_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Body-style'), null);
 	BackBody_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Body-alignment'));
-	createBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ), $CardClass );
+//	createBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ), $CardClass );
+	setBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ), $CardClass );
 
 	initBodyTags( diy, BackBody_box );	
 }
@@ -183,6 +212,7 @@ function paintFront( g, diy, sheet ) {
 }
 
 function paintBack( g, diy, sheet ) {
+
 	clearImage( g, sheet );
 
 	PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
@@ -193,19 +223,21 @@ function paintBack( g, diy, sheet ) {
 
 	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, BackSubtitle_box, $CardClass, false );
 
-	drawBody( g, diy, sheet, BackBody_box, new Array( 'DeckSize', 'SecondaryClass', 'DeckOptions', 'DeckRequirements', 'DeckRestrictions', 'AdditionalRequirements', 'InvStory' ) );
+//	drawBody( g, diy, sheet, BackBody_box, new Array( 'DeckSize', 'SecondaryClass', 'DeckOptions', 'DeckRequirements', 'DeckRestrictions', 'AdditionalRequirements', 'InvStory' ) );
+	drawInvBackBody( g, diy, sheet, BackBody_box, new Array( 'Text1', 'Text2', 'Text3', 'Text4', 'Text5', 'Text6', 'Text7', 'Text8', 'InvStory' ) );
 } 
 
 function onClear() {
 	setDefaults();
 }
-
+/*
 function getPathPointArrays( className ) {
 	pointArray = [];
 
 	switch ( className )
 	{
 		case 'Guardian':
+		case 'ParallelGuardian':
 			pointArray[0] = new Array( 0.355, 0.337, 0.271, 0.267, 0.010, 0.010, 1.0, 1.0 );
 			pointArray[1] = new Array( 0.000, 0.566, 0.566, 0.600, 0.600, 1.000, 1.0, 0.0 );
 			break;
@@ -221,6 +253,7 @@ function getPathPointArrays( className ) {
 			pointArray[1] = new Array( 0.000, 0.511, 0.511, 0.583, 0.583, 1.0, 1.0, 0.0 );
 			break;
 		case 'Mystic':
+		case 'ParallelMystic':
 		case 'Survivor':
 			pointArray[0] = new Array( 0.355, 0.315, 0.276, 0.264, 0.010, 0.010, 1.0, 1.0 );
 //			pointArray[1] = new Array( 0.000, 0.544, 0.544, 0.631, 0.631, 1.000, 1.0, 0.0 );
@@ -260,6 +293,12 @@ function createBackTextShape( textBox, textRegion, className ) {
 		
 	textBox.pageShape = PageShape.GeometricShape( path, textRegion );
 }
+*/
+function setBackTextShape( box, region, className ) {
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	box.pageShape = AHLCGObject.getInvestigatorBackTextShape( region, className );
+}
 
 // These can be used to perform special processing during open/save.
 // For example, you can seamlessly upgrade from a previous version
@@ -282,10 +321,51 @@ function onRead(diy, oos) {
 		$SecondaryClassBack = '';
 		$SecondaryClassBackSpacing = '0';
 	}
+	if ( diy.version < 12 ) {
+		$Text1NameBack = 'Deck Size';
+		$Text2NameBack = 'Secondary Class Choice';
+		$Text3NameBack = 'Deckbuilding Options';
+		$Text4NameBack = 'Deckbuilding Requirements</b> (do not count toward deck size)';
+		$Text5NameBack = 'Deckbuilding Restrictions';
+		$Text6NameBack = 'Additional Requirements';
+		$Text7NameBack = 'Additional Restrictions';
+		$Text8NameBack = '';
+
+		$Text1Back = $DeckSizeBack;
+		$Text2Back = $SecondaryClassBack;
+		$Text3Back = $DeckOptionsBack;
+		$Text4Back = $DeckRequirementsBack;
+		$Text5Back = $DeckRestrictionsBack;
+		$Text6Back = $AdditionalReqirementsBack;
+		$Text7Back = '';
+		$Text8Back = '';
+
+		if ( $Text1Back == null ) $Text1Back = '';
+		if ( $Text2Back == null ) $Text2Back = '';
+		if ( $Text3Back == null ) $Text3Back = '';
+		if ( $Text4Back == null ) $Text4Back = '';
+		if ( $Text5Back == null ) $Text5Back = '';
+		if ( $Text6Back == null ) $Text6Back = '';
+
+		$Text1BackSpacing = $DeckSizeBackSpacing;
+		$Text2BackSpacing = $SecondaryClassBackSpacing;
+		$Text3BackSpacing = $DeckOptionsBackSpacing;
+		$Text4BackSpacing = $DeckRequirementsBackSpacing;
+		$Text5BackSpacing = $DeckRestrictionsBackSpacing;
+		$Text6BackSpacing = $AdditionalRequirementsBackSpacing;
+		$Text7BackSpacing = '0';
+
+		if ( $Text1BackSpacing == null ) $Text1BackSpacing = '0';
+		if ( $Text2BackSpacing == null ) $Text2BackSpacing = '0';
+		if ( $Text3BackSpacing == null ) $Text3BackSpacing = '0';
+		if ( $Text4BackSpacing == null ) $Text4BackSpacing = '0';
+		if ( $Text5BackSpacing == null ) $Text5BackSpacing = '0';
+		if ( $Text6BackSpacing == null ) $Text6BackSpacing = '0';
+	}
 	
 	updateCollection();
 	
-	diy.version = 11;
+	diy.version = 12;
 }
 
 function onWrite( diy, oos ) {

@@ -381,6 +381,9 @@ function layoutAssetStats( bindings, faceIndex ) {
 	var SkillList5 = new comboBox( AHLCGObject.comboSkills, null );
 	bindings.add( 'Skill5' + BindingSuffixes[faceIndex], SkillList5, [faceIndex] );
 	
+	var SkillList6 = new comboBox( AHLCGObject.comboSkills, null );
+	bindings.add( 'Skill6' + BindingSuffixes[faceIndex], SkillList6, [faceIndex] );
+	
 	var ClassList2 = new comboBox( AHLCGObject.comboClassesD, null );
 	bindings.add( 'CardClass2' + BindingSuffixes[faceIndex], ClassList2, [faceIndex] );
 
@@ -415,7 +418,8 @@ function layoutAssetStats( bindings, faceIndex ) {
 		@AHLCG-Stamina, 'align right, gapx 10', StaminaList, 'wrap, pushx, growx, sizegroup sp',
 		@AHLCG-Icon + ' 4', 'align right', SkillList4, 'pushx, growx, sizegroup sp',
 		@AHLCG-Sanity, 'align right, gapx 10', SanityList, 'wrap, pushx, growx, sizegroup sp',
-		@AHLCG-Icon + ' 5', 'align right', SkillList5, 'pushx, growx, sizegroup sp'
+		@AHLCG-Icon + ' 5', 'align right', SkillList5, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Icon + ' 6', 'align right', SkillList6, 'pushx, growx, sizegroup sp'
 		);
 
 	return StatsPanel;
@@ -566,9 +570,13 @@ function layoutEventStats( diy, bindings, faceIndex ) {
 		try {
 			let className = (String)(ClassList.getSelectedItem());
 			if ( className == 'Weakness' || className == 'BasicWeakness' ) {
-				createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'WeaknessBody-region') ) );
+//				createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'WeaknessBody-region') ) );
+				setTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'WeaknessBody-region') ) );
 			}
-			else createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );			
+			else {
+//				createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );			
+				setTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );
+			}
 		} catch ( ex if ex instanceof ReferenceError ) {
 			// means Body_box has not been created yet (during createInterface)
 			// we can safely ignore this
@@ -623,7 +631,8 @@ function layoutInvestigatorStats( diy, bindings, faceIndex ) {
 
 	ClassList.addActionListener( function updateShape( actionEvent ) {
 		try {
-			createBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ), (String)(ClassList.getSelectedItem()) );			
+//			createBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ), (String)(ClassList.getSelectedItem()) );			
+			setBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ), (String)(ClassList.getSelectedItem() ) );
 		} catch ( ex if ex instanceof ReferenceError ) {
 			// means Body_box has not been created yet (during createInterface)
 			// we can safely ignore this
@@ -803,6 +812,9 @@ function layoutSkillStats( bindings, faceIndex ) {
 	var SkillList5 = new comboBox( AHLCGObject.comboSkills, null );
 	bindings.add( 'Skill5' + BindingSuffixes[faceIndex], SkillList5, [faceIndex] );
 	
+	var SkillList6 = new comboBox( AHLCGObject.comboSkills, null );
+	bindings.add( 'Skill6' + BindingSuffixes[faceIndex], SkillList6, [faceIndex] );
+	
 	var LevelList = new comboBox( AHLCGObject.comboLevelsN, null );
 	bindings.add( 'Level' + BindingSuffixes[faceIndex], LevelList, [faceIndex] );
 
@@ -813,7 +825,8 @@ function layoutSkillStats( bindings, faceIndex ) {
 		@AHLCG-Icon + ' 2', 'align right', SkillList2, 'wrap, pushx, growx, sizegroup sp',
 		@AHLCG-Icon + ' 3', 'align right', SkillList3, 'wrap, pushx, growx, sizegroup sp',
 		@AHLCG-Icon + ' 4', 'align right', SkillList4, 'wrap, pushx, growx, sizegroup sp',
-		@AHLCG-Icon + ' 5', 'align right', SkillList5, 'pushx, growx, sizegroup sp'
+		@AHLCG-Icon + ' 5', 'align right', SkillList5, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Icon + ' 6', 'align right', SkillList6, 'pushx, growx, sizegroup sp'
 		);
 		
 	return StatPanel;
@@ -888,6 +901,29 @@ function layoutChaosStats( bindings, faceIndex ) {
 		);
 	
 	return StatsPanel;
+}
+
+function layoutStoryStats( bindings, faceIndex ) {
+	var StatPanel = new Grid();
+	StatPanel.setTitle( @AHLCG-BasicData );
+
+	var TemplateList = new comboBox( Eons.namedObjects.AHLCGObject.comboStoryTemplate, null );
+	bindings.add( 'Template' + BindingSuffixes[faceIndex], TemplateList, [faceIndex] );
+	
+	TemplateList.addActionListener( function updateTemplate( actionEvent ) {
+		if ( (String)(TemplateList.getSelectedItem()) == 'Story' ) {
+ 			CardTypes[faceIndex] = 'Story';
+ 		}
+ 		else {
+ 			CardTypes[faceIndex] = 'Chaos';
+ 		}
+	});
+	
+	StatPanel.place(
+		@AHLCG-Template, 'align right', TemplateList, 'pushx, growx, sizegroup sp'
+		);
+
+	return StatPanel;
 }
 
 function layoutConnections( bindings, updateFaces, faceIndex ) {
@@ -1070,6 +1106,169 @@ function layoutText( bindings, parts, suffix, faceIndex ) {
 	return TextPanel;
 }
 
+function layoutVictoryText( bindings, faceIndex ) {	
+	var TextPanel = new Grid();
+	TextPanel.setTitle( @AHLCG-Victory );
+	
+	var spaceSpinner = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Victory' + BindingSuffixes[faceIndex] + 'Spacing', spaceSpinner, [ faceIndex ] );
+
+	var field = new textArea( '', 2, 30 );
+	bindings.add( 'Victory' + BindingSuffixes[faceIndex], field, [ faceIndex ] );
+				
+	var tip = new tipButton( @AHLCG-VictoryTip1 );
+
+	TextPanel.place(
+		@AHLCG-Spacing, 'align right', spaceSpinner, 'wrap',
+		@AHLCG-Victory, 'aligny top, gaptop 5, align right', field, 'pushx, growx',
+		tip, 'wrap, aligny top, gaptop 5'
+	);
+
+	return TextPanel;
+}
+
+function layoutInvestigatorTextBack( diy, bindings, faceIndex ) {
+	var StylePanel = new Grid();
+	StylePanel.setTitle( @AHLCG-Sections );
+	var TextPanel = new Grid();
+	TextPanel.setTitle( @AHLCG-Rules );
+	
+	var StandardButton = new button( @AHLCG-Standard );
+	var PrologueButton = new button( @AHLCG-TCUPrologue );
+
+	StylePanel.place(
+		StandardButton, 'pushx, growx',
+		PrologueButton, 'pushx, growx'
+		);
+
+	var name1 = new textField( '', 30 );
+	bindings.add( 'Text1Name' + BindingSuffixes[faceIndex], name1, [ faceIndex ] );
+	var text1 = new textArea( '', 4, 30, true );
+	bindings.add( 'Text1' + BindingSuffixes[faceIndex], text1, [faceIndex] );
+	var spinner1 = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Text1' + BindingSuffixes[faceIndex] + 'Spacing', spinner1, [faceIndex] );
+		
+	var name2 = new textField( '', 30 );
+	bindings.add( 'Text2Name' + BindingSuffixes[faceIndex], name2, [ faceIndex ] );
+	var text2 = new textArea( '', 4, 30, true );
+	bindings.add( 'Text2' + BindingSuffixes[faceIndex], text2, [faceIndex] );
+	var spinner2 = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Text2' + BindingSuffixes[faceIndex] + 'Spacing', spinner2, [faceIndex] );
+
+	var name3 = new textField( '', 30 );
+	bindings.add( 'Text3Name' + BindingSuffixes[faceIndex], name3, [ faceIndex ] );
+	var text3 = new textArea( '', 4, 30, true );
+	bindings.add( 'Text3' + BindingSuffixes[faceIndex], text3, [faceIndex] );
+	var spinner3 = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Text3' + BindingSuffixes[faceIndex] + 'Spacing', spinner3, [faceIndex] );
+
+	var name4 = new textField( '', 30 );
+	bindings.add( 'Text4Name' + BindingSuffixes[faceIndex], name4, [ faceIndex ] );
+	var text4 = new textArea( '', 4, 30, true );
+	bindings.add( 'Text4' + BindingSuffixes[faceIndex], text4, [faceIndex] );
+	var spinner4 = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Text4' + BindingSuffixes[faceIndex] + 'Spacing', spinner4, [faceIndex] );
+
+	var name5 = new textField( '', 30 );
+	bindings.add( 'Text5Name' + BindingSuffixes[faceIndex], name5, [ faceIndex ] );
+	var text5 = new textArea( '', 4, 30, true );
+	bindings.add( 'Text5' + BindingSuffixes[faceIndex], text5, [faceIndex] );
+	var spinner5 = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Text5' + BindingSuffixes[faceIndex] + 'Spacing', spinner5, [faceIndex] );
+
+	var name6 = new textField( '', 30 );
+	bindings.add( 'Text6Name' + BindingSuffixes[faceIndex], name6, [ faceIndex ] );
+	var text6 = new textArea( '', 4, 30, true );
+	bindings.add( 'Text6' + BindingSuffixes[faceIndex], text6, [faceIndex] );
+	var spinner6 = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Text6' + BindingSuffixes[faceIndex] + 'Spacing', spinner6, [faceIndex] );
+
+	var name7 = new textField( '', 30 );
+	bindings.add( 'Text7Name' + BindingSuffixes[faceIndex], name7, [ faceIndex ] );
+	var text7 = new textArea( '', 4, 30, true );
+	bindings.add( 'Text7' + BindingSuffixes[faceIndex], text7, [faceIndex] );
+	var spinner7 = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Text7' + BindingSuffixes[faceIndex] + 'Spacing', spinner7, [faceIndex] );
+
+	var name8 = new textField( '', 30 );
+	bindings.add( 'Text8Name' + BindingSuffixes[faceIndex], name8, [ faceIndex ] );
+	var text8 = new textArea( '', 4, 30, true );
+	bindings.add( 'Text8' + BindingSuffixes[faceIndex], text8, [faceIndex] );
+
+	var storyText = new textArea( '', 12, 30, true );
+	bindings.add( 'InvStory' + BindingSuffixes[faceIndex], storyText, [faceIndex] );
+
+	TextPanel.place(
+		@AHLCG-Section + ' 1', 'align right', name1, 'wrap, pushx, growx', 
+		@AHLCG-Text, 'align right', text1, 'wrap, pushx, growx',
+		@AHLCG-Spacing, 'align right', spinner1, 'wrap',
+		@AHLCG-Section + ' 2', 'align right', name2, 'wrap, pushx, growx', 
+		@AHLCG-Text, 'align right', text2, 'wrap, pushx, growx',
+		@AHLCG-Spacing, 'align right', spinner2, 'wrap',
+		@AHLCG-Section + ' 3', 'align right', name3, 'wrap, pushx, growx', 
+		@AHLCG-Text, 'align right', text3, 'wrap, pushx, growx',
+		@AHLCG-Spacing, 'align right', spinner3, 'wrap',
+		@AHLCG-Section + ' 4', 'align right', name4, 'wrap, pushx, growx', 
+		@AHLCG-Text, 'align right', text4, 'wrap, pushx, growx',
+		@AHLCG-Spacing, 'align right', spinner4, 'wrap',
+		@AHLCG-Section + ' 5', 'align right', name5, 'wrap, pushx, growx', 
+		@AHLCG-Text, 'align right', text5, 'wrap, pushx, growx',
+		@AHLCG-Spacing, 'align right', spinner5, 'wrap',
+		@AHLCG-Section + ' 6', 'align right', name6, 'wrap, pushx, growx', 
+		@AHLCG-Text, 'align right', text6, 'wrap, pushx, growx',
+		@AHLCG-Spacing, 'align right', spinner6, 'wrap',
+		@AHLCG-Section + ' 7', 'align right', name7, 'wrap, pushx, growx', 
+		@AHLCG-Text, 'align right', text7, 'wrap, pushx, growx',
+		@AHLCG-Spacing, 'align right', spinner7, 'wrap',
+		@AHLCG-Section + ' 8', 'align right', name8, 'wrap, pushx, growx', 
+		@AHLCG-Text, 'align right', text8, 'wrap, pushx, growx',
+		@AHLCG-Story, 'align right', storyText, 'pushx, growx'
+		);
+
+	StandardButton.addActionListener( function updateHeaders( actionEvent ) {
+//		name1.setText('Testing');
+		name1.setText( 'Deck Size' );
+		name2.setText( 'Secondary Class Choice' );
+		name3.setText( 'Deckbuilding Options' );
+		name4.setText( 'Deckbuilding Requirements</b> (do not count toward deck size)' );
+		name5.setText( 'Deckbuilding Restrictions' );
+		name6.setText( 'Additional Requirements' );
+		name7.setText( 'Additional Restrictions' );
+		name8.setText( '' );
+
+		text1.viewport.getView().setText('30.');
+		text2.viewport.getView().setText('');
+		text3.viewport.getView().setText('');
+		text4.viewport.getView().setText('');
+		text5.viewport.getView().setText('');
+		text6.viewport.getView().setText('');
+		text7.viewport.getView().setText('');
+		text8.viewport.getView().setText('');
+	});
+		
+	PrologueButton.addActionListener( function updateHeaders( actionEvent ) {
+		name1.setText( 'Setup' );
+		name2.setText( 'Starting Play Area' );
+		name3.setText( 'Opening Hand' );
+		name4.setText( '' );
+		name5.setText( '' );
+		name6.setText( '' );
+		name7.setText( '' );
+		name8.setText( '' );
+
+		text1.viewport.getView().setText('');
+		text2.viewport.getView().setText('');
+		text3.viewport.getView().setText('');
+		text4.viewport.getView().setText('');
+		text5.viewport.getView().setText('');
+		text6.viewport.getView().setText('');
+		text7.viewport.getView().setText('');
+		text8.viewport.getView().setText('');
+	});
+
+	return [ StylePanel, TextPanel ];
+}
+/*
 function layoutInvestigatorTextBack( bindings, faceIndex ) {
 	var TextPanel = new Grid();
 	TextPanel.setTitle( @AHLCG-Rules );
@@ -1109,7 +1308,7 @@ function layoutInvestigatorTextBack( bindings, faceIndex ) {
 
 	var additionalRequirementsSpinner = new spinner( 0, 50, 1, 1 );
 	bindings.add( 'AdditionalRequirements' + BindingSuffixes[faceIndex] + 'Spacing', additionalRequirementsSpinner, [faceIndex] );
-/*
+/-*
 	var setupText = new textArea( '', 4, 30, true );
 	bindings.add( 'Setup' + BindingSuffixes[faceIndex], setupText, [faceIndex] );
 
@@ -1127,7 +1326,7 @@ function layoutInvestigatorTextBack( bindings, faceIndex ) {
 
 	var handSpinner = new spinner( 0, 50, 1, 1 );
 	bindings.add( 'OpeningHand' + BindingSuffixes[faceIndex] + 'Spacing', handSpinner, [faceIndex] );
-*/
+*-/
 	var storyText = new textArea( '', 12, 30, true );
 	bindings.add( 'InvStory' + BindingSuffixes[faceIndex], storyText, [faceIndex] );
 
@@ -1155,7 +1354,7 @@ function layoutInvestigatorTextBack( bindings, faceIndex ) {
 
 	return TextPanel;
 }
-
+*/
 // header = story/chaos
 function layoutChaosText( bindings, faceIndex, header ) {
 	var TextPanel = new Grid();

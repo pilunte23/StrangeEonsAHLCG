@@ -14,12 +14,12 @@ AHLCG-AgendaPortrait-BackPortrait-portrait-pany = 0
 AHLCG-AgendaPortrait-BackPortrait-portrait-clip-region = 0,0,525,375
 AHLCG-AgendaPortrait-Encounter-portrait-clip-region = 33,235,38,38
 AHLCG-AgendaPortrait-ReturnEncounter-portrait-clip-region = 29,231,45,45
-AHLCG-AgendaPortrait-Artist-region = 14,365,129,10
-AHLCG-AgendaPortrait-Copyright-region = 208,365,80,10
-AHLCG-AgendaPortrait-Collection-portrait-clip-region = 471,362,13,13
+AHLCG-AgendaPortrait-Artist-region = 14,363,129,10
+AHLCG-AgendaPortrait-Copyright-region = 208,363,80,10
+AHLCG-AgendaPortrait-Collection-portrait-clip-region = 471,360,13,13
 
-AHLCG-AgendaPortrait-CollectionNumber-region = 472,365,37,10
+AHLCG-AgendaPortrait-CollectionNumber-region = 472,363,37,10
 
-AHLCG-AgendaPortrait-EncounterNumber-region = 402,365,55,10
+AHLCG-AgendaPortrait-EncounterNumber-region = 402,363,55,10
 AHLCG-AgendaPortrait-EncounterNumber-alignment = center, middle
 AHLCG-AgendaPortrait-EncounterNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 4.5; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF

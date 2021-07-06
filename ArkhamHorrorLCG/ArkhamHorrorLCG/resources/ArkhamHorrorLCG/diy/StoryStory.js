@@ -25,11 +25,13 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 	
-	diy.version = 12;
+	diy.version = 14;
 }
 
 function setDefaults() {
 	// front
+	$Template = 'Story';
+	
 	$TraitsA = '';
 	$HeaderA = '';
 	$AccentedStoryA = '';
@@ -49,6 +51,8 @@ function setDefaults() {
 	$HeaderCSpacing = '0';
 	$AccentedStoryCSpacing = '0';
 
+	$Victory = '';
+	$VictorySpacing = '0';
 	$ScaleModifier = '100';
 
 	// back
@@ -71,6 +75,8 @@ function setDefaults() {
 	$HeaderCBackSpacing = '0';
 	$AccentedStoryCBackSpacing = '0';
 
+	$VictoryBack = '';
+	$VictoryBackSpacing = '0';
 	$ScaleModifierBack = '100';
 	
 	$Copyright = '';
@@ -83,13 +89,15 @@ function createInterface( diy, editor ) {
 
 	var TitlePanel = layoutTitle( diy, bindings, false, [0], FACE_FRONT );
 	TitlePanel.setTitle( @AHLCG-Title + ': ' + @AHLCG-Front );
+	var StatPanel = layoutStoryStats( bindings, FACE_FRONT );
+	StatPanel.setTitle( @AHLCG-BasicData + ': ' + @AHLCG-Front );
 	var BackTitlePanel = layoutTitle( diy, bindings, false, [1], FACE_BACK );
 	BackTitlePanel.setTitle( @AHLCG-Title + ': ' + @AHLCG-Back );
 	var CopyrightPanel = layoutCopyright( bindings, [0, 1], FACE_FRONT );
 
 	var StatisticsTab = new Grid();
 	StatisticsTab.editorTabScrolling = true;
-	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', BackTitlePanel, 'wrap, pushx, growx', CopyrightPanel, 'wrap, pushx, growx' );
+	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', StatPanel, 'wrap, pushx, growx', BackTitlePanel, 'wrap, pushx, growx', CopyrightPanel, 'wrap, pushx, growx' );
 	StatisticsTab.addToEditor( editor , @AHLCG-General );
 
 //	var TextPanelTrait = layoutText( bindings, [ 'Traits' ], '', FACE_FRONT );
@@ -108,12 +116,21 @@ function createInterface( diy, editor ) {
 	TextPanelC.setTitle( @AHLCG-Rules + ' (' + @AHLCG-Part + ' C)' );
 	TextPanelC.editorTabScrolling = true;
 
+	var VictoryPanel = layoutVictoryText( bindings, FACE_FRONT );
+
 	var scaleSpinner = new spinner( 50, 150, 1, 100 );
 	bindings.add( 'ScaleModifier', scaleSpinner, [0] );
 
 	var TextTab = new Grid();
 	TextTab.editorTabScrolling = true;
-	TextTab.place(TextPanelA, 'wrap, pushx, growx', TextPanelB, 'wrap, pushx, growx', TextPanelC, 'wrap, pushx, growx', @AHLCG-TextScale, 'align left, split', scaleSpinner, 'align left', '%', 'wrap, align left' );
+	TextTab.place(
+		TextPanelA, 'wrap, pushx, growx', 
+		TextPanelB, 'wrap, pushx, growx', 
+		TextPanelC, 'wrap, pushx, growx', 
+		VictoryPanel, 'wrap, pushx, growx',
+		@AHLCG-TextScale, 'align left, split', scaleSpinner, 'align left', '%', 'wrap, align left'
+	);
+	
 	TextTab.addToEditor( editor, @AHLCG-Rules + ': ' + @AHLCG-Front );
 
 //	var BackTextPanelTrait = layoutText( bindings, [ 'Traits' ], '', FACE_BACK );
@@ -132,12 +149,21 @@ function createInterface( diy, editor ) {
 	BackTextPanelC.setTitle( @AHLCG-Rules + ' (' + @AHLCG-Part + ' C)' );
 	BackTextPanelC.editorTabScrolling = true;
 
+	var BackVictoryPanel = layoutVictoryText( bindings, FACE_BACK );
+
 	var backScaleSpinner = new spinner( 50, 150, 1, 100 );
 	bindings.add( 'ScaleModifierBack', backScaleSpinner, [1] );
 
 	var BackTextTab = new Grid();
 	BackTextTab.editorTabScrolling = true;
-	BackTextTab.place(BackTextPanelA, 'wrap, pushx, growx', BackTextPanelB, 'wrap, pushx, growx', BackTextPanelC, 'wrap, pushx, growx', @AHLCG-TextScale, 'align left, split', backScaleSpinner, 'align left', '%', 'wrap, align left' );
+	BackTextTab.place(
+		BackTextPanelA, 'wrap, pushx, growx', 
+		BackTextPanelB, 'wrap, pushx, growx', 
+		BackTextPanelC, 'wrap, pushx, growx', 
+		BackVictoryPanel, 'wrap, pushx, growx',
+		@AHLCG-TextScale, 'align left, split', backScaleSpinner, 'align left', '%', 'wrap, align left'
+	);
+	
 	BackTextTab.addToEditor( editor, @AHLCG-Rules + ': ' + @AHLCG-Back );
 
 	var CollectionImagePanel = new portraitPanel( diy, getPortraitIndex( 'Collection' ), @AHLCG-CustomCollection );
@@ -160,9 +186,10 @@ function createInterface( diy, editor ) {
 }
 
 function createFrontPainter( diy, sheet ) {
+	// always use Story settings, Chaos doesn't have label or Story settings
 	Label_box = markupBox(sheet);
-	Label_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Label-style'), null);
-	Label_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Label-alignment'));
+	Label_box.defaultStyle = diy.settings.getTextStyle('AHLCG-Story-Label-style', null);
+	Label_box.alignment = diy.settings.getTextAlignment('AHLCG-Story-Label-alignment');
 
 	Name_box = markupBox(sheet);
 	Name_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Name-style'), null);
@@ -181,9 +208,9 @@ function createFrontPainter( diy, sheet ) {
 	Header_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Header', '-tightness') + '-tightness') );	
 
 	Story_box = markupBox(sheet);
-	Story_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Story-style'), null);
-	Story_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Story-alignment'));
-	Story_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Story', '-tightness') + '-tightness') );	
+	Story_box.defaultStyle = diy.settings.getTextStyle('AHLCG-Story-Story-style', null);
+	Story_box.alignment = diy.settings.getTextAlignment('AHLCG-Story-Story-alignment');
+	Story_box.setLineTightness( $('AHLCG-Story-Story-tightness') );	
 
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
@@ -211,9 +238,10 @@ function createFrontPainter( diy, sheet ) {
 }
 
 function createBackPainter( diy, sheet ) {
+	// always use Story settings, Chaos doesn't have label or Story settings
 	BackLabel_box  = markupBox(sheet);
-	BackLabel_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Label-style'), null);
-	BackLabel_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Label-alignment'));
+	BackLabel_box.defaultStyle = diy.settings.getTextStyle('AHLCG-Story-Label-style', null);
+	BackLabel_box.alignment = diy.settings.getTextAlignment('AHLCG-Story-Label-alignment');
 
 	BackName_box = markupBox(sheet);
 	BackName_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Name-style'), null);
@@ -232,9 +260,9 @@ function createBackPainter( diy, sheet ) {
 	BackHeader_box.setLineTightness( $(getExpandedKey(FACE_BACK, 'Header', '-tightness') + '-tightness') );	
 
 	BackStory_box = markupBox(sheet);
-	BackStory_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Story-style'), null);
-	BackStory_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Story-alignment'));
-	BackStory_box.setLineTightness( $(getExpandedKey(FACE_BACK, 'Story', '-tightness') + '-tightness') );	
+	BackStory_box.defaultStyle = diy.settings.getTextStyle('AHLCG-Story-Story-style', null);
+	BackStory_box.alignment = diy.settings.getTextAlignment('AHLCG-Story-Story-alignment');
+	BackStory_box.setLineTightness( $('AHLCG-Story-Story-tightness') );	
 
 	BackBody_box = markupBox(sheet);
 	BackBody_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Body-style'), null);
@@ -265,8 +293,17 @@ function paintFront( g, diy, sheet ) {
 	clearImage( g, sheet );
 
 	drawTemplate( g, sheet, '' );
-	drawLabel( g, diy, sheet, Label_box, #AHLCG-Label-Story );
-	drawName( g, diy, sheet, Name_box );
+	
+	Name_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Name-style'), null);
+	Name_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'Name-alignment'));
+
+	if ( $Template == 'Story' ) {
+		drawLabel( g, diy, sheet, Label_box, #AHLCG-Label-Story );
+		drawName( g, diy, sheet, Name_box );
+	}
+	else {
+		if ( diy.name != '' ) y = drawChaosName( g, diy, sheet, Name_box );
+	}
 
 	drawIndentedStoryBody( g, diy, sheet, Traits_box, Header_box, Story_box, Body_box );
 
@@ -292,7 +329,7 @@ function paintBack( g, diy, sheet ) {
 function onClear() {
 	setDefaults();
 }
-
+/*
 function createBackTextShape( textBox, textRegion ) {
 	var x = textRegion.x;
 	var y = textRegion.y;
@@ -322,7 +359,7 @@ function createBackTextShape( textBox, textRegion ) {
 		
 	textBox.pageShape = PageShape.GeometricShape( path, textRegion );
 }
-
+*/
 // These can be used to perform special processing during open/save.
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
@@ -342,8 +379,17 @@ function onRead(diy, oos) {
 		$TraitsABack = '';
 		$TraitsABackSpacing = '0';
 	}
+	if ( diy.version < 13 ) {
+		$Victory = '';
+		$VictorySpacing = '0';
+		$VictoryBack = '';
+		$VictoryBackSpacing = '0';
+	}
+	if ( diy.version < 14 ) {
+		$Template = 'Story';
+	}
 	
-	diy.version = 12;
+	diy.version = 14;
 }
 
 function onWrite( diy, oos ) {

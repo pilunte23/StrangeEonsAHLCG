@@ -25,7 +25,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 
-	diy.version = 11;
+	diy.version = 11z;
 }
 
 function setDefaults() {

@@ -3,8 +3,12 @@ AHLCG-GuideA4-Default-template = ArkhamHorrorLCG/templates/AHLCG-GuideA4Empty.jp
 AHLCG-GuideA4-Name-region = 375,312,490,46
 AHLCG-GuideA4-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 20.0; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #FFFFFF
 
-AHLCG-GuideA4-ResHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #492925
-AHLCG-GuideA4-SAHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #3d534e
+#AHLCG-GuideA4-ResHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #492925
+#AHLCG-GuideA4-SAHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #3d534e
+#AHLCG-Guide75-KeyHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #7e0607
+AHLCG-GuideA4-ResHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #63251d
+AHLCG-GuideA4-SAHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #2d5b58
+AHLCG-GuideA4-KeyHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #7e0607
 AHLCG-GuideA4-Header-alignment = center
 
 AHLCG-GuideA4-Body-region = 65,65,1109,1624

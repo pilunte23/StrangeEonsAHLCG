@@ -23,7 +23,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 	
-	diy.version = 10;
+	diy.version = 12;
 }
 
 function setDefaults() {
@@ -40,6 +40,9 @@ function setDefaults() {
 	
 	$AgendaStorySpacing = '0';
 		
+	$Artist = '';
+	$Copyright = '';
+
 	// back
 	$TitleBack = '';
 
@@ -60,10 +63,9 @@ function setDefaults() {
 	$HeaderCBackSpacing = '0';
 	$AccentedStoryCBackSpacing = '0';
 		
-	$ScaleModifier = '100';
-		
-	$Artist = '';
-	$Copyright = '';
+	$VictoryBack = '';
+	$VictoryBackSpacing = '0';
+	$ScaleModifier = '100';		
 }
 
 function createInterface( diy, editor ) {
@@ -105,12 +107,21 @@ function createInterface( diy, editor ) {
 	BackTextPanelC.setTitle( @AHLCG-Rules + ' (' + @AHLCG-Part + ' C)' );
 	BackTextPanelC.editorTabScrolling = true;
 
+	var VictoryPanel = layoutVictoryText( bindings, FACE_BACK );
+
 	var scaleSpinner = new spinner( 50, 150, 1, 100 );
 	bindings.add( 'ScaleModifier', scaleSpinner, [1] );
 
 	var BackTextTab = new Grid();
 	BackTextTab.editorTabScrolling = true;
-	BackTextTab.place(BackTextPanelA, 'wrap, pushx, growx', BackTextPanelB, 'wrap, pushx, growx', BackTextPanelC, 'wrap, pushx, growx', @AHLCG-TextScale, 'align left, split', scaleSpinner, 'align left', '%', 'wrap, align left' );
+	BackTextTab.place(
+		BackTextPanelA, 'wrap, pushx, growx', 
+		BackTextPanelB, 'wrap, pushx, growx', 
+		BackTextPanelC, 'wrap, pushx, growx', 
+		VictoryPanel, 'wrap, pushx, growx',
+		@AHLCG-TextScale, 'align left, split', scaleSpinner, 'align left', '%', 'wrap, align left' 
+	);
+	
 	BackTextTab.addToEditor( editor, @AHLCG-Rules + ': ' + @AHLCG-Back );
 
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
@@ -232,7 +243,7 @@ function paintBack( g, diy, sheet ) {
 function onClear() {
 	setDefaults();
 }
-
+/*
 function createTextShape( textBox, textRegion, reverse ) {
 	var x = textRegion.x;
 	var y = textRegion.y;
@@ -269,6 +280,12 @@ function createTextShape( textBox, textRegion, reverse ) {
 	path.lineTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
 		
 	textBox.pageShape = PageShape.GeometricShape( path, textRegion );
+}
+*/
+function setTextShape( box, region, reverse ) {
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	box.pageShape = AHLCGObject.getAgendaTextShape( region, reverse );
 }
 
 // These can be used to perform special processing during open/save.
@@ -309,11 +326,15 @@ function onRead(diy, oos) {
 	if ( diy.version < 10 ) {
 		$Asterisk = '0';
 	}
+	if ( diy.version < 12 ) {
+		$VictoryBack = '';
+		$VictoryBackSpacing = '0';
+	}
 	
 	updateCollection();
 	updateEncounter();
 
-	diy.version = 10;
+	diy.version = 12;
 }
 
 function onWrite( diy, oos ) {

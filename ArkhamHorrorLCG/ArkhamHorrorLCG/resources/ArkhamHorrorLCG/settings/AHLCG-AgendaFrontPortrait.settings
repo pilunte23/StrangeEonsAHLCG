@@ -27,21 +27,21 @@ AHLCG-AgendaFrontPortrait-DefaultEncounter-portrait-clip-region = 38,216,28,28
 AHLCG-AgendaFrontPortrait-ReturnEncounter-portrait-clip-region = 34,212,35,35
 AHLCG-AgendaFrontPortrait-DefaultReturnEncounter-portrait-clip-region = 34,212,35,35
 
-AHLCG-AgendaFrontPortrait-Artist-region = 14,365,129,10
-AHLCG-AgendaFrontPortrait-Copyright-region = 208,365,80,10
+AHLCG-AgendaFrontPortrait-Artist-region = 14,363,129,10
+AHLCG-AgendaFrontPortrait-Copyright-region = 208,363,80,10
 
 AHLCG-AgendaFrontPortrait-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-AgendaFrontPortrait-Collection-portrait-pany = 0
 
-AHLCG-AgendaFrontPortrait-Collection-portrait-clip-region = 471,362,13,13
-AHLCG-AgendaFrontPortrait-DefaultCollection-portrait-clip-region = 471,362,13,13
+AHLCG-AgendaFrontPortrait-Collection-portrait-clip-region = 471,360,13,13
+AHLCG-AgendaFrontPortrait-DefaultCollection-portrait-clip-region = 471,360,13,13
 
-AHLCG-AgendaFrontPortrait-CollectionNumber-region = 472,365,37,10
+AHLCG-AgendaFrontPortrait-CollectionNumber-region = 472,363,37,10
 
 AHLCG-AgendaFrontPortrait-ScenarioIndex-region = 314,8,134,21
 AHLCG-AgendaFrontPortrait-ScenarioIndex-alignment = center, middle
 AHLCG-AgendaFrontPortrait-ScenarioIndex-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.scenarioIndexSize}; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
 
-AHLCG-AgendaFrontPortrait-EncounterNumber-region = 401,365,55,10
+AHLCG-AgendaFrontPortrait-EncounterNumber-region = 401,363,55,10
 AHLCG-AgendaFrontPortrait-EncounterNumber-alignment = right, middle
 AHLCG-AgendaFrontPortrait-EncounterNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF

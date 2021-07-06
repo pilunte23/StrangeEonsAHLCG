@@ -23,7 +23,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 	
-	diy.version = 10;
+	diy.version = 12;
 }
 
 function setDefaults() {
@@ -59,6 +59,8 @@ function setDefaults() {
 	$HeaderCBackSpacing = '0';
 	$AccentedStoryCBackSpacing = '0';
 		
+	$VictoryBack = '';
+	$VictoryBackSpacing = '0';
 	$ScaleModifier = '100';
 		
 	$Artist = '';
@@ -104,12 +106,21 @@ function createInterface( diy, editor ) {
 	BackTextPanelC.setTitle( @AHLCG-Rules + ' (' + @AHLCG-Part + ' C)' );
 	BackTextPanelC.editorTabScrolling = true;
 
+	var VictoryPanel = layoutVictoryText( bindings, FACE_BACK );
+
 	var scaleSpinner = new spinner( 50, 150, 1, 100 );
 	bindings.add( 'ScaleModifier', scaleSpinner, [1] );
 
 	var BackTextTab = new Grid();
 	BackTextTab.editorTabScrolling = true;
-	BackTextTab.place(BackTextPanelA, 'wrap, pushx, growx', BackTextPanelB, 'wrap, pushx, growx', BackTextPanelC, 'wrap, pushx, growx', @AHLCG-TextScale, 'align left, split', scaleSpinner, 'align left', '%', 'wrap, align left' );
+	BackTextTab.place(
+		BackTextPanelA, 'wrap, pushx, growx', 
+		BackTextPanelB, 'wrap, pushx, growx', 
+		BackTextPanelC, 'wrap, pushx, growx', 
+		VictoryPanel, 'wrap, pushx, growx',
+		@AHLCG-TextScale, 'align left, split', scaleSpinner, 'align left', '%', 'wrap, align left'
+	);
+	
 	BackTextTab.addToEditor( editor, @AHLCG-Rules + ': ' + @AHLCG-Back );
 
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
@@ -143,7 +154,7 @@ function createFrontPainter( diy, sheet ) {
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
-	updateReversableTextBoxShape( diy, $Orientation );
+//	updateReversableTextBoxShape( diy, $Orientation );
 
 	initBodyTags( diy, Body_box );	
 	
@@ -231,7 +242,7 @@ function paintBack( g, diy, sheet ) {
 function onClear() {
 	setDefaults();
 }
-
+/*
 function createTextShape( textBox, textRegion, reverse ) {
 	var x = textRegion.x;
 	var y = textRegion.y;
@@ -269,7 +280,7 @@ function createTextShape( textBox, textRegion, reverse ) {
 		
 	textBox.pageShape = PageShape.GeometricShape( path, textRegion );
 }
-
+*/
 // These can be used to perform special processing during open/save.
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
@@ -308,11 +319,15 @@ function onRead(diy, oos) {
 	if ( diy.version < 10 ) {
 		$Asterisk = '0';
 	}
+	if ( diy.version < 12 ) {
+		$VictoryBack = ''
+		$VictoryBackSpacing = '0';
+	}
 	
 	updateCollection();
 	updateEncounter();
 
-	diy.version = 10;
+	diy.version = 12;
 }
 
 function onWrite( diy, oos ) {

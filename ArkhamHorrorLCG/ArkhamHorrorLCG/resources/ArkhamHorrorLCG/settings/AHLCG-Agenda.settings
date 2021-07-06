@@ -33,8 +33,8 @@ AHLCG-Agenda-Portrait-portrait-clip-region = 0,0,305,375
 AHLCG-Agenda-DefaultPortrait-portrait-clip-region = 0,0,305,375
 
 AHLCG-Agenda-Doom-region = 233,291,50,49
-AHLCG-Agenda-DoomPerInv-region = 227,291,50,48
-AHLCG-Agenda-PerInv-region = 254,293,30,48
+AHLCG-Agenda-DoomPerInv-region = 228,291,50,48
+AHLCG-Agenda-PerInv-region = 254,291,30,48
 
 AHLCG-Agenda-Dash-tint = 38.0, 0.14, 1.0
 
@@ -48,19 +48,19 @@ AHLCG-Agenda-DefaultReturnEncounter-portrait-clip-region = 364,22,35,35
 AHLCG-AgendaBack-Encounter-portrait-clip-region = 27,57,36,36
 AHLCG-AgendaBack-ReturnEncounter-portrait-clip-region = 20,50,49,48
 
-AHLCG-Agenda-Artist-region = 220,365,120,10
+AHLCG-Agenda-Artist-region = 220,363,120,10
 #AHLCG-Agenda-Copyright-region = 343,365,89,10
-AHLCG-Agenda-Copyright-region = 322,365,80,10
+AHLCG-Agenda-Copyright-region = 322,363,80,10
 
 AHLCG-Agenda-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Agenda-Collection-portrait-pany = 0
 
-AHLCG-Agenda-Collection-portrait-clip-region = 476,362,13,13
-AHLCG-Agenda-DefaultCollection-portrait-clip-region = 476,362,13,13
+AHLCG-Agenda-Collection-portrait-clip-region = 476,360,13,13
+AHLCG-Agenda-DefaultCollection-portrait-clip-region = 476,360,13,13
 
 #AHLCG-Agenda-CollectionNumber-region = 499,365,21,10
 #AHLCG-Agenda-CollectionNumber-region = 483,365,37,10
-AHLCG-Agenda-CollectionNumber-region = 472,365,37,10
+AHLCG-Agenda-CollectionNumber-region = 472,363,37,10
 
 AHLCG-Agenda-ScenarioIndex-region = 314,8,134,21
 AHLCG-Agenda-ScenarioIndex-alignment = center, middle
@@ -72,6 +72,6 @@ AHLCG-AgendaBack-ScenarioIndex-style = FAMILY: {Eons.namedObjects.AHLCGObject.bo
 
 #AHLCG-Agenda-EncounterNumber-region = 432,365,35,10
 #AHLCG-Agenda-EncounterNumber-region = 422,365,45,10
-AHLCG-Agenda-EncounterNumber-region = 401,365,55,10
+AHLCG-Agenda-EncounterNumber-region = 401,363,55,10
 AHLCG-Agenda-EncounterNumber-alignment = right, middle
 AHLCG-Agenda-EncounterNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF

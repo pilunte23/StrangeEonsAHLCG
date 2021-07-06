@@ -22,6 +22,16 @@ AHLCG-Chaos-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZ
 AHLCG-Chaos-BodyIcon-region = 44,148,47,47
 AHLCG-Chaos-Body-tightness = 1.0
 
+# Chaos template story cards
+AHLCG-Chaos-BodyStory-region = 36,130,305,352
+AHLCG-Chaos-BodyStory-alignment = left
+AHLCG-Chaos-BodyStory-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize*1.02}; WIDTH: 0.88; POSTURE: OBLIQUE; FOREGROUND: #000000
+AHLCG-Chaos-BodyStory-tightness = 1.15
+AHLCG-Chaos-StoryStory-region = 51,130,290,352
+AHLCG-Chaos-StoryStory-alignment = left
+AHLCG-Chaos-StoryStory-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize*1.02}; WIDTH: 0.88; POSTURE: OBLIQUE; FOREGROUND: #000000
+AHLCG-Chaos-StoryStory-tightness = 1.15
+
 AHLCG-Chaos-TrackerBox-region = 35,369,299,93
 AHLCG-Chaos-TrackerName-region = 45,375,279,20
 AHLCG-Chaos-TrackerName-alignment = center, middle
@@ -37,14 +47,14 @@ AHLCG-Chaos-ReturnEncounter-portrait-clip-region = 169,54,35,35
 #AHLCG-Chaos-EncounterNumber-alignment = right, middle
 #AHLCG-Chaos-EncounterNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 
-AHLCG-Chaos-Copyright-region = 19,515,102,10
+AHLCG-Chaos-Copyright-region = 19,513,102,10
 AHLCG-Chaos-Copyright-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 AHLCG-Chaos-Copyright-alignment = left, middle
 
 AHLCG-Chaos-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Chaos-Collection-portrait-pany = 0
 
-AHLCG-Chaos-DefaultCollection-portrait-clip-region = 320,510,13,13
-AHLCG-Chaos-Collection-portrait-clip-region = 320,510,13,13
+AHLCG-Chaos-DefaultCollection-portrait-clip-region = 320,513,13,13
+AHLCG-Chaos-Collection-portrait-clip-region = 320,513,13,13
 
 #AHLCG-Chaos-CollectionNumber-region = 333,515,21,10

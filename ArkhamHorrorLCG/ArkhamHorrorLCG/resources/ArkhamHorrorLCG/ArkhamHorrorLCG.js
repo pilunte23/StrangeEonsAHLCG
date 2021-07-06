@@ -9,6 +9,7 @@ useLibrary('tints');
 
 useLibrary( 'diy' );
 useLibrary( 'ui' );
+useLibrary( 'markup' );
 
 importClass( arkham.diy.ListItem );
 importClass( resources.StrangeImage );
@@ -105,9 +106,9 @@ function gameObject( masterSettings ) {
 	this.bodyTraitSize = 7;
 	this.bodyTraitSpacing = 0.97;
 	this.bodyFlavorSize = 7.0;
-	this.bodyFlavorSpacing = 0.92;
+	this.bodyFlavorSpacing = 0.97;
 	this.bodyStorySize = 7.8;
-	this.bodyStorySpacing = 0.92;
+	this.bodyStorySpacing = 0.97;
 	this.collectionSize = 4.0;
 	this.subtitleSize = 6.0;
 	this.smallLabelSize = 4.7;
@@ -118,23 +119,27 @@ function gameObject( masterSettings ) {
 	this.scenarioIndexBackSize = 4.4;
 	this.difficultySize = 5.8;
 	
+	this.symbolSize = 7;
+//	if ( this.OS == "Mac" ) this.symbolSize = 7;
+	
 	if (fontFamily == 'Arno Pro') {
 		this.bodyFamily = 'Arno Pro';
 
-		if ( this.OS == "Mac" ) this.bodyFontTightness = 0.58;
-		else this.bodyFontTightness = 0.90;
-		
-		this.bodyFontSize = this.bodyFontSize * 1.08;
+//		if ( this.OS == "Mac" ) 
+		this.bodyFontTightness = 0.58;
+//		else this.bodyFontTightness = 0.90;
+		this.bodyFontSpacing = 0.9;
+		this.bodyFontSize = this.bodyFontSize * 1.12;
 		this.bodyTraitSize = this.bodyTraitSize * 1.12;
 		this.bodyFlavorSize = this.bodyFlavorSize * 1.12;
 		this.bodyStorySize = this.bodyStorySize * 1.12;
-		this.subtitleSize = this.subtitleSize * 1.08;
+		this.subtitleSize = this.subtitleSize * 1.12;
 		this.smallLabelSize = this.smallLabelSize * 1.08;
 		this.largeLabelSize = this.largeLabelSize * 1.08;
 		this.subtypeSize = this.subtypeSize * 1.08;
 		this.collectionSize = this.collectionSize * 1.12;
-		this.bodyFlavorSpacing = 0.96;
-		this.subtitleFontSpacing = 0.97;
+		this.bodyFlavorSpacing = 0.95;
+		this.subtitleFontSpacing = 0.95;
 		this.scenarioIndexSize = this.scenarioIndexSize * 1.08;
 		this.scenarioIndexBackSize = this.scenarioIndexBackSize * 1.08;
 		this.difficultySize = this.difficultySize * 1.08;		
@@ -159,8 +164,10 @@ function gameObject( masterSettings ) {
 		ListItem( 'Mystic', @AHLCG-Class-Mystic ),
 		ListItem( 'Survivor', @AHLCG-Class-Survivor ),
 		ListItem( 'Neutral', @AHLCG-Class-Neutral ),
+		ListItem( 'ParallelGuardian', @AHLCG-Class-ParallelGuardian ),
 		ListItem( 'ParallelSeeker', @AHLCG-Class-ParallelSeeker ),
-		ListItem( 'ParallelRogue', @AHLCG-Class-ParallelRogue ) );
+		ListItem( 'ParallelRogue', @AHLCG-Class-ParallelRogue ),
+		ListItem( 'ParallelMystic', @AHLCG-Class-ParallelMystic ) );
 		
 	this.comboClassesBW = new Array( 
 		ListItem( 'Guardian', @AHLCG-Class-Guardian ),
@@ -275,6 +282,10 @@ function gameObject( masterSettings ) {
 		ListItem( 'TopRightCorner', @AHLCG-Guide-TopRightCorner ),
 		ListItem( 'BottomRightCorner', @AHLCG-Guide-BottomRightCorner ) );
 
+	this.comboStoryTemplate = new Array( 
+		ListItem( 'Story', @AHLCG-StoryTemplate-Story ),
+		ListItem( 'Token effects', @AHLCG-StoryTemplate-Token ) );
+
 	this.comboStat = new Array();
 	for( let index = 0; index <= 6; index++ ){
 		this.comboStat[this.comboStat.length] = ListItem( index, String(index) );
@@ -303,7 +314,7 @@ function gameObject( masterSettings ) {
 		ListItem( '-', '-' ),
 		ListItem( '?', '?' ),
 		ListItem( 'X', 'X' ) );
-	for( let index = 0; index <= 9; index++ ){
+	for( let index = 0; index <= 29; index++ ){
 		this.comboEnemyStat[this.comboEnemyStat.length] = ListItem( index, String(index) );
 	}
 
@@ -311,7 +322,7 @@ function gameObject( masterSettings ) {
 		ListItem( '-', '-' ),
 		ListItem( '?', '?' ),
 		ListItem( 'X', 'X' ) );
-	for( let index = 0; index <= 19; index++ ){
+	for( let index = 0; index <= 30; index++ ){
 		this.comboEnemyHealth[this.comboEnemyHealth.length] = ListItem( index, String(index) );
 	}
 
@@ -350,10 +361,11 @@ function gameObject( masterSettings ) {
 		'CustomEncounterSet',
 		'StrangeEons'
 	);
-				
-	// Highest = 198 (TIC)
+								
+	// Highest = 208 (WoToG)
 	// NameKey, CollectionID, Tag, Index into select keys
 	this.standardEncounterList = new Array(
+		[ 'ALightInTheFog', 22, 'alitf', 199 ],
 		[ 'APhantomOfTruth', 4, 'phntm', 50 ],
 		[ 'AbyssalGifts', 8, 'abygfts', 87 ],
 		[ 'AbyssalTribute', 8, 'abytrib', 88 ],
@@ -385,6 +397,7 @@ function gameObject( masterSettings ) {
 		[ 'BrotherhoodOfTheBeast', 8, 'bhdbst', 89 ],
 		[ 'Byakhee', 4, 'byak', 48 ],
 		[ 'CarnevaleOfHorrorsE', 3, 'carhor', 8 ],
+		[ 'ChildrenOfParadise', 23, 'chpar', 205 ],
 		[ 'ChillingCold', 0, 'chlcld', 9 ],
 		[ 'CityOfSins', 10, 'ctysins', 111 ],
 		[ 'Corsairs', 12, 'cors', 145 ],
@@ -401,11 +414,13 @@ function gameObject( masterSettings ) {
 		[ 'DarkRituals', 13, 'dkrit', 162 ],
 		[ 'DarkSideOfTheMoon', 12, 'dsotm', 147 ],
 		[ 'DeadlyTraps', 5, 'deadtrp', 57 ],
+		[ 'DeathOfStars', 23, 'dthstrs', 206 ],
 		[ 'DecayAndFilth', 4, 'decay', 39 ],
 		[ 'DecayingReality', 11, 'decrea', 128 ],
 		[ 'Delusions', 4, 'delusn', 40 ],
 		[ 'DelusoryEvils', 11, 'delevl', 129 ],
 		[ 'DescentIntoThePitch', 12, 'ditp', 148 ],
+		[ 'DevilReef', 22, 'devreef', 200 ],
 		[ 'DimCarcosa', 4, 'dimcar', 55 ],
 		[ 'DisappearanceAtTheTwilightEstate', 10, 'datte', 112 ],
 		[ 'DoomedExpedition', 16, 'dmdexp', 172 ],
@@ -431,10 +446,12 @@ function gameObject( masterSettings ) {
 		[ 'Hauntings', 4, 'haunt', 43 ],
 		[ 'HeartOfTheElders', 5, 'hrteld', 71 ],
 		[ 'HideousAbominations', 1, 'hidabo', 15 ],
-//		[ 'InTooDeep', 22, 'indeep', 199 ],
+		[ 'HorrorInHighGear', 22, 'hihg', 201 ],
+		[ 'InTheClutchesOfChaos', 10, 'itcoc', 115 ],
+		[ 'InTooDeep', 22, 'indeep', 202 ],
 		[ 'InexorableFate', 10, 'inexft', 114 ],
 		[ 'InhabitantsOfCarcosa', 4, 'inhcar', 49 ],
-		[ 'InTheClutchesOfChaos', 10, 'itcoc', 115 ],
+		[ 'IntoTheMaelstrom', 22, 'inmael', 203 ],
 		[ 'KnYan', 5, 'knyan', 73 ],
 		[ 'LockedDoors', 0, 'lckdrs', 16 ],
 		[ 'LostInTimeAndSpace', 1, 'litas', 36 ],
@@ -466,7 +483,7 @@ function gameObject( masterSettings ) {
 		[ 'ReturnToHeartOfTheElders', 16, 'rhrteld', 173 ],
 		[ 'ReturnToKnYan', 16, 'rknyan', 174 ],
 		[ 'ReturnToLostInTimeAndSpace', 9, 'rtlitas', 99 ],
-		[ 'ReturnToPillarsOfJudgement', 16, 'rpiljdg', 175 ],
+		[ 'ReturnToPillarsOfJudgment', 16, 'rpiljdg', 175 ],
 		[ 'ReturnToShatteredAeons', 16, 'rshaaon', 176 ],
 		[ 'ReturnToTheBoundaryBeyond', 16, 'rbndry', 177 ],
 		[ 'ReturnToTheCityOfArchives', 16, 'rctyarc', 178 ],
@@ -501,6 +518,7 @@ function gameObject( masterSettings ) {
 		[ 'SpectralPredators', 10, 'specpred', 120 ],
 		[ 'Spiders', 12, 'spdrs', 153 ],
 		[ 'StrikingFear', 0, 'strfr', 21 ],
+		[ 'SwarmOfAssimilation', 23, 'swmass', 207 ],
 		[ 'Syzygy', 22, 'syzygy', 195 ],
 		[ 'TemporalFlux', 5, 'temflx', 65 ],
 		[ 'TemporalHunters', 16, 'tmphnt', 185 ],
@@ -520,6 +538,7 @@ function gameObject( masterSettings ) {
 		[ 'TheGathering', 0, 'gather', 26 ],
 		[ 'TheHouseAlwaysWins', 1, 'hsewin', 27 ],
 		[ 'TheLabyrinthsOfLunacyE', 6, 'lablun', 78 ],
+		[ 'TheLairOfDagon', 22, 'tlod', 204 ],
 		[ 'TheLastKing', 4, 'lstkng', 44 ],
 		[ 'TheLocals', 22, 'locals', 196 ],
 		[ 'TheMidnightMasks', 0, 'midmsk', 28 ],
@@ -545,6 +564,7 @@ function gameObject( masterSettings ) {
 		[ 'VenomousHate', 16, 'vnmhate', 186 ],
 		[ 'VileExperiments', 13, 'vileex', 166 ],
 		[ 'WakingNightmare', 12, 'wkngnm', 156 ],
+		[ 'WarOfTheOuterGodsE', 23, 'wotog', 208 ],
 		[ 'WeaverOfTheCosmos', 12, 'wotc', 157 ],
 		[ 'WhereDoomAwaits', 1, 'wda', 35 ],
 		[ 'WhereTheGodsDwell', 12, 'wtgd', 158 ],
@@ -584,7 +604,8 @@ function gameObject( masterSettings ) {
 		[ 'WinifredHabbamock', 'winhab' ],				// 19
 		[ 'JacquelineFine', 'jacfin' ],					// 20
 		[ 'StellaClark', 'stecla' ],					// 21
-		[ 'TheInnsmouthConspiracy', 'tic' ]				// 22
+		[ 'TheInnsmouthConspiracy', 'tic' ],			// 22
+		[ 'WarOfTheOuterGods', 'cwotog' ]	 			// 23
 	);
 	
 	this.encounterTypes = new Array();
@@ -670,4 +691,360 @@ function gameObject( masterSettings ) {
 
 		ig.dispose();
 	}	
+	
+	this.actTextShapes = new Array( null, null );
+	this.agendaTextShapes = new Array( null, null );
+	this.enemyPageShape = null;
+	this.eventTextShape = null;
+	this.locationTextShape = null;
+	this.locationBackTextShape = null;
+	this.skillTextShape = null;
+	this.investigatorBackTextShapes = [];
+	
+	this.getIntBoxTint = function () {
+		if ( this.intBoxTint ) return this.intBoxTint;
+		
+		this.intBoxTint = new TintCache( new TintFilter() );
+		this.intBoxTint.setImage( ImageUtils.get( 'ArkhamHorrorLCG/overlays/AHLCG-BoxIntRed.png') );
+						
+		return this.intBoxTint;
+	};
+	this.getIntMidTint = function () {
+		if ( this.intMidTint ) return this.intMidTint;
+		
+		this.intMidTint = new TintCache( new TintFilter() );
+		this.intMidTint.setImage( ImageUtils.get( 'ArkhamHorrorLCG/overlays/AHLCG-BoxIntLineRed.png' ) );
+
+		return this.intMidTint;
+	};
+	this.getBracketTint = function () {
+		if ( this.bracketTint ) return this.bracketTint;
+		
+		this.bracketTint = new TintCache( new TintFilter() );
+		this.bracketTint.setImage( ImageUtils.get( 'ArkhamHorrorLCG/overlays/AHLCG-BoxResBracketRed.png') );
+						
+		return this.bracketTint;
+	};
+	this.getResBoxTint = function () {
+		if ( this.resBoxTint ) return this.resBoxTint;
+		
+		this.resBoxTint = new TintCache( new TintFilter() );
+		this.resBoxTint.setImage( ImageUtils.get( 'ArkhamHorrorLCG/overlays/AHLCG-BoxResRed.png') );
+						
+		return this.resBoxTint;
+	};
+	this.getResMidTint = function () {
+		if ( this.resMidTint ) return this.resMidTint;
+		
+		this.resMidTint = new TintCache( new TintFilter() );
+		this.resMidTint.setImage( ImageUtils.get( 'ArkhamHorrorLCG/overlays/AHLCG-BoxResLineRed.png' ) );
+
+		return this.resMidTint;
+	};
+	this.getActTextShape = function ( region, reverse ) {
+		let nReverse = Number(reverse);
+
+		if ( this.actTextShapes[nReverse] ) return this.actTextShapes[nReverse];
+		
+		var x = region.x;
+		var y = region.y;
+		var w = region.width;
+		var h = region.height;
+	
+		var path = new java.awt.geom.Path2D.Double();
+
+		var xPathPoints = new Array( 0.000, 0.000, 0.715, 0.830, 0.830, 1.000, 1.000 );
+		var yPathPoints = new Array( 0.000, 1.000, 1.000, 0.957, 0.850, 0.850, 0.000 );
+	
+		var numPoints = xPathPoints.length;
+	
+		if ( reverse ) {
+			// swap order and x-value
+			for (let i = 0; i < numPoints / 2; i++) {
+				let px = xPathPoints[i];
+				let py = yPathPoints[i];
+			
+				xPathPoints[i] = 1.000 - xPathPoints[numPoints - i - 1];
+				yPathPoints[i] = yPathPoints[numPoints - i - 1];
+			
+				xPathPoints[numPoints - i - 1] = 1.000 - px;
+				yPathPoints[numPoints - i - 1] = py;
+			}
+		}
+	
+		path.moveTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+
+		for (let i = 1; i < numPoints; i++) {
+			path.lineTo( x + w * xPathPoints[i], y + h * yPathPoints[i] );
+		}
+
+		path.lineTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+		
+		this.actTextShapes[nReverse] = PageShape.GeometricShape( path, region );
+
+		return this.actTextShapes[nReverse];
+	};
+	this.getAgendaTextShape = function ( region, reverse ) {
+		let nReverse = Number(reverse);
+
+		if ( this.agendaTextShapes[nReverse] ) return this.agendaTextShapes[nReverse];
+
+		var x = region.x;
+		var y = region.y;
+		var w = region.width;
+		var h = region.height;
+
+		var path = new java.awt.geom.Path2D.Double();
+
+		var xPathPoints = new Array( 0.000, 0.000, 0.148, 0.148, 1.000, 1.000 );
+		var yPathPoints = new Array( 0.000, 0.850, 0.850, 1.000, 1.000, 0.000 );
+
+		var numPoints = xPathPoints.length;
+	
+		if ( reverse ) {
+			// swap order and x-value
+			for (let i = 0; i < numPoints / 2; i++) {
+				let px = xPathPoints[i];
+				let py = yPathPoints[i];
+			
+				xPathPoints[i] = 1.000 - xPathPoints[numPoints - i - 1];
+				yPathPoints[i] = yPathPoints[numPoints - i - 1];
+			
+				xPathPoints[numPoints - i - 1] = 1.000 - px;
+				yPathPoints[numPoints - i - 1] = py;
+			}
+		}
+	
+		path.moveTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+
+		for (let i = 1; i < numPoints; i++) {
+			path.lineTo( x + w * xPathPoints[i], y + h * yPathPoints[i] );
+		}
+
+		path.lineTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+		
+		this.agendaTextShapes[nReverse] = PageShape.GeometricShape( path, region );
+
+		return this.agendaTextShapes[nReverse];
+	};
+	this.getEnemyTextShape = function ( region ) {
+		if ( this.enemyTextShape ) return this.enemyTextShape;
+
+		var x = region.x;
+		var y = region.y;
+		var w = region.width;
+		var h = region.height;
+	
+		var path = new java.awt.geom.Path2D.Double();
+	
+		var xPathPoints = new Array( 0.086, 0.086, 0.000, 0.000, 0.039, 0.078 );
+		var yPathPoints = new Array( 0.000, 0.189, 0.189, 0.693, 0.800, 1.000 );
+
+		var numPoints = xPathPoints.length;
+	
+		path.moveTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+
+		for (let i = 1; i < numPoints; i++) {
+			path.lineTo( x + w * xPathPoints[i], y + h * yPathPoints[i] );
+		}
+
+		path.lineTo( x + w * (1 - xPathPoints[numPoints-1]), y + h * yPathPoints[numPoints-1] );
+
+		for (let i = numPoints-2; i >= 0; i--) {
+			path.lineTo( x + w * (1 - xPathPoints[i]), y + h * yPathPoints[i] );
+		}
+
+		path.lineTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+		
+		this.enemyPageShape = PageShape.GeometricShape( path, region );
+		
+		return this.enemyPageShape;
+	};
+	this.getEventTextShape = function ( region ) {
+		if ( this.eventTextShape ) return this.eventTextShape;
+
+		var x = region.x;
+		var y = region.y;
+		var w = region.width;
+		var h = region.height;
+	
+		var path = new java.awt.geom.Path2D.Double();
+	
+//		var xPathPoints = new Array( 0.0, -0.054, -0.009, 0.179 );
+//		var xPathPoints = new Array( 0.0, -0.054, -0.004, 0.179 );
+		var xPathPoints = new Array( 0.0, -0.054, -0.004, 0.179 );
+		var yPathPoints = new Array( 0.0, 0.333, 0.892, 1.0 );
+	
+		var xControlPoints = new Array( 0.004, -0.060, -0.083, 0.006, 0.088, 0.047 );
+		var yControlPoints = new Array( 0.047, 0.193, 0.513, 0.674, 0.873, 0.993 );
+	
+		var numPoints = xPathPoints.length;
+	
+		path.moveTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+
+		for (let i = 1; i < numPoints; i++) {
+			path.curveTo( x + w * xControlPoints[i*2 - 2], y + h * yControlPoints[i*2 - 2],
+						  x + w * xControlPoints[i*2 - 1], y + h * yControlPoints[i*2 - 1],
+						  x + w * xPathPoints[i], y + h * yPathPoints[i]
+			);
+		}
+
+		path.lineTo( x + w * (1 - xPathPoints[numPoints-1]), y + h * yPathPoints[numPoints-1] );
+
+		for (let i = numPoints-2; i >= 0; i--) {
+			path.curveTo( x + w * (1.0 - xControlPoints[i*2 + 1]), y + h * yControlPoints[i*2 + 1],
+						  x + w * (1.0 - xControlPoints[i*2]), y + h * yControlPoints[i*2],
+						  x + w * (1.0 - xPathPoints[i]), y + h * yPathPoints[i]
+			);
+		}
+
+		path.lineTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+		
+		this.eventTextShape = PageShape.GeometricShape( path, region );
+		
+		return this.eventTextShape;
+	};
+	this.getLocationTextShape = function ( region ) {
+		if ( this.locationTextShape ) return this.locationTextShape;
+
+		var x = region.x;
+		var y = region.y;
+		var w = region.width;
+		var h = region.height;
+
+		var path = new java.awt.geom.Path2D.Double();
+
+		// asymmetrical	
+		var xPathPoints = new Array( 0.074, 0.000, 0.000, 1.000, 1.000, 0.951, 0.926 );
+		var yPathPoints = new Array( 0.000, 0.174, 1.000, 1.000, 0.319, 0.125, 0.000 );
+	
+		var xControlPoints = new Array( 0.037, 0.107, 0.991, 0.962, 0.936, 0.970 );
+		var yControlPoints = new Array( 0.153, 0.139, 0.278, 0.167, 0.132, 0.174 );
+	
+		var numPoints = xPathPoints.length;
+	
+		path.moveTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+
+		// just create by hand, it's asymmetrical
+		path.curveTo( x + w * xControlPoints[0], y + h * yControlPoints[0],
+			x + w * xControlPoints[1], y + h * yControlPoints[1],
+			x + w * xPathPoints[1], y + h * yPathPoints[1]
+		);
+	
+		for (let i = 2; i <= 4; i++) {
+			path.lineTo( x + w * xPathPoints[i], y + h * yPathPoints[i] );
+		}
+
+		for (let i = 5; i <= 6; i++) {
+			path.curveTo( x + w * xControlPoints[i*2 - 8], y + h * yControlPoints[i*2 - 8],
+				x + w * xControlPoints[i*2 - 7], y + h * yControlPoints[i*2 - 7],
+				x + w * xPathPoints[i], y + h * yPathPoints[i]
+			);
+		}
+
+		path.lineTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+		
+		this.locationTextShape = PageShape.GeometricShape( path, region );
+		
+		return this.locationTextShape;
+	};
+	this.getLocationBackTextShape = function ( region ) {
+		if ( this.locationBackTextShape ) return this.locationBackTextShape;
+
+		var x = region.x;
+		var y = region.y;
+		var w = region.width;
+		var h = region.height;
+
+//		var xPathPoints = new Array( 0.151, 0.000, 0.000, 1.000, 1.000, 0.849 );
+		var xPathPoints = new Array( 0.111, 0.000, 0.000, 1.000, 1.000, 0.889 );
+		var yPathPoints = new Array( 0.000, 0.204, 1.000, 1.000, 0.204, 0.000 );
+	
+		var path = new java.awt.geom.Path2D.Double();
+
+		var numPoints = xPathPoints.length;
+
+		path.moveTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+
+		for (let i = 1; i < numPoints; i++) {
+			path.lineTo( x + w * xPathPoints[i], y + h * yPathPoints[i] );
+		}
+
+		path.lineTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+		
+		this.locationBackTextShape = PageShape.GeometricShape( path, region );
+		
+		return this.locationBackTextShape;
+	};
+	this.getSkillTextShape = function ( region ) {
+		if ( this.skillTextShape ) return this.skillTextShape;
+
+		var x = region.x;
+		var y = region.y;
+		var w = region.width;
+		var h = region.height;
+	
+		var path = new java.awt.geom.Path2D.Double();
+	
+		var xPathPoints = new Array( 0.0, 0.015 );
+		var yPathPoints = new Array( 0.0, 1.000 );
+	
+		var xControlPoints = new Array( 0.053, 0.088 );
+		var yControlPoints = new Array( 0.307, 0.600 );
+	
+		var numPoints = xPathPoints.length;
+	
+		path.moveTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+
+		for (let i = 1; i < numPoints; i++) {
+			path.curveTo( x + w * xControlPoints[i*2 - 2], y + h * yControlPoints[i*2 - 2],
+						  x + w * xControlPoints[i*2 - 1], y + h * yControlPoints[i*2 - 1],
+						  x + w * xPathPoints[i], y + h * yPathPoints[i]
+			);
+		}
+
+		path.lineTo( x + w * (1 + xPathPoints[numPoints-1]), y + h * yPathPoints[numPoints-1] );
+
+		for (let i = numPoints-2; i >= 0; i--) {
+			path.curveTo( x + w * (1.0 + xControlPoints[i*2 + 1]), y + h * yControlPoints[i*2 + 1],
+						  x + w * (1.0 + xControlPoints[i*2]), y + h * yControlPoints[i*2],
+						  x + w * (1.0 + xPathPoints[i]), y + h * yPathPoints[i]
+			);
+		}
+
+		path.lineTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+		
+		this.skillTextShape = PageShape.GeometricShape( path, region );
+		
+		return this.skillTextShape;
+	};
+	this.getInvestigatorBackTextShape = function ( region, className ) {
+		if ( this.investigatorBackTextShapes[className] ) return this.investigatorBackTextShapes[className];
+
+		var x = region.x;
+		var y = region.y;
+		var w = region.width;
+		var h = region.height;
+
+		var pointArrays = getPathPointArrays( className );
+	
+		var xPathPoints = pointArrays[0];
+		var yPathPoints = pointArrays[1];
+
+		var path = new java.awt.geom.Path2D.Double();
+
+		var numPoints = xPathPoints.length;
+
+		path.moveTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+
+		for (let i = 0; i < numPoints; i++) {
+			path.lineTo( x + w * xPathPoints[i], y + h * yPathPoints[i] );
+		}
+
+		path.lineTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
+		
+		this.investigatorBackTextShapes[className] = PageShape.GeometricShape( path, region );
+		
+		return this.investigatorBackTextShapes[className];
+	};
 }

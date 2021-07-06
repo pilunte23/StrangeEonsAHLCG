@@ -3,8 +3,9 @@ AHLCG-Guide75-Default-template = ArkhamHorrorLCG/templates/AHLCG-Guide75Empty.jp
 AHLCG-Guide75-Name-region = 340,283,445,42
 AHLCG-Guide75-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 20.0; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #FFFFFF
 
-AHLCG-Guide75-ResHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #492925
-AHLCG-Guide75-SAHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #3d534e
+AHLCG-Guide75-ResHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #63251d
+AHLCG-Guide75-SAHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #2d5b58
+AHLCG-Guide75-KeyHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #7e0607
 AHLCG-Guide75-Header-alignment = center
 
 AHLCG-Guide75-Body-region = 65,65,993,1012

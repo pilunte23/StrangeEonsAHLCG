@@ -32,9 +32,6 @@ function setDefaults() {
 	$RulesLeft = '';
 	$RulesRight = '';
 
-	$PositionPortrait1 = 'None';
-	$PositionPortrait2 = 'None';
-		
 	$PositionPortrait1 = 'TopLeftSmall';
 	$PositionPortrait2 = 'BottomLarge';
 }

@@ -1,7 +1,7 @@
 AHLCG-Event-Default-template = ArkhamHorrorLCG/templates/AHLCG-Event-G.jp2
 AHLCG-EventBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-PlayerBack.jp2
 
-AHLCG-Event-Label-region = 21,61,36,14
+AHLCG-Event-Label-region = 21,62,36,14
 AHLCG-Event-Label-alignment = center, middle
 AHLCG-Event-Label-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.smallLabelSize}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.92; FOREGROUND: #000000
 
@@ -30,6 +30,6 @@ AHLCG-Event-Portrait-portrait-clip-region = 0,0,375,288
 AHLCG-Event-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Event-Collection-portrait-pany = 0
 
-AHLCG-Event-Collection-portrait-clip-region = 319,512,13,13
+AHLCG-Event-Collection-portrait-clip-region = 319,510,13,13
 
 AHLCG-Event-Dash-tint = 0.0, 0.0, 1.0

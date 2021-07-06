@@ -25,11 +25,13 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 	
-	diy.version = 12;
+	diy.version = 14;
 }
 
 function setDefaults() {
 	// front
+	$Template = 'Story';
+	
 	$TraitsA = '';
 	$HeaderA = '';
 	$AccentedStoryA = '';
@@ -49,6 +51,9 @@ function setDefaults() {
 	$HeaderCSpacing = '0';
 	$AccentedStoryCSpacing = '0';
 
+	$Victory = '';
+	$VictorySpacing = '0';
+	
 	$ScaleModifier = '100';
 
 	// back
@@ -90,15 +95,17 @@ function createInterface( diy, editor ) {
 
 	var TitlePanel = layoutTitle( diy, bindings, false, [0], FACE_FRONT );
 	TitlePanel.setTitle( @AHLCG-Title + ': ' + @AHLCG-Front );
+	var StatPanel = layoutStoryStats( bindings, FACE_FRONT );
+	StatPanel.setTitle( @AHLCG-BasicData + ': ' + @AHLCG-Front );
 	var BackTitlePanel = layoutTitleUnique( diy, bindings, true, [1], FACE_BACK );
 	BackTitlePanel.setTitle( @AHLCG-Title + ': ' + @AHLCG-Back );
-	var BackStatsPanel = layoutAssetStoryStats( bindings, FACE_BACK );
-	BackStatsPanel.setTitle( @AHLCG-BasicData + ': ' + @AHLCG-Back );
+	var BackStatPanel = layoutAssetStoryStats( bindings, FACE_BACK );
+	BackStatPanel.setTitle( @AHLCG-BasicData + ': ' + @AHLCG-Back );
 	var CopyrightPanel = layoutCopyright( bindings, [1], FACE_BACK );
 
 	var StatisticsTab = new Grid();
 	StatisticsTab.editorTabScrolling = true;
-	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', BackTitlePanel, 'wrap, pushx, growx', BackStatsPanel, 'wrap, pushx, growx', CopyrightPanel, 'wrap, pushx, growx' );
+	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', StatPanel, 'wrap, pushx, growx', BackTitlePanel, 'wrap, pushx, growx', BackStatPanel, 'wrap, pushx, growx', CopyrightPanel, 'wrap, pushx, growx' );
 	StatisticsTab.addToEditor( editor , @AHLCG-General );
 
 	var TextPanelA = layoutText( bindings, [ 'Traits', 'Header', 'AccentedStory', 'Rules' ], 'A', FACE_FRONT );
@@ -113,12 +120,21 @@ function createInterface( diy, editor ) {
 	TextPanelC.setTitle( @AHLCG-Rules + ' (' + @AHLCG-Part + ' C)' );
 	TextPanelC.editorTabScrolling = true;
 
+	var VictoryPanel = layoutVictoryText( bindings, FACE_FRONT );
+
 	var scaleSpinner = new spinner( 50, 150, 1, 100 );
 	bindings.add( 'ScaleModifier', scaleSpinner, [0] );
 
 	var TextTab = new Grid();
 	TextTab.editorTabScrolling = true;
-	TextTab.place(TextPanelA, 'wrap, pushx, growx', TextPanelB, 'wrap, pushx, growx', TextPanelC, 'wrap, pushx, growx', @AHLCG-TextScale, 'align left, split', scaleSpinner, 'align left', '%', 'wrap, align left' );
+	TextTab.place(
+		TextPanelA, 'wrap, pushx, growx', 
+		TextPanelB, 'wrap, pushx, growx', 
+		TextPanelC, 'wrap, pushx, growx', 
+		VictoryPanel, 'wrap, pushx, growx',
+		@AHLCG-TextScale, 'align left, split', scaleSpinner, 'align left', '%', 'wrap, align left'
+	);
+	
 	TextTab.addToEditor( editor, @AHLCG-Rules + ': ' + @AHLCG-Front );
 
 	var BackTextTab = layoutText( bindings, [ 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ], '', FACE_BACK );
@@ -148,9 +164,12 @@ function createInterface( diy, editor ) {
 }
 
 function createFrontPainter( diy, sheet ) {
+	// always use Story settings, Chaos doesn't have label or Story settings
 	Label_box = markupBox(sheet);
-	Label_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Label-style'), null);
-	Label_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Label-alignment'));
+//	Label_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Label-style'), null);
+//	Label_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Label-alignment'));
+	Label_box.defaultStyle = diy.settings.getTextStyle('AHLCG-Story-Label-style', null);
+	Label_box.alignment = diy.settings.getTextAlignment('AHLCG-Story-Label-alignment');
 
 	Name_box = markupBox(sheet);
 	Name_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Name-style'), null);
@@ -167,8 +186,11 @@ function createFrontPainter( diy, sheet ) {
 	Traits_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Header-alignment'));
 
 	Story_box = markupBox(sheet);
-	Story_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Story-style'), null);
-	Story_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Story-alignment'));
+//	Story_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Story-style'), null);
+//	Story_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Story-alignment'));
+	Story_box.defaultStyle = diy.settings.getTextStyle('AHLCG-Story-Story-style', null);
+	Story_box.alignment = diy.settings.getTextAlignment('AHLCG-Story-Story-alignment');
+	Story_box.setLineTightness( $('AHLCG-Story-Story-tightness') );	
 
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
@@ -242,9 +264,18 @@ function paintFront( g, diy, sheet ) {
 	clearImage( g, sheet );
 
 	drawTemplate( g, sheet, '' );
-	drawLabel( g, diy, sheet, Label_box, #AHLCG-Label-Story );
-	drawName( g, diy, sheet, Name_box );
+	
+	Name_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Name-style'), null);
+	Name_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'Name-alignment'));
 
+	if ( $Template == 'Story' ) {
+		drawLabel( g, diy, sheet, Label_box, #AHLCG-Label-Story );
+		drawName( g, diy, sheet, Name_box );
+	}
+	else {
+		if ( diy.name != '' ) y = drawChaosName( g, diy, sheet, Name_box );
+	}
+	
 	drawIndentedStoryBody( g, diy, sheet, Traits_box, Header_box, Story_box, Body_box );
 
 	drawEncounterIcon( g, diy, sheet );	
@@ -306,11 +337,18 @@ function onRead(diy, oos) {
 		$TraitsA = '';
 		$TraitsASpacing = '0';
 	}
+	if ( diy.version < 13 ) {
+		$Victory = '';
+		$VictorySpacing = '0';
+	}
+	if ( diy.version < 14 ) {
+		$Template = 'Story';
+	}
 	
 	updateCollection();
 	updateEncounter();
 	
-	diy.version = 12;
+	diy.version = 14;
 }
 
 function onWrite( diy, oos ) {

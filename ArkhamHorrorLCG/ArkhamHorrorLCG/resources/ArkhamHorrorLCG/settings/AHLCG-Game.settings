@@ -4,23 +4,25 @@ AHLCG-Cost-alignment = center, middle
 
 AHLCG-Level-region = 14,36,48,23
 AHLCG-NoLevel-region = 8,5,60,58
-AHLCG-Skill1-region = 0,82,54,44
-AHLCG-Skill2-region = 0,124,54,44
-AHLCG-Skill3-region = 0,166,54,44
-AHLCG-Skill4-region = 0,208,54,44
-AHLCG-Skill5-region = 0,250,54,44
-AHLCG-SkillIcon1-region = 13,89,25,26
-AHLCG-SkillIcon2-region = 13,131,25,26
-AHLCG-SkillIcon3-region = 13,173,25,26
-AHLCG-SkillIcon4-region = 13,215,25,26
-AHLCG-SkillIcon5-region = 13,257,25,26
+AHLCG-Skill1-region = 0,80,54,44
+AHLCG-Skill2-region = 0,121,54,44
+AHLCG-Skill3-region = 0,162,54,44
+AHLCG-Skill4-region = 0,203,54,44
+AHLCG-Skill5-region = 0,244,54,44
+AHLCG-Skill6-region = 0,285,54,44
+AHLCG-SkillIcon1-region = 13,87,25,26
+AHLCG-SkillIcon2-region = 13,128,25,26
+AHLCG-SkillIcon3-region = 13,169,25,26
+AHLCG-SkillIcon4-region = 13,210,25,26
+AHLCG-SkillIcon5-region = 13,251,25,26
+AHLCG-SkillIcon6-region = 13,292,25,26
 AHLCG-Slot-region = 309,454,51,52
 AHLCG-Slot2-region = 255,454,51,52
 
-AHLCG-Artist-region = 14,515,121,10
+AHLCG-Artist-region = 14,513,121,10
 AHLCG-Artist-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 AHLCG-Artist-alignment = left, middle
-AHLCG-Copyright-region = 124,515,86,10
+AHLCG-Copyright-region = 124,513,86,10
 AHLCG-Copyright-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 #AHLCG-Copyright-alignment = center, middle
 AHLCG-Copyright-alignment = right, middle
@@ -32,11 +34,11 @@ AHLCG-Body-tightness = 1.0
 
 AHLCG-Clues-region = 239,296,51,48
 
-AHLCG-CollectionNumber-region = 318,515,37,10
+AHLCG-CollectionNumber-region = 318,513,37,10
 AHLCG-CollectionNumber-alignment = right, middle
 AHLCG-CollectionNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 
-AHLCG-EncounterNumber-region = 247,515,55,10
+AHLCG-EncounterNumber-region = 247,513,55,10
 AHLCG-EncounterNumber-alignment = right, middle
 AHLCG-EncounterNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 4.5; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 
@@ -137,13 +139,13 @@ Trait-tag = t
 Trait-style = FAMILY: { Eons.namedObjects.AHLCGObject.bodyFamily }; WEIGHT: WEIGHT_BOLD; POSTURE: OBLIQUE
 
 AHF-tag = ahf
-AHF-style = FAMILY: { Eons.namedObjects.AHLCGObject.symbolFamily }
+AHF-style = FAMILY: { Eons.namedObjects.AHLCGObject.symbolFamily }; SIZE: {Eons.namedObjects.AHLCGObject.symbolSize}
 TraitSection-tag = ts
 TraitSection-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyTraitSize}; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: {Eons.namedObjects.AHLCGObject.bodyTraitSpacing}; POSTURE: OBLIQUE
 FlavorSection-tag = fs
 FlavorSection-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFlavorSize}; WIDTH: {Eons.namedObjects.AHLCGObject.bodyFlavorSpacing}; POSTURE: OBLIQUE
 InvStorySection-tag = iss
-InvStorySection-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyStorySize*0.875}; WIDTH: {Eons.namedObjects.AHLCGObject.bodyStorySpacing}; POSTURE: OBLIQUE
+InvStorySection-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyStorySize*0.925}; WIDTH: {Eons.namedObjects.AHLCGObject.bodyStorySpacing}; POSTURE: OBLIQUE
 ActStorySection-tag = css
 ActStorySection-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyStorySize}; WIDTH: {Eons.namedObjects.AHLCGObject.bodyFontSpacing}; POSTURE: OBLIQUE
 AgendaStorySection-tag = gss

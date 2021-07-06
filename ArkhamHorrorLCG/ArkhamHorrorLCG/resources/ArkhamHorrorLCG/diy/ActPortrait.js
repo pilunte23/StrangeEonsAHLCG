@@ -210,7 +210,7 @@ function paintBack( g, diy, sheet ) {
 function onClear() {
 	setDefaults();
 }
-
+/*
 function createTextShape( textBox, textRegion, reverse ) {
 	var x = textRegion.x;
 	var y = textRegion.y;
@@ -247,6 +247,12 @@ function createTextShape( textBox, textRegion, reverse ) {
 	path.lineTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
 		
 	textBox.pageShape = PageShape.GeometricShape( path, textRegion );
+}
+*/
+function setTextShape( box, region, reverse ) {
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	box.pageShape = AHLCGObject.getActTextShape( region, reverse );
 }
 
 // These can be used to perform special processing during open/save.

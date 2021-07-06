@@ -122,7 +122,9 @@ function createSetData() {
 				return 4;
 			},
 			isCellEditable: function( row, column ) {
-				return true;
+				if (column == 0) return true;
+			
+				return false;
 			},
 			addToComboBox: function( box ) {
 				try {
@@ -190,7 +192,7 @@ try {
 	seTable.getColumnModel().getColumn(1).setPreferredWidth(250);
 	seTable.getColumnModel().getColumn(2).setPreferredWidth(200);
 	seTable.getColumnModel().getColumn(3).setPreferredWidth(70);
-	seTable.setAutoCreateRowSorter( true );
+	seTable.setAutoCreateRowSorter( true ); 
 	
 	var seScrollPane = new JScrollPane( seTable );
 	seScrollPane.setPreferredSize( new Dimension( 520, 175 ) );

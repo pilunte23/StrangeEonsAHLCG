@@ -51,8 +51,8 @@ AHLCG-ActBack-Encounter-portrait-clip-region = 27,57,36,36
 AHLCG-ActBack-ReturnEncounter-portrait-clip-region = 20,50,49,48
 
 AHLCG-Act-Clues-region = 240,290,49,50
-AHLCG-Act-CluesPerInv-region = 234,290,49,49
-AHLCG-Act-PerInv-region = 261, 292, 30, 49
+AHLCG-Act-CluesPerInv-region = 235,290,49,49
+AHLCG-Act-PerInv-region = 261, 290, 30, 49
 
 AHLCG-Act-Dash-tint = 38.0, 0.14, 1.0
 

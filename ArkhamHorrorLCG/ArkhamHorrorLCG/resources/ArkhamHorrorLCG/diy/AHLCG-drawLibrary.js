@@ -5,16 +5,10 @@ importClass( java.awt.FontMetrics );
 importClass( java.awt.font.FontRenderContext );
 importClass( java.awt.Rectangle );
 importClass( java.awt.font.TextLayout );
+importClass( java.awt.BasicStroke );
 
-// The Dream-Eaters TODO:
-//		Entries for prologue investigators
-//		Enemy orientation (Weaver), collection info on side
-
-// Subtitle region for neutrals
-// Label region for certain classes
-// Update card backs
-// Line spacing dependent on OS, ugh
-// Font issues
+// horizontal guide box spacing
+// add sixth skill icon
 
 function drawTemplate( g, sheet, className ) {
 	var faceIndex = sheet.getSheetIndex();
@@ -226,7 +220,7 @@ function drawName( g, diy, sheet, nameBox ) {
 
 	// can't make this work without creating a new box
 	// otherwise, you have to edit the text for the color change to happen
-	if ( CardTypes[faceIndex] == 'Investigator') {
+	if ( CardTypes[faceIndex] == 'Investigator' || CardTypes[faceIndex] == 'InvestigatorBack') {
 		if ( $CardClass != null && $CardClass.indexOf('Parallel') >= 0) {
 			nameBox = markupBox(sheet);
 			nameBox.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'ParallelName-style'), null);
@@ -257,6 +251,7 @@ function drawName( g, diy, sheet, nameBox ) {
 		}
 	
 		var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Name-region') );
+		if ( CardTypes[faceIndex] == 'Event' && $CardClass == 'Neutral' ) region.y -= 2;
 		if ( $Orientation == 'Reversed' ) region = reverseRegion( region );
 
 		if ( CardTypes[faceIndex] == 'Asset' ) {
@@ -423,8 +418,12 @@ function drawChaosName( g, diy, sheet, nameBox ) {
 	}
 		
 	// I hope this calculation works everywhere
-	sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HorizLines.png'), 
-		new Region( region.x + (region.width - width) / 2, region.y + 1, width + 2, 6) );
+//	sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HorizLines.png'), 
+//		new Region( region.x + (region.width - width) / 2, region.y + 1, width + 2, 6) );
+	g.setPaint( new Color( 0.0, 0.0, 0.0 ) );
+	g.setStroke( new BasicStroke( 1.0 ) );
+	g.drawLine(region.x + (region.width - width) / 2, region.y + 2, region.x + (region.width + width) / 2 + 2, region.y + 2);
+	g.drawLine(region.x + (region.width - width) / 2, region.y + 6, region.x + (region.width + width) / 2 + 2, region.y + 6);
 
 	return region.y + 12;
 }
@@ -487,7 +486,7 @@ function drawLabel( g, diy, sheet, textBox, text ) {
 
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Label-region') );
 	if ( Eons.namedObjects.AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 2;
-
+	
 	textBox.markupText = text.toUpperCase();
 	textBox.drawAsSingleLine( g, region );
 }
@@ -511,8 +510,12 @@ function drawScenarioResolutionHeader( g, diy, sheet, headerBox ) {
 							
 	var headerWidth = Math.max( width1, width2 );
 							
-	sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HorizLines.png'), 
-		new Region( headerRegion.x + (headerRegion.width - headerWidth)/ 2, headerRegion.y + height, headerWidth, 3) );
+//	sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HorizLines.png'), 
+//		new Region( headerRegion.x + (headerRegion.width - headerWidth)/ 2, headerRegion.y + height, headerWidth, 3) );
+	g.setPaint( new Color( 0.0, 0.0, 0.0 ) );
+	g.setStroke( new BasicStroke( 1.0 ) );
+	g.drawLine(headerRegion.x + (headerRegion.width - headerWidth) / 2, headerRegion.y + height, headerRegion.x + (headerRegion.width + headerWidth) / 2, headerRegion.y + height);
+	g.drawLine(headerRegion.x + (headerRegion.width - headerWidth) / 2, headerRegion.y + height + 4, headerRegion.x + (headerRegion.width + headerWidth) / 2, headerRegion.y + height + 4);
 }
 
 function drawBody( g, diy, sheet, bodyBox, partsArray ) {
@@ -542,6 +545,38 @@ function drawBody( g, diy, sheet, bodyBox, partsArray ) {
 	}
 
 		bodyBox.markupText = Text;
+
+	updateNameTags( bodyBox, diy );
+	bodyBox.draw( g, region );
+}
+
+function drawInvBackBody( g, diy, sheet, bodyBox, partsArray ) {
+	var faceIndex = sheet.getSheetIndex();
+	var Text = '';
+
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region') );
+	if ( $Orientation == 'Reversed' ) region = reverseRegion( region );
+	if ( AHLCGObject.bodyFamily == 'Times New Roman' ) region.y -= 2;
+	
+	bodyBox.setLineTightness( $(getExpandedKey(faceIndex, 'Body', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
+	bodyBox.setTextFitting( FIT_SCALE_TEXT );	
+	
+	// if there is no trait text, add a little spacing
+	var traitText = $( 'Traits' + BindingSuffixes[faceIndex] );
+
+	// null if it doesn't exist
+	if ( traitText == '' ) {
+		Text = Text + '<image res://ArkhamHorrorLCG/images/empty1x1.png 1pt 6pt>';
+	}
+
+	for( let index = 0; index < partsArray.length; index++ ) {
+		Text = addTextPart( faceIndex, Text, partsArray[index], diy );
+		Text = addSpacing( faceIndex, Text, partsArray[index], diy );
+	}
+
+	bodyBox.markupText = Text;
 
 	updateNameTags( bodyBox, diy );
 	bodyBox.draw( g, region );
@@ -582,12 +617,22 @@ function drawIndentedStoryBody( g, diy, sheet, traitsBox, headerBox, storyBox, b
 
 	var AHLCGObject = Eons.namedObjects.AHLCGObject;
 	
-	var fullRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region' ) );
-	var traitsRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region' ) );
-	var headerRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region' ) );
-	var bodyRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body-region' ) );
-	var fullStoryRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Story-region' ) );
-	var storyRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Story-region' ) );
+	var bodyAppend = '-region';
+	var storyAppend = '-region';
+	var tightnessAppend = '-tightness';
+	
+	if ( CardTypes[faceIndex] == 'Chaos' ) {
+		bodyAppend = 'Story-region';
+		storyAppend = 'Story-region';
+		tightnessAppend = 'Story-tightness';
+	}
+
+	var fullRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body' + bodyAppend ) );
+	var traitsRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body' + bodyAppend ) );
+	var headerRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body' + bodyAppend ) );
+	var bodyRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Body' + bodyAppend ) );
+	var fullStoryRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Story' + storyAppend ) );
+	var storyRegion = diy.settings.getRegion( getExpandedKey( faceIndex, 'Story' + storyAppend ) );
 
 	var horizLineSpace1 = 0;
 	var horizLineSpace2 = 16;
@@ -604,15 +649,15 @@ function drawIndentedStoryBody( g, diy, sheet, traitsBox, headerBox, storyBox, b
 	}
 	
 	if ( traitsBox ) {
-		traitsBox.setLineTightness( $(getExpandedKey(faceIndex, 'Header', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
+		traitsBox.setLineTightness( $(getExpandedKey(faceIndex, 'Header', tightnessAppend) + '-tightness') * AHLCGObject.bodyFontTightness );	
 		traitsBox.setTextFitting( FIT_SCALE_TEXT );	
 	}
 	
-	headerBox.setLineTightness( $(getExpandedKey(faceIndex, 'Header', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
+	headerBox.setLineTightness( $(getExpandedKey(faceIndex, 'Header', tightnessAppend) + '-tightness') * AHLCGObject.bodyFontTightness );	
 	headerBox.setTextFitting( FIT_SCALE_TEXT );	
-	storyBox.setLineTightness( $(getExpandedKey(faceIndex, 'Story', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
+	storyBox.setLineTightness( $(getExpandedKey(faceIndex, 'Story', tightnessAppend) + '-tightness') * AHLCGObject.bodyFontTightness );	
 	storyBox.setTextFitting( FIT_SCALE_TEXT );	
-	bodyBox.setLineTightness( $(getExpandedKey(faceIndex, 'Body', '-tightness') + '-tightness') * AHLCGObject.bodyFontTightness );	
+	bodyBox.setLineTightness( $(getExpandedKey(faceIndex, 'Body', tightnessAppend) + '-tightness') * AHLCGObject.bodyFontTightness );	
 	bodyBox.setTextFitting( FIT_SCALE_TEXT );	
 
 //	var defaultSpacing = 8;
@@ -626,12 +671,15 @@ function drawIndentedStoryBody( g, diy, sheet, traitsBox, headerBox, storyBox, b
 	var storyHeight = [ 0, 0, 0 ];
 	var storySpacing = [ 0, 0, 0 ];
 	var bodyHeight = [ 0, 0, 0 ];
+	var victoryHeight = 0;
+	var victorySpacing = 0;
 	var fullHeight = fullRegion.height;
 	var totalHeight = 0;
 	var traitsText = '';
 	var headerText = [ '', '', ''];
 	var storyText = [ '', '', '' ];
 	var bodyText = [ '', '', '' ];
+	var victoryText = '';
 	
 	var scaleModifier = $( 'ScaleModifier' + BindingSuffixes[faceIndex], 100 );
 	if ( scaleModifier == null ) scaleModifier = $ScaleModifier;
@@ -648,6 +696,18 @@ function drawIndentedStoryBody( g, diy, sheet, traitsBox, headerBox, storyBox, b
 		}
 	}
 
+	victoryText = $( 'Victory' + BindingSuffixes[faceIndex] );
+	if ( victoryText.length() > 0 ) {
+		headerBox.markupText = '';	// we are reusing headerBox for each section - this is required to prevent oddness that I admit I don't understand
+		headerBox.markupText = $( 'Victory' + BindingSuffixes[faceIndex] + 'Text' );
+	
+		victoryHeight = headerBox.measure( g, fullRegion );
+		victorySpacing = parseInt( $('Victory' + BindingSuffixes[faceIndex] + 'Spacing'), 10 );
+		
+		totalHeight += victoryHeight;
+		totalHeight += victorySpacing;
+	}
+
 	for ( let i = 0; i < 3; i++ ) {
 		headerSpacing[i] = parseInt( $( 'Header' + suffixArray[i] + BindingSuffixes[faceIndex] + 'Spacing' ), 10 ) + 4;
 		headerText[i] = $( 'Header' + suffixArray[i] + BindingSuffixes[faceIndex] );
@@ -658,7 +718,7 @@ function drawIndentedStoryBody( g, diy, sheet, traitsBox, headerBox, storyBox, b
 				
 		headerBox.markupText = '';	// we are reusing headerBox for each section - this is required to prevent oddness that I admit I don't understand
 		headerBox.markupText = headerText[i];
-	
+
 		if (headerText[i].length() > 0) {
 			headerHeight[i] = headerBox.measure( g, fullRegion );
 			totalHeight += headerHeight[i];
@@ -700,14 +760,17 @@ function drawIndentedStoryBody( g, diy, sheet, traitsBox, headerBox, storyBox, b
 		if (textExists) totalHeight += 16;	// for the rule and spacing
 	}
 	
+	totalHeight -= 28;	// don't need the final rule/spacing, tweaked to make Victory look better
+	
 	var scale = 1.0;
 
 	if (totalHeight > fullHeight) scale = fullHeight / totalHeight;
-
+		
 	var bodyTextSize = 1.0;
 	var storyTextSize = 1.0;
 	var headerTextSize = 1.0;
 	var traitsTextSize = 1.0;
+	var victoryTextSize = 1.0;
 	
 	// this is more or less a guess that works so far
 	var textScale = Math.sqrt( scale ) * 0.93;
@@ -716,6 +779,7 @@ function drawIndentedStoryBody( g, diy, sheet, traitsBox, headerBox, storyBox, b
 	storyTextSize = textScale * scaleModifier;
 	headerTextSize = textScale * scaleModifier;
 	traitsTextSize = textScale * scaleModifier;
+	victoryTextSize = textScale * scaleModifier;
 	
 	if ( traitsBox && traitsText.length() > 0 ) {
 		traitsRegion.height = Math.ceil( traitsHeight * scale );
@@ -735,8 +799,11 @@ function drawIndentedStoryBody( g, diy, sheet, traitsBox, headerBox, storyBox, b
 		}
 		else {
 			if ( headerHeight[i] > 0 || storyHeight[i] > 0 || bodyHeight[i] > 0) {
-				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HRLine.png'), 
-					new Region( headerRegion.x, headerRegion.y + ( horizLineSpace1 * scale * $ScaleModifier / 100.0 ), headerRegion.width, 7) );
+//				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HRLine.png'), 
+//					new Region( headerRegion.x, headerRegion.y + ( horizLineSpace1 * scale * $ScaleModifier / 100.0 ), headerRegion.width, 7) );
+				g.setPaint( new Color( 0.0, 0.0, 0.0 ) );
+				g.setStroke( new BasicStroke( 1.0 ) );
+				g.drawLine(headerRegion.x, headerRegion.y + ( horizLineSpace1 * scale + $ScaleModifier / 100.0 ) + 2, headerRegion.x + headerRegion.width, headerRegion.y + ( horizLineSpace1 * scale + $ScaleModifier / 100.0 ) + 2 );
 					
 				headerRegion.y += Math.ceil( horizLineSpace2 * scale * $ScaleModifier / 100.0 );
 			}
@@ -781,8 +848,12 @@ function drawIndentedStoryBody( g, diy, sheet, traitsBox, headerBox, storyBox, b
 
 			storyBox.draw( g, storyRegion );
 		
-			sheet.paintImage( g, createDarkenedImage( ImageUtils.get('ArkhamHorrorLCG/images/Lines.png') ), 
-				new Region( storyRegion.x - 18, storyRegion.y, 6, storyRegion.height - 2) );
+//			sheet.paintImage( g, createDarkenedImage( ImageUtils.get('ArkhamHorrorLCG/images/Lines.png') ), 
+//				new Region( storyRegion.x - 18, storyRegion.y, 6, storyRegion.height - 2) );
+			g.setPaint( new Color( 0.0, 0.0, 0.0 ) );
+			g.setStroke( new BasicStroke( 1.0 ) );
+			g.drawLine(storyRegion.x - 15, storyRegion.y + 1, storyRegion.x - 15, storyRegion.y + storyRegion.height - 3);
+			g.drawLine(storyRegion.x - 12, storyRegion.y + 1, storyRegion.x - 12, storyRegion.y + storyRegion.height - 3);
 		}
 	
 		if (bodyHeight[i] > 0) {
@@ -793,6 +864,18 @@ function drawIndentedStoryBody( g, diy, sheet, traitsBox, headerBox, storyBox, b
 		
 		// update regions (everything is based off of headerRegion.y)
 		headerRegion.y = bodyRegion.y + bodyRegion.height + ( 2 * scale );
+	}
+	
+	if ( victoryText.length() > 0 ) {
+		headerRegion.height = Math.ceil( victoryHeight * scale );
+		headerRegion.y += victorySpacing;
+		
+		headerBox.markupText = '<center><b><size ' + headerTextSize + '%>' + victoryText + '</size></b>';
+
+		victoryHeight = headerBox.measure( g, fullRegion );
+		headerRegion.height = Math.ceil( victoryHeight );
+
+		headerBox.draw( g, headerRegion );
 	}
 }
 
@@ -808,8 +891,8 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 	}
 
 	while (text.length > 0) {
-		let startMatch = /<section>|<header>|<box(?:res|sa|int)(?:\sbracket|\sheader)*>/.exec( text );
-		
+		let startMatch = /<section>|<header>|<box(?:res|sa|key|int|fla)(?:\s+bracket|\s+header|\s+colou?r\s*=\s*-?[0-9]+\.?[0-9]*\s*,\s*-?[0-9]+\.?[0-9]*\s*,\s*-?[0-9]+\.?[0-9])*>/.exec( text );
+//		let startMatch = /<section\s*.*>|<header\s*.*>|<box(?:res|sa|int)\s*.*>/.exec( text );
 		let endMatch = null;
 		let matchIndex = -1;
 		let preSpecialText = '';
@@ -820,8 +903,11 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 		let textRegion = new Region( bodyRegion );
 		
 		if ( startMatch ) {
-			switch ( startMatch[0] ) {
-				case '<section>':
+			let tagMatch = /<([a-zA-Z]+)/.exec( startMatch[0] );
+			let colorMatch = /colou?r\s*=\s*([0-9\.]+)\s*,\s*([0-9\.]+)\s*,\s*([0-9\.]+)/.exec( startMatch[0] );
+
+			switch ( tagMatch[1] ) {
+				case 'section':
 					endMatch = /<\/section>/.exec( text );
 				
 					if ( startMatch.index > 0) {
@@ -847,6 +933,8 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 					else {
 						specialText = text.slice( startMatch.index );
 					}
+					
+//					specialText = specialText.replace( /<section.*?>/, '<section>' );
 
 					bodyBox.markupText = specialText;
 					bodyBox.setLineTightness( $(getExpandedKey(FACE_FRONT, 'BodySection', '-tightness') + '-tightness')  * tightness );
@@ -855,8 +943,12 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 					bodyBox.draw( g, bodyRegion );
 					bodyBox.markupText = '';
 
-					sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HorizLines.png'), 
-						new Region( bodyRegion.x, bodyRegion.y + sectionHeight - 2, bodyRegion.width + 2, 6) );
+//					sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HorizLines.png'), 
+//						new Region( bodyRegion.x, bodyRegion.y + sectionHeight - 2, bodyRegion.width + 2, 6) );
+					g.setPaint( new Color( 0.255, 0.353, 0.333 ) );
+					g.setStroke( new BasicStroke( 1.0 ) );
+					g.drawLine(bodyRegion.x, bodyRegion.y + sectionHeight - 1, bodyRegion.x + bodyRegion.width + 2, bodyRegion.y + sectionHeight - 1);
+					g.drawLine(bodyRegion.x, bodyRegion.y + sectionHeight + 3, bodyRegion.x + bodyRegion.width + 2, bodyRegion.y + sectionHeight + 3);
 
 					bodyRegion.y += sectionHeight - 4;
 					bodyRegion.height -= (sectionHeight - 4);
@@ -865,7 +957,7 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 
 					text = postSpecialText;
 					break;
-				case '<header>':
+				case 'header':
 					endMatch = /<\/header>/.exec( text );
 				
 					if ( startMatch.index > 0) {
@@ -895,6 +987,16 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 					bodyRegion.y += 8;
 					bodyRegion.height -= 8;
 
+//					specialText = specialText.replace( /<header.*?>/, '<header>' );
+/*
+					var textStyle = diy.settings.getTextStyle( 'GuideHeader-style', null );
+					
+					if ( colorMatch ) {
+						textStyle.add( COLOR, new Color( Color.HSBtoRGB(colorMatch[1], colorMatch[2], colorMatch[3]) ) );
+					}
+
+					bodyBox.setStyleForTag( 'header', textStyle );
+*/
 					bodyBox.markupText = specialText;
 					bodyBox.setLineTightness( $(getExpandedKey(FACE_FRONT, 'BodySection', '-tightness') + '-tightness') * tightness );
 					sectionHeight = bodyBox.measure( g, bodyRegion );
@@ -911,18 +1013,45 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 					break;
 				default:	//	<box...>
 					let res = ( /boxres/.exec( startMatch[0] ) != null );
+					let sa = ( /boxsa/.exec( startMatch[0] ) != null );
+					let keybox = ( /boxkey/.exec( startMatch[0] ) != null );
 					let interlude = ( /boxint/.exec( startMatch[0] ) != null );
-					let header = ( /header/.exec( startMatch[0] ) != null );
-					let bracket = ( /bracket/.exec( startMatch[0] ) != null );
+					let flashback = ( /boxfla/.exec( startMatch[0] ) != null );
+					let header = ( /\sheader/.exec( startMatch[0] ) != null );
+					let bracket = ( /\sbracket/.exec( startMatch[0] ) != null );
+
+					if ( flashback ) {
+						if ( colorMatch == null ) {
+							colorMatch = [ 'color', '0.630', '0.48', '0.48' ];
+						}
+						
+						interlude = true;
+					}
+					
+					if ( keybox ) {
+						if ( colorMatch == null ) {
+							colorMatch = [ 'color', '0.000', '0.97', '0.55' ];
+						}
+					}
 
 					if ( res ) endMatch = /<\/boxres>/.exec( text );
+					else if ( sa ) endMatch = /<\/boxsa>/.exec( text );
+					else if ( keybox ) endMatch = /<\/boxkey>/.exec( text );
+					else if ( flashback ) {
+						endMatch = /<\/boxfla>/.exec( text );
+						interlude = true;
+					}
 					else if ( interlude ) {
 						endMatch = /<\/boxint>/.exec( text );
-						header = null;
-						bracket = null;
+						header = false;
+						bracket = false;
 					}
-					else endMatch = /<\/boxsa>/.exec( text );
 
+					if ( interlude ) {
+						header = false;
+						bracket = false;
+					}
+					
 					if ( startMatch.index > 0) {
 						preSpecialText = text.slice( 0, startMatch.index );
 					
@@ -940,7 +1069,8 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 					}
 
 					if ( endMatch ) {					
-						let len = (res || interlude) ? 9 : 8;
+//						let len = (res || interlude) ? 9 : 8;
+						let len = endMatch[0].length;
 						
 						specialText = text.slice( startMatch.index, endMatch.index + len );
 						postSpecialText = text.slice( endMatch.index + len );
@@ -1042,25 +1172,116 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 							) );
 					}
 				
-					let boxTopImage;
-					let boxBottomImage;
-
+					let boxTopImage = null;
+					let boxBotImage = null;
+					let boxMidImage = null;
+					// Bracket images only used in color
+					let boxTopBracketImage = null;
+					let boxBotBracketImage = null;
+					
 					let boxType = 'SA';
 					if ( res ) boxType = 'Res';
-					else if ( interlude ) boxType = 'Int';
+					else if ( interlude ) boxType = 'Int';					
+// colors:
+// Resolution     : 0.019, 0.70, 0.38
+// SA			  : 0.480, 0.58, 0.36
+// Key			  : 0.000, 0.97, 0.55
+// Interlude (TFA): 0.489, 0.56, 0.36
+// Flashback (TIC): 0.630, 0.48, 0.48
+// Keys (TIC)     : 0.992, 0.76, 0.37
 
-					if ( bracket && !interlude ) boxTopImage = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Box' + boxType + 'Bracket.png');
-					else boxTopImage = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Box' + boxType + '.png');
+// res box tint
+					if ( colorMatch != null ) {
+//						if ( bracket && !interlude ) boxTopImage = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Box' + boxType + 'Bracket.png');
+//						else boxTopImage = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Box' + boxType + 'Red.png');
 						
-					if ( interlude || endMatch == bracket) boxBottomImage = boxTopImage;
-					else if ( endMatch ) boxBottomImage = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Box' + boxType + 'Bracket.png');
-					else boxBottomImage = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Box' + boxType + '.png');
+//						if ( interlude || endMatch == bracket) boxBotImage = boxTopImage;
+//						else if ( endMatch ) boxBotImage = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Box' + boxType + 'Bracket.png');
+//						else boxBotImage = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Box' + boxType + 'Red.png');
 					
+//						boxMidImage = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Box' + boxType + 'LineRed.png');
+
+						var h = parseFloat(colorMatch[1]);
+						var s = parseFloat(colorMatch[2]);
+						var b = parseFloat(colorMatch[3]);
+						var b2 = b;
+						
+						if ( !interlude ) {
+							b2 += 0.3;
+							if ( b2 > 1.0 ) b2 = 1.0;
+						}
+						
+//						var tc = new TintCache( new TintFilter() );
+						var tcBox = null;
+						var tcBracket = null;
+						var tcMid = null;
+
+						if ( interlude ) {
+							tcBox = AHLCGObject.getIntBoxTint();
+							tcMid = AHLCGObject.getIntMidTint();
+						}
+						else if ( bracket ) {							
+							tcBox = AHLCGObject.getResBoxTint();
+							tcBracket = AHLCGObject.getBracketTint();
+							tcMid = AHLCGObject.getResMidTint();
+//							if ( !endMatch ) tcBot = AHLCGObject.getResTopTint();
+//							if ( endMatch ) tcBotBracket = AHLCGObject.getBracketTint();
+						}
+						else {
+							tcBox = AHLCGObject.getResBoxTint();
+							tcMid = AHLCGObject.getResMidTint();
+							if ( endMatch ) tcBracket = AHLCGObject.getBracketTint();
+						}
+						
+						tcBox.setFactors(h, s, b2);
+						boxTopImage = tcBox.getTintedImage();
+						boxBotImage = boxTopImage;
+						
+						tcMid.setFactors(h, s, b2);
+						boxMidImage = tcMid.getTintedImage();
+
+						if ( tcBracket ) {
+							tcBracket.setFactors(h, s, b);
+						}
+						if ( bracket ) {
+							boxTopBracketImage = tcBracket.getTintedImage();
+						}
+						if ( !interlude && endMatch ) {
+							boxBotBracketImage = tcBracket.getTintedImage();
+						}
+//						else {
+//							boxBotImage = boxTopImage;
+//						}						
+					}
+					else {
+						if ( bracket && !interlude ) boxTopImage = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Box' + boxType + 'Bracket.png');
+						else boxTopImage = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Box' + boxType + '.png');
+						
+						if ( interlude || endMatch == bracket) boxBotImage = boxTopImage;
+						else if ( endMatch ) boxBotImage = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Box' + boxType + 'Bracket.png');
+						else boxBotImage = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Box' + boxType + '.png');
+					
+						boxMidImage = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Box' + boxType + 'Line.png');
+					}
+/*
+			// ok from scratch now
+					var mask = ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-BoxMask.png');
+					var color = ImageUtils.create(mask.getWidth(), mask.getHeight(), true);
+					var gc = color.createGraphics();
+					gc.setPaint( new Color(1, 1, 1) );
+					gc.fillRect( 0, 0, color.getWidth(), color.getHeight() );
+					
+					boxTopImage = createStencilImage(color, 'Box');
+*/
 					let ar = boxTopImage.height / boxTopImage.width;
 
 					sheet.paintImage( g, boxTopImage, 
 						new Region( boxRegion.x, boxRegion.y, boxRegion.width, boxRegion.width * ar ) );
-					
+					if ( boxTopBracketImage ) {
+						sheet.paintImage( g, boxTopBracketImage, 
+							new Region( boxRegion.x, boxRegion.y, boxRegion.width, boxRegion.width * ar ) );
+					}
+				
 					boxRegion.y += boxRegion.width * ar;
 					boxRegion.height -= boxRegion.width * ar;
 					
@@ -1068,7 +1289,7 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 					if ( interlude ) minHeight = 60;
 					
 					if ( sectionHeight + headerHeight > minHeight ) {
-						sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-Box' + boxType + 'Line.png'), 
+						sheet.paintImage( g, boxMidImage, 
 							new Region( boxRegion.x, boxRegion.y, boxRegion.width, sectionHeight + headerHeight - minHeight ) );
 					}
 					
@@ -1076,16 +1297,24 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 					boxRegion.y += sectionHeight + headerHeight;
 					boxRegion.height -= ( sectionHeight + headerHeight );
 
-					ar = boxBottomImage.height / boxBottomImage.width;
+					ar = boxBotImage.height / boxBotImage.width;
 
-					sheet.paintImage( g, ImageUtils.mirror( boxBottomImage, false, true ), 
+					sheet.paintImage( g, ImageUtils.mirror( boxBotImage, false, true ), 
 						new Region( boxRegion.x, boxRegion.y - minHeight, boxRegion.width, boxRegion.width * ar) );
-
+					if ( boxBotBracketImage ) {
+						sheet.paintImage( g, ImageUtils.mirror( boxBotBracketImage, false, true ), 
+							new Region( boxRegion.x, boxRegion.y - minHeight, boxRegion.width, boxRegion.width * ar) );
+					}
+					
 					// draw header
-					if ( header ) {						
+					if ( header ) {	
 						if ( res ) {
-							let headerRegion = new Region2D( bodyRegion.x, bodyRegion.y, bodyRegion.width, bodyRegion.height );
-							
+							let headerRegion = new Region2D( bodyRegion.x, bodyRegion.y, bodyRegion.width, bodyRegion.height );							
+/*							
+							var textStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'ResHeader-style'), null);
+
+							textStyle.add( COLOR, new Color( 1.0, 1.0, 0.0) );
+*/
 							headerBox.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'ResHeader-style'), null);
 
 							headerBox.markupText = #AHLCG-Scenario-Header1;
@@ -1102,18 +1331,40 @@ function drawGuideBody( g, diy, sheet, bodyBox, headerBox, bodyRegion, text ) {
 							
 							let headerWidth = Math.max( width1, width2 );
 							
-							sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HorizLines.png'), 
-								new Region( headerRegion.x + (headerRegion.width - headerWidth)/ 2, bodyRegion.y + height, headerWidth, 6) );
+//							sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HorizLines.png'), 
+//								new Region( headerRegion.x + (headerRegion.width - headerWidth)/ 2, bodyRegion.y + height, headerWidth, 6) );
+//							g.setPaint( new Color( 0.282, 0.012, 0.0 ) );
+							g.setPaint( new Color( 0.388, 0.145, 0.114 ) );
+							g.setStroke( new BasicStroke( 1.0 ) );
+							g.drawLine(headerRegion.x + (headerRegion.width - headerWidth) / 2, bodyRegion.y + height, headerRegion.x + (headerRegion.width - headerWidth) / 2 + headerWidth, bodyRegion.y + height);
+							g.drawLine(headerRegion.x + (headerRegion.width - headerWidth) / 2, bodyRegion.y + height + 5, headerRegion.x + (headerRegion.width - headerWidth) / 2 + headerWidth, bodyRegion.y + height + 5);
 						}
-						else {
+						else if ( sa ) {
 							headerBox.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'SAHeader-style'), null);
 
 							headerBox.markupText = '<size 90%>' + #AHLCG-Guide-Standalone + '<size 111%>';
 							let height = headerBox.measure( g, bodyRegion );
 							let width = headerBox.drawAsSingleLine( g, bodyRegion ) + 4.0;
 
-							sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HorizLines.png'), 
-								new Region( bodyRegion.x + (bodyRegion.width - width)/ 2, bodyRegion.y + height - 2, width, 6) );
+//							sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/HorizLines.png'), 
+//								new Region( bodyRegion.x + (bodyRegion.width - width)/ 2, bodyRegion.y + height - 2, width, 6) );
+//							g.setPaint( new Color( 0.255, 0.353, 0.333 ) );
+							g.setPaint( new Color( 0.176, 0.357, 0.345 ) );
+							g.setStroke( new BasicStroke( 1.0 ) );
+							g.drawLine(bodyRegion.x + (bodyRegion.width - width) / 2, bodyRegion.y + height - 2, bodyRegion.x + (bodyRegion.width + width) / 2, bodyRegion.y + height - 2);
+							g.drawLine(bodyRegion.x + (bodyRegion.width - width) / 2, bodyRegion.y + height + 3, bodyRegion.x + (bodyRegion.width + width) / 2, bodyRegion.y + height + 3);
+						}
+						else {	// Keys
+							headerBox.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'KeyHeader-style'), null);
+
+							headerBox.markupText = '<size 90%>' + #AHLCG-Guide-Keys + '<size 111%>';
+							let height = headerBox.measure( g, bodyRegion );
+							let width = headerBox.drawAsSingleLine( g, bodyRegion ) + 4.0;
+
+							g.setPaint( new Color( 0.494, 0.024, 0.027 ) );
+							g.setStroke( new BasicStroke( 1.0 ) );
+							g.drawLine(bodyRegion.x + (bodyRegion.width - width) / 2, bodyRegion.y + height - 2, bodyRegion.x + (bodyRegion.width + width) / 2, bodyRegion.y + height - 2);
+							g.drawLine(bodyRegion.x + (bodyRegion.width - width) / 2, bodyRegion.y + height + 3, bodyRegion.x + (bodyRegion.width + width) / 2, bodyRegion.y + height + 3);
 						}
 
 						bodyRegion.y += headerHeight;
@@ -1486,8 +1737,12 @@ function drawChaosBody( g, diy, sheet, textBoxes, headerBox, y ) {
 
 			// draw vertical lines
 			if (tokensInGroup[i] > 1) {
-				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/Lines.png'), 
-					new Region( iconRegion.x + iconRegion.width + 2, yIconMin, 3, yIconMax - yIconMin) );
+//				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/Lines.png'), 
+//					new Region( iconRegion.x + iconRegion.width + 2, yIconMin, 3, yIconMax - yIconMin) );
+				g.setPaint( new Color( 0.0, 0.0, 0.0 ) );
+				g.setStroke( new BasicStroke( 0.5 ) );
+				g.drawLine(iconRegion.x + iconRegion.width + 2, yIconMin + 1, iconRegion.x + iconRegion.width + 2, yIconMax - 1);
+				g.drawLine(iconRegion.x + iconRegion.width + 4, yIconMin + 1, iconRegion.x + iconRegion.width + 4, yIconMax - 1);
 			}
 
 			yOffset += minSpacing + maxEqualCenterSpacing*scale;
@@ -1540,8 +1795,12 @@ function drawChaosBody( g, diy, sheet, textBoxes, headerBox, y ) {
 
 			// draw vertical lines
 			if (tokensInGroup[i] > 1) {
-				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/Lines.png'), 
-					new Region( iconRegion.x + iconRegion.width + 2, yIconMin, 3, yIconMax - yIconMin) );
+//				sheet.paintImage( g, ImageUtils.get('ArkhamHorrorLCG/images/Lines.png'), 
+//					new Region( iconRegion.x + iconRegion.width + 2, yIconMin, 3, yIconMax - yIconMin) );
+				g.setPaint( new Color( 0.0, 0.0, 0.0 ) );
+				g.setStroke( new BasicStroke( 0.5 ) );
+				g.drawLine(iconRegion.x + iconRegion.width + 2, yIconMin + 1, iconRegion.x + iconRegion.width + 2, yIconMax - 1);
+				g.drawLine(iconRegion.x + iconRegion.width + 4, yIconMin + 1, iconRegion.x + iconRegion.width + 4, yIconMax - 1);
 			}
 
 			yOffset += minSpacing + tokenHeight[i];
@@ -1611,10 +1870,12 @@ function drawVictory( g, diy, sheet ) {
 	Victory_box.draw( g, diy.settings.getRegion( getExpandedKey( faceIndex, 'Victory-region') ) );
 }
 
-function drawArtist( g, diy, sheet ) {
+function drawArtist( g, diy, sheet, forceFrontValue ) {
 	var faceIndex = sheet.getSheetIndex();
 
-	var artistText = $( 'Artist' + BindingSuffixes[faceIndex] );
+	var valueIndex = forceFrontValue ? 0 : faceIndex;
+
+	var artistText = $( 'Artist' + BindingSuffixes[valueIndex] );
 
 	if ( artistText.length() > 0 ) {
 		var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Artist-region' ) );
@@ -1674,7 +1935,7 @@ function drawCollectorInfo( g, diy, sheet, collectionNumberBox, collectionSuffix
 	
 	if ( copyrightBox ) collectorX = drawCopyright( g, diy, sheet, copyrightBox, collectorX );
 	
-	if ( artistBox ) drawArtist( g, diy, sheet, artistBox );
+	if ( artistBox ) drawArtist( g, diy, sheet, false );
 }
 
 function drawSubtype( g, diy, sheet, box, text ) {
@@ -1732,7 +1993,10 @@ function drawLevel( g, diy, sheet, className ) {
 function drawSkillIcons( g, diy, sheet, className ) {
 	var faceIndex = sheet.getSheetIndex();
 
-	for ( let index = 1; index <= 5; index++ ) {
+	var maxIcons = 5;
+	if ( CardTypes[faceIndex] == 'Skill' ) maxIcons = 6;
+
+	for ( let index = 1; index <= maxIcons; index++ ) {
 		let skillName = $( 'Skill' + index + BindingSuffixes[faceIndex] );
 
 		if ( skillName != 'None' ) {
@@ -2026,14 +2290,21 @@ function drawEnemyHealth( g, diy, sheet ) {
 	else if (perInvestigator == '1') {
 		let healthRegion = diy.settings.getRegion( getExpandedKey(faceIndex, 'HealthPerInv-region' ) );
 		let healthPerInvRegion = diy.settings.getRegion( getExpandedKey(faceIndex, 'PerInv-region' ) );
+		let fontSize = 13.5;
 		
 		if ( health == 'X' ) {
 			healthRegion.x += 2;
 			healthPerInvRegion.x += 2;
 		}
 		
-		sheet.drawOutlinedTitle( g, health, healthRegion, Eons.namedObjects.AHLCGObject.enemyFont, 13.5, 0.8, new Color(1, 1, 1), new Color(0, 0, 0), 0, true );	
-		sheet.drawOutlinedTitle( g, 'p', healthPerInvRegion, Eons.namedObjects.AHLCGObject.symbolFont, 6.0, 0.8, new Color(1, 1, 1), new Color(0, 0, 0), 0, true );
+		if ( health > 9 ) {
+			fontSize = 13.0;
+			healthPerInvRegion.x += 4;
+		}
+		
+		sheet.drawOutlinedTitle( g, health, healthRegion, Eons.namedObjects.AHLCGObject.enemyFont, fontSize, 0.8, new Color(1, 1, 1), new Color(0, 0, 0), 0, true );	
+//		sheet.drawOutlinedTitle( g, 'p', healthPerInvRegion, Eons.namedObjects.AHLCGObject.symbolFont, 6.0, 0.8, new Color(1, 1, 1), new Color(0, 0, 0), 0, true );
+		sheet.drawOutlinedTitle( g, 'p', healthPerInvRegion, Eons.namedObjects.AHLCGObject.symbolFont, 6.5, 0.8, new Color(1, 1, 1), new Color(0, 0, 0), 0, true );
 	}
 	else {
 		sheet.drawOutlinedTitle( g, health, diy.settings.getRegion( getExpandedKey(faceIndex, 'Health-region' ) ), Eons.namedObjects.AHLCGObject.enemyFont, 13.5, 0.8, new Color(1, 1, 1), new Color(0, 0, 0), 0, true );	
@@ -2109,7 +2380,8 @@ function drawShroud( g, diy, sheet ) {
 
 function drawClues( g, diy, sheet ) {
 	var faceIndex = sheet.getSheetIndex();
-	var piIconSize = 7.0;
+//	var piIconSize = 5.0;
+	var piIconSize = 7.5;
 	
 	// 254, 241, 219
 	var lightColor = new Color(0.996, 0.945, 0.859);
@@ -2118,20 +2390,30 @@ function drawClues( g, diy, sheet ) {
 	var textColor;
 	var borderColor;
 	
-	if (CardTypes[faceIndex] == 'Act') {
-		piIconSize = 6.0;
-		textColor = lightColor;
-		borderColor = darkColor;
-	}
-	else {
-		textColor = darkColor;
-		borderColor = lightColor;
-	}
-	
 	var perInvestigator = $( 'PerInvestigator' + BindingSuffixes[faceIndex] );
 	var asterisk = $( 'Asterisk' + BindingSuffixes[faceIndex] );
 	var clues = $( 'Clues' + BindingSuffixes[faceIndex] );
 
+	if (CardTypes[faceIndex] == 'Act') {
+		if ( clues > 9 ) {
+			piIconSize = 6.0;
+		}
+		else {
+			piIconSize = 6.5;
+		}
+		
+		textColor = lightColor;
+		borderColor = darkColor;
+	}
+	else {
+		if ( clues > 9 ) {
+			piIconSize = 7.0;
+		}
+		
+		textColor = darkColor;
+		borderColor = lightColor;
+	}
+	
 	var region = diy.settings.getRegion( getExpandedKey( faceIndex, 'Clues-region' ) );
 	if ( $Orientation == 'Reversed' ) region = reverseRegion( region );
 
@@ -2209,7 +2491,7 @@ function drawDoom( g, diy, sheet ) {
 	
 	var textColor = new Color(0.996, 0.945, 0.859);
 	var borderColor = new Color(0, 0, 0);
-	var piIconSize = 6.0;
+	var piIconSize = 6.5;
 
 	if ( doom == '-' ) {		
 		drawDash( g, diy, sheet, region, 0, 6 );
@@ -2233,6 +2515,7 @@ function drawDoom( g, diy, sheet ) {
 			perInvDoomRegion.x -= 1;
 			perInvRegion.x += 1;
 			fontSize = 11.0;
+			piIconSize = 6.0;
 		}
 
 		sheet.drawOutlinedTitle( g, doom, perInvDoomRegion, Eons.namedObjects.AHLCGObject.enemyFont, fontSize, 0.8, textColor, borderColor, 0, true );

@@ -53,8 +53,8 @@ AHLCG-Connection6Icon-region = 273,467,35,35
 
 AHLCG-Location-Shroud-region = 11,251,49,49
 AHLCG-Location-Clues-region = 318,251,49,50
-AHLCG-Location-CluesPerInv-region = 309,251,49,49
-AHLCG-Location-PerInv-region = 338, 254, 30, 49
+AHLCG-Location-CluesPerInv-region = 311,251,49,49
+AHLCG-Location-PerInv-region = 338,254,30,45
 
 AHLCG-Location-Victory-region = 262,418,104,42
 AHLCG-Location-Victory-alignment = right, bottom
@@ -76,5 +76,5 @@ AHLCG-LocationBack-Encounter-portrait-clip-region = 174,245,28,28
 AHLCG-Location-ReturnEncounter-portrait-clip-region = 170,241,37,34
 AHLCG-LocationBack-ReturnEncounter-portrait-clip-region = 170,241,37,34
 
-AHLCG-Location-Copyright-region = 143,515,86,10
-AHLCG-LocationBack-Copyright-region = 128,515,86,10
+AHLCG-Location-Copyright-region = 143,513,86,10
+AHLCG-LocationBack-Copyright-region = 128,513,86,10

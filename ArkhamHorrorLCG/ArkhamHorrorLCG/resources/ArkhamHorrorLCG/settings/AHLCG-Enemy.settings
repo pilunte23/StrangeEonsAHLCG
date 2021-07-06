@@ -29,8 +29,8 @@ AHLCG-Enemy-BackPortrait-portrait-clip-region = 0,241,375,284
 AHLCG-Enemy-Attack-region = 107,51,26,27
 AHLCG-Enemy-Evade-region = 248,51,23,27
 AHLCG-Enemy-Health-region = 168,45,40,35
-AHLCG-Enemy-HealthPerInv-region = 169,45,27,35
-AHLCG-Enemy-PerInv-region = 191,55,17,17
+AHLCG-Enemy-HealthPerInv-region = 170,45,27,35
+AHLCG-Enemy-PerInv-region = 191,51,17,17
 
 AHLCG-Enemy-Damage1-region = 132,284,19,23
 AHLCG-Enemy-Damage2-region = 109,277,19,23

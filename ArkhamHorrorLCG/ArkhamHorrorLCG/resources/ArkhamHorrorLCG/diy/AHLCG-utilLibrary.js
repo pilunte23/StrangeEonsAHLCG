@@ -511,6 +511,7 @@ function addTextPart( faceIndex, text, key, diy ) {
 				formatEnd = diy.settings.get('AHLCG-Victory-formatEnd','</b>');
 				alignment = diy.settings.get('AHLCG-Victory-alignment','<center>');
 				break;
+/*
 			case 'DeckSize':
 				format = diy.settings.get('AHLCG-DeckSize-format',#AHLCG-DeckSize-format);
 				formatEnd = diy.settings.get('AHLCG-DeckSize-formatEnd',#AHLCG-DeckSize-formatEnd);
@@ -553,6 +554,7 @@ function addTextPart( faceIndex, text, key, diy ) {
 				formatEnd = diy.settings.get('AHLCG-AdditionalRequirements-formatEnd','');
 				alignment = diy.settings.get('AHLCG-AdditionalRequirements-alignment','');
 				break;
+*/
 			case 'Story': 
 				format = diy.settings.get('AHLCG-Story-format','<i>');
 				formatEnd = diy.settings.get('AHLCG-Story-formatEnd','</i>');
@@ -577,6 +579,18 @@ function addTextPart( faceIndex, text, key, diy ) {
 				format = diy.settings.get('AHLCG-SmallStory-format','<iss>');
 				formatEnd = diy.settings.get('AHLCG-SmallStory-formatEnd','</iss>');
 				alignment = diy.settings.get('AHLCG-SmallStory-alignment','<left>');
+				break;
+			case 'Text1':
+			case 'Text2':
+			case 'Text3':
+			case 'Text4':
+			case 'Text5':
+			case 'Text6':
+			case 'Text7':
+			case 'Text8':
+				format = '<b>' + $(key + 'NameBack') + '</b>: ';
+				formatEnd = '';
+				alignment = '<left>';
 				break;
 			}
 
@@ -973,15 +987,29 @@ function createPortraitStencil( diy, portrait, panel, position, pageType ) {
 function updateGuideBodyRegions( diy, bodyRegions ) {
 	// use portrait options to modify text regions
 	var pageOffset = 0;
-	var bodyHeight = 996;
-	var pageHeight = 996;
+	var bodyHeight = 947;
+	var pageHeight = 947;
+//	var bodyHeight = 996;
+//	var pageHeight = 996;
 //	var bodyHeight = 1196;
 //	var pageHeight = 1196;
 	var divisions = 3;
+	
 	if ( $PageType == 'Title' ) {
 		pageOffset = 307;
-		bodyHeight = 689;
+//		bodyHeight = 689;
+		bodyHeight = 640;
+		
+		if ( CardTypes[0] == 'GuideA4' ) {
+			pageOffset = 346;
+			bodyHeight = 1213;
+		}
+		
 		divisions = 2;
+	}
+	else if ( CardTypes[0] == 'GuideA4' ) {
+		bodyHeight = 1559;
+		pageHeight = 1559;
 	}
 
 	var boxHeight = bodyHeight / divisions;	
@@ -1044,10 +1072,10 @@ function updateGuideBodyRegions( diy, bodyRegions ) {
 		}	
 	}
 
-	bodyRegions[0].y += leftDown;
-	bodyRegions[0].height -= (leftDown + leftUp);
-	bodyRegions[1].y += rightDown;
-	bodyRegions[1].height -= (rightDown + rightUp);
+	bodyRegions[0].y += leftDown + 15;
+	bodyRegions[0].height -= (leftDown + leftUp + 15);
+	bodyRegions[1].y += rightDown + 15;
+	bodyRegions[1].height -= (rightDown + rightUp + 15);
 	
 	return bodyRegions;
 }
@@ -1102,6 +1130,9 @@ function getClassInitial( className ) {
 		case 'Guardian':
 			initial = 'G';
 			break;
+		case 'ParallelGuardian':
+			initial = 'GP';
+			break;
 		case 'Seeker':
 			initial = 'K';
 			break;
@@ -1116,6 +1147,9 @@ function getClassInitial( className ) {
 			break;
 		case 'Mystic':
 			initial = 'M';
+			break;
+		case 'ParallelMystic':
+			initial = 'MP';
 			break;
 		case 'Survivor':
 			initial = 'V';
@@ -1273,9 +1307,9 @@ function updateReversableTextBoxShape( diy, orientation ) {
 		reverse = true;
 	}
 	
-	if ( Body_box != null ) createTextShape( Body_box, region, reverse );
+//	if ( Body_box != null ) createTextShape( Body_box, region, reverse );
+	setTextShape( Body_box, region, reverse );
 }
-
 
 function filterFunction(filter){
 	var f = function filter(source){
@@ -1301,6 +1335,21 @@ const createAlphaInvertedImage = filterFunction(
 	new ca.cgjennings.graphics.filters.AlphaInversionFilter()
 );
 
+const createHSBImage = filterFunction(
+	new ca.cgjennings.graphics.filters.TintFilter( 0.4, 0.8, 0.6 )
+);
+/*
+function createHSBImage(source)
+{
+	new ca.cgjennings.graphics.filters.ReplaceHueSaturationFilter(0.4, 1.0, 0.8);
+	
+//	var f = function filter(source){
+//		return filter.filter.filter(source,null);
+//	};
+//	f.filter = filter;
+//	return f;
+}
+*/
 function createStencilImage( source, mask )
 {
 	var stencilImage = ImageUtils.resize( ImageUtils.get('ArkhamHorrorLCG/overlays/AHLCG-' + mask + 'Mask.png'), source.width, source.height );
@@ -1332,4 +1381,41 @@ function createReturnToImage( iconImage )
 	g.dispose();
 	
 	return destImage;
+}
+
+function getPathPointArrays( className ) {
+	pointArray = [];
+
+	switch ( className )
+	{
+		case 'Guardian':
+		case 'ParallelGuardian':
+			pointArray[0] = new Array( 0.355, 0.337, 0.271, 0.267, 0.010, 0.010, 1.0, 1.0 );
+			pointArray[1] = new Array( 0.000, 0.566, 0.566, 0.600, 0.600, 1.000, 1.0, 0.0 );
+			break;
+		case 'Seeker':
+		case 'ParallelSeeker':
+			pointArray[0] = new Array( 0.355, 0.322, 0.296, 0.275, 0.010, 0.010, 1.0, 1.0 );
+			pointArray[1] = new Array( 0.000, 0.585, 0.578, 0.630, 0.622, 1.000, 1.0, 0.0 );
+			break;
+		case 'Rogue':
+		case 'ParallelRogue':
+			pointArray[0] = new Array( 0.355, 0.326, 0.272, 0.264, 0.000, 0.0, 1.0, 1.0 );
+//			pointArray[1] = new Array( 0.000, 0.511, 0.511, 0.593, 0.593, 1.0, 1.0, 0.0 );
+			pointArray[1] = new Array( 0.000, 0.511, 0.511, 0.583, 0.583, 1.0, 1.0, 0.0 );
+			break;
+		case 'Mystic':
+		case 'ParallelMystic':
+		case 'Survivor':
+			pointArray[0] = new Array( 0.355, 0.315, 0.276, 0.264, 0.010, 0.010, 1.0, 1.0 );
+//			pointArray[1] = new Array( 0.000, 0.544, 0.544, 0.631, 0.631, 1.000, 1.0, 0.0 );
+			pointArray[1] = new Array( 0.000, 0.544, 0.544, 0.611, 0.611, 1.000, 1.0, 0.0 );
+			break;
+		case 'Neutral':
+			pointArray[0] = new Array( 0.400, 0.357, 0.010, 0.010, 1.0, 1.0 );
+			pointArray[1] = new Array( 0.000, 0.468, 0.468, 1.000, 1.0, 0.0 );
+			break;
+	}
+
+	return pointArray;
 }

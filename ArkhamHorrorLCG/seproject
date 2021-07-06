@@ -1,10 +1,10 @@
 #WARNING:
 #If this file is deleted then this folder will no
 #longer appear to be a project/task in Strange Eons.
-#Sat Nov 21 09:18:41 EST 2020
-first-row=0
-open-folders=\:ArkhamHorrorLCG\:ArkhamHorrorLCG/resources\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG/diy\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG/settings\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG/text
+#Wed Jun 30 21:54:00 EDT 2021
+first-row=94
+open-folders=\:ArkhamHorrorLCG\:ArkhamHorrorLCG/resources\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG/diy\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG/fonts\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG/settings\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG/text
 res-id=tim
 notes=
 type=PROJECT
-selected-members=\:ArkhamHorrorLCG/resources/ArkhamHorrorLCG/settings/AHLCG-Agenda.settings
+selected-members=\:ArkhamHorrorLCG.seext
