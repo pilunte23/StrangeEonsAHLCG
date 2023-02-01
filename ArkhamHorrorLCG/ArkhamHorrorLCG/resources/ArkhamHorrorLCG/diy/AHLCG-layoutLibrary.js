@@ -25,6 +25,23 @@ function layoutTitle( diy, bindings, subtitle, updateFaces, bindingFaceIndex ) {
 	return TitlePanel;
 }
 
+// 2 lines
+function layoutTitle2( diy, bindings, updateFaces, bindingFaceIndex ) {
+	var TitlePanel = new Grid();	
+	TitlePanel.setTitle( @AHLCG-Title );
+
+	var titleArea = new textArea( '', 2, 30 );
+	
+	if (bindingFaceIndex == FACE_FRONT) diy.setNameField( titleArea );
+	else bindings.add( 'Title' + BindingSuffixes[bindingFaceIndex], titleArea, updateFaces );
+
+	TitlePanel.place( 
+		@AHLCG-Title, 'align right', titleArea, 'wrap, pushx, growx'
+		);
+
+	return TitlePanel;
+}
+
 function layoutTitleUnique( diy, bindings, subtitle, updateFaces, bindingFaceIndex ) {
 	var TitlePanel = new Grid();
 	TitlePanel.setTitle( @AHLCG-Title );
@@ -39,7 +56,7 @@ function layoutTitleUnique( diy, bindings, subtitle, updateFaces, bindingFaceInd
 	bindings.add( 'Unique' + BindingSuffixes[bindingFaceIndex], uniqueButton, updateFaces );
 
 	TitlePanel.place( 
-		@AHLCG-Title, 'align right', uniqueButton, 'split, wmax 30', titleField, 'wrap, pushx, growx'
+		@AHLCG-Title, 'align right', uniqueButton, 'split, wmax 35, hmin 25, hmax 25', titleField, 'wrap, pushx, growx'
 		);
 
 	if (subtitle) {
@@ -108,17 +125,17 @@ function layoutTitleGuide( diy, bindings, updateFaces, bindingFaceIndex, portrai
 					
 						let coveringScale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
 
-						portrait.pan = Point2D.Float( region.x + (region.width - clipDimension.width) / 2, region.y + (region.height - clipDimension.height) / 2 );					
+						portrait.pan = Point2D.Float( region.x + (region.width - clipDimension.width) / 2, region.y + (region.height - clipDimension.height) / 2 );
 						portrait.scale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
 						portrait.scale = coveringScale;
-				
+
 						portraitPanels[i].portrait = portrait;
 					}
 				
 					portraitPanels[i].portrait = portrait;
 				}
 			}
-			
+
 			createPortraitStencil( diy, PortraitList[0], portraitPanels[0], $PositionPortrait1, (String)(TypeList.getSelectedItem()) );
 			createPortraitStencil( diy, PortraitList[1], portraitPanels[1],  $PositionPortrait2, (String)(TypeList.getSelectedItem()) );
 		} catch ( ex ) {
@@ -159,6 +176,17 @@ function layoutActStats( diy, bindings, faceIndex, portraitPanels ) {
 	var perInvestigatorButton = new toggleButton( '', perInvestigatorIcon, false );
 	bindings.add( 'PerInvestigator' + BindingSuffixes[faceIndex], perInvestigatorButton, [0] );
 
+	var asteriskButton = new toggleButton( '*', null, false );
+	bindings.add( 'Asterisk' + BindingSuffixes[faceIndex], asteriskButton, [0] );
+
+	perInvestigatorButton.addActionListener( function updateButtons( actionEvent ) {
+		asteriskButton.setSelected(false);
+	});
+	
+	asteriskButton.addActionListener( function updateButtons( actionEvent ) {
+		perInvestigatorButton.setSelected(false);		
+	});	
+
 	var orientationList = new comboBox( Eons.namedObjects.AHLCGObject.comboTemplateOrientation, null );
 	bindings.add( 'Orientation' + BindingSuffixes[faceIndex], orientationList, [0] );
 
@@ -186,14 +214,20 @@ function layoutActStats( diy, bindings, faceIndex, portraitPanels ) {
 			
 			diy.settings.setRegion( 'AHLCG-Act-Encounter-portrait-clip-region', region );
 
+			region = diy.settings.getRegion( 'AHLCG-Act-DefaultReturnEncounter-portrait-clip-region',
+				// default - if no DefaultReturnPortrait defined, use normal ReturnPortrait
+				diy.settings.getRegion( 'AHLCG-Act-ReturnEncounter-portrait-clip-region') );
+
+			if ( orientationSetting == 'Reversed' ) region = reverseRegion( region );
+
+			diy.settings.setRegion( 'AHLCG-Act-ReturnEncounter-portrait-clip-region', region );
+
 			region = diy.settings.getRegion( 'AHLCG-Act-DefaultCollection-portrait-clip-region',
 				// default - if no DefaultPortrait defined, use normal Portrait
 				diy.settings.getRegion( 'AHLCG-Act-Collection-portrait-clip-region') );
 			if ( orientationSetting == 'Reversed' ) region = shiftRegion( region, CardTypes[FACE_FRONT] );
 			
 			diy.settings.setRegion( 'AHLCG-Act-Collection-portrait-clip-region', region );
-				
-//			portraitPanels[index].portrait = portrait;
 		} catch ( ex if ex instanceof ReferenceError ) {
 			// means Body_box has not been created yet (during createInterface)
 			// we can safely ignore this
@@ -205,9 +239,10 @@ function layoutActStats( diy, bindings, faceIndex, portraitPanels ) {
 	StatPanel.place(
 		@AHLCG-ActNumber, 'align right', indexList, 'pushx, growx, sizegroup sp', 
 		@AHLCG-Clues, 'align right, gapx 10', cluesList, 'pushx, growx, sizegroup sp', 
-		perInvestigatorButton, 'wrap, wmax 30, hmax 30',
+		perInvestigatorButton, 'wmax 35, hmin 25, hmax 25',
+		asteriskButton, 'wrap, wmax 35, hmin 25, hmax 25',
 		@AHLCG-ScenarioDeckID, 'align right', deckList, 'pushx, growx, sizegroup sp', 
-		@AHLCG-Orientation, 'align right, gapx 10', orientationList, 'pushx, growx, span 2'
+		@AHLCG-Orientation, 'align right, gapx 10', orientationList, 'pushx, growx, span 3'
 		);
 		
 	return StatPanel;
@@ -232,6 +267,17 @@ function layoutAgendaStats( diy, bindings, faceIndex, portraitPanels ) {
 	var perInvestigatorButton = new toggleButton( '', perInvestigatorIcon, false );
 	bindings.add( 'PerInvestigator' + BindingSuffixes[faceIndex], perInvestigatorButton, [0] );
 
+	var asteriskButton = new toggleButton( '*', null, false );
+	bindings.add( 'Asterisk' + BindingSuffixes[faceIndex], asteriskButton, [0] );
+
+	perInvestigatorButton.addActionListener( function updateButtons( actionEvent ) {
+		asteriskButton.setSelected(false);
+	});
+	
+	asteriskButton.addActionListener( function updateButtons( actionEvent ) {
+		perInvestigatorButton.setSelected(false);		
+	});	
+
 	var orientationList = new comboBox( Eons.namedObjects.AHLCGObject.comboTemplateOrientation, null );
 	bindings.add( 'Orientation' + BindingSuffixes[faceIndex], orientationList, [0] );
 
@@ -248,6 +294,7 @@ function layoutAgendaStats( diy, bindings, faceIndex, portraitPanels ) {
 			let region = diy.settings.getRegion( 'AHLCG-Agenda-DefaultPortrait-portrait-clip-region',
 				// default - if no PortraitCollection defined, use normal Portrait
 				diy.settings.getRegion( 'AHLCG-Agenda-Portrait-portrait-clip-region') );
+				
 			if ( orientationSetting == 'Reversed' ) region = reverseRegion( region );			
 		} catch ( ex if ex instanceof ReferenceError ) {
 			// means Body_box has not been created yet (during createInterface)
@@ -260,11 +307,53 @@ function layoutAgendaStats( diy, bindings, faceIndex, portraitPanels ) {
 	StatPanel.place(
 		@AHLCG-AgendaNumber, 'align right', indexList, 'pushx, growx, sizegroup sp', 
 		@AHLCG-Doom, 'align right, gapx 10', doomList, 'pushx, growx, sizegroup sp',
-		perInvestigatorButton, 'wrap, wmax 30, hmax 30',
+		perInvestigatorButton, 'wmax 35, hmin 25, hmax 25',
+		asteriskButton, 'wrap, wmax 35, hmin 25, hmax 25',
 		@AHLCG-ScenarioDeckID, 'align right', deckList, 'pushx, growx, sizegroup sp', 
-		@AHLCG-Orientation, 'align right, gapx 10', orientationList, 'pushx, growx, span 2'
+		@AHLCG-Orientation, 'align right, gapx 10', orientationList, 'pushx, growx, span 3'
 		);
-		
+
+	return StatPanel;
+}
+
+function layoutAgendaFrontPortraitStats( diy, bindings, faceIndex, portraitPanels ) {
+	var StatPanel = new Grid();
+	StatPanel.setTitle( @AHLCG-BasicData );
+
+	StatPanel.editorTabScrolling = true;
+
+	var indexList = new comboBox( Eons.namedObjects.AHLCGObject.combo20, null );
+	bindings.add( 'ScenarioIndex' + BindingSuffixes[faceIndex], indexList, [0, 1] );
+
+	var deckList = new comboBox( [ 'a', 'c', 'e', 'g', 'i', 'k', 'm', 'o', 'q', 's', 'u', 'w', 'y' ], null );
+	bindings.add( 'ScenarioDeckID' + BindingSuffixes[faceIndex], deckList, [0, 1] );
+
+	var doomList = new comboBox( Eons.namedObjects.AHLCGObject.comboClues, null );
+	bindings.add( 'Doom' + BindingSuffixes[faceIndex], doomList, [0] );
+
+	var perInvestigatorIcon = ImageUtils.createIcon(ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-PerInvestigator.png'), 12, 12);
+	var perInvestigatorButton = new toggleButton( '', perInvestigatorIcon, false );
+	bindings.add( 'PerInvestigator' + BindingSuffixes[faceIndex], perInvestigatorButton, [0] );
+
+	var asteriskButton = new toggleButton( '*', null, false );
+	bindings.add( 'Asterisk' + BindingSuffixes[faceIndex], asteriskButton, [0] );
+
+	perInvestigatorButton.addActionListener( function updateButtons( actionEvent ) {
+		asteriskButton.setSelected(false);
+	});
+	
+	asteriskButton.addActionListener( function updateButtons( actionEvent ) {
+		perInvestigatorButton.setSelected(false);		
+	});	
+
+	StatPanel.place(
+		@AHLCG-AgendaNumber, 'align right', indexList, 'pushx, growx, sizegroup sp', 
+		@AHLCG-Doom, 'align right, gapx 10', doomList, 'pushx, growx, sizegroup sp',
+		perInvestigatorButton, 'wmax 35, hmin 25, hmax 25',
+		asteriskButton, 'wrap, wmax 35, hmin 25, hmax 25',
+		@AHLCG-ScenarioDeckID, 'align right', deckList, 'pushx, growx, sizegroup sp'
+		);
+
 	return StatPanel;
 }
 
@@ -274,7 +363,7 @@ function layoutAssetStats( bindings, faceIndex ) {
 
 	var AHLCGObject = Eons.namedObjects.AHLCGObject;
 	
-	var ClassList = new comboBox( AHLCGObject.comboClassesW, null );
+	var ClassList = new comboBox( AHLCGObject.comboClassesBW, null );
 	bindings.add( 'CardClass' + BindingSuffixes[faceIndex], ClassList, [faceIndex] );
 	
 	var SkillList1 = new comboBox( AHLCGObject.comboSkills, null );
@@ -289,14 +378,26 @@ function layoutAssetStats( bindings, faceIndex ) {
 	var SkillList4 = new comboBox( AHLCGObject.comboSkills, null );
 	bindings.add( 'Skill4' + BindingSuffixes[faceIndex], SkillList4, [faceIndex] );
 	
+	var SkillList5 = new comboBox( AHLCGObject.comboSkills, null );
+	bindings.add( 'Skill5' + BindingSuffixes[faceIndex], SkillList5, [faceIndex] );
+	
+	var SkillList6 = new comboBox( AHLCGObject.comboSkills, null );
+	bindings.add( 'Skill6' + BindingSuffixes[faceIndex], SkillList6, [faceIndex] );
+	
+	var ClassList2 = new comboBox( AHLCGObject.comboClassesD, null );
+	bindings.add( 'CardClass2' + BindingSuffixes[faceIndex], ClassList2, [faceIndex] );
+
 	var CostList = new comboBox( AHLCGObject.comboCost, null );
 	bindings.add( 'ResourceCost' + BindingSuffixes[faceIndex], CostList, [faceIndex] );
 
 	var LevelList = new comboBox( AHLCGObject.comboLevelsN, null );
 	bindings.add( 'Level' + BindingSuffixes[faceIndex], LevelList, [faceIndex] );
 
-	var SlotList = new comboBox( AHLCGObject.comboSlots, null );
-	bindings.add( 'Slot' + BindingSuffixes[faceIndex], SlotList, [faceIndex] );
+	var SlotList1 = new comboBox( AHLCGObject.comboSlots, null );
+	bindings.add( 'Slot' + BindingSuffixes[faceIndex], SlotList1, [faceIndex] );
+	
+	var SlotList2 = new comboBox( AHLCGObject.comboSlots, null );
+	bindings.add( 'Slot2' + BindingSuffixes[faceIndex], SlotList2, [faceIndex] );
 	
 	var StaminaList = new comboBox( AHLCGObject.comboAssetStamina, null );
 	bindings.add( 'Stamina' + BindingSuffixes[faceIndex], StaminaList, [faceIndex] );
@@ -306,17 +407,21 @@ function layoutAssetStats( bindings, faceIndex ) {
 	
 	StatsPanel.place(
 		@AHLCG-Class, 'align right', ClassList, 'pushx, growx, sizegroup sp', 
-		@AHLCG-Cost, 'align right, gapx 10', CostList, 'wrap, pushx, growx, sizegroup sp',
-		@AHLCG-Icon + ' 1', 'align right', SkillList1, 'pushx, growx, sizegroup sp',
+		@AHLCG-Cost, 'align right, gapx 10', CostList, 'wrap, pushx, growx, sizegroup sp',		
+		@AHLCG-Class2, 'align right, gapx 10', ClassList2, 'pushx, growx, sizegroup sp', 
 		@AHLCG-Level, 'align right, gapx 10', LevelList, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Icon + ' 1', 'align right', SkillList1, 'pushx, growx, sizegroup sp',
+		@AHLCG-Slot1, 'align right, gapx 10', SlotList1, 'wrap, pushx, growx, sizegroup sp',
 		@AHLCG-Icon + ' 2', 'align right', SkillList2, 'pushx, growx, sizegroup sp',
-		@AHLCG-Slot, 'align right, gapx 10', SlotList, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Slot2, 'align right, gapx 10', SlotList2, 'wrap, pushx, growx, sizegroup sp',
 		@AHLCG-Icon + ' 3', 'align right', SkillList3, 'pushx, growx, sizegroup sp',
 		@AHLCG-Stamina, 'align right, gapx 10', StaminaList, 'wrap, pushx, growx, sizegroup sp',
 		@AHLCG-Icon + ' 4', 'align right', SkillList4, 'pushx, growx, sizegroup sp',
-		@AHLCG-Sanity, 'align right, gapx 10', SanityList, 'wrap, pushx, growx, sizegroup sp'
+		@AHLCG-Sanity, 'align right, gapx 10', SanityList, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Icon + ' 5', 'align right', SkillList5, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Icon + ' 6', 'align right', SkillList6, 'pushx, growx, sizegroup sp'
 		);
-		
+
 	return StatsPanel;
 }
 
@@ -325,6 +430,9 @@ function layoutAssetStoryStats( bindings, faceIndex ) {
 	StatsPanel.setTitle( @AHLCG-BasicData );
 
 	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	var ClassList = new comboBox( AHLCGObject.comboStoryAssetClasses, null );
+	bindings.add( 'CardClass' + BindingSuffixes[faceIndex], ClassList, [faceIndex] );
 
 	var SkillList1 = new comboBox( AHLCGObject.comboSkills, null );
 	bindings.add( 'Skill1' + BindingSuffixes[faceIndex], SkillList1, [faceIndex] );
@@ -338,11 +446,17 @@ function layoutAssetStoryStats( bindings, faceIndex ) {
 	var SkillList4 = new comboBox( AHLCGObject.comboSkills, null );
 	bindings.add( 'Skill4' + BindingSuffixes[faceIndex], SkillList4, [faceIndex] );
 	
+	var SkillList5 = new comboBox( AHLCGObject.comboSkills, null );
+	bindings.add( 'Skill5' + BindingSuffixes[faceIndex], SkillList5, [faceIndex] );
+	
 	var CostList = new comboBox( AHLCGObject.comboCost, null );
 	bindings.add( 'ResourceCost' + BindingSuffixes[faceIndex], CostList, [faceIndex] );
 
-	var SlotList = new comboBox( AHLCGObject.comboSlots, null );
-	bindings.add( 'Slot' + BindingSuffixes[faceIndex], SlotList, [faceIndex] );
+	var SlotList1 = new comboBox( AHLCGObject.comboSlots, null );
+	bindings.add( 'Slot' + BindingSuffixes[faceIndex], SlotList1, [faceIndex] );
+	
+	var SlotList2 = new comboBox( AHLCGObject.comboSlots, null );
+	bindings.add( 'Slot2' + BindingSuffixes[faceIndex], SlotList2, [faceIndex] );
 	
 	var StaminaList = new comboBox( AHLCGObject.comboAssetStamina, null );
 	bindings.add( 'Stamina' + BindingSuffixes[faceIndex], StaminaList, [faceIndex] );
@@ -351,14 +465,17 @@ function layoutAssetStoryStats( bindings, faceIndex ) {
 	bindings.add( 'Sanity' + BindingSuffixes[faceIndex], SanityList, [faceIndex] );
 	
 	StatsPanel.place(
-		@AHLCG-Icon + ' 1', 'align right', SkillList1, 'pushx, growx, sizegroup sp',
+		@AHLCG-Class, 'align right', ClassList, 'pushx, growx, sizegroup sp',
 		@AHLCG-Cost, 'align right, gapx 10', CostList, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Icon + ' 1', 'align right', SkillList1, 'pushx, growx, sizegroup sp',
+		@AHLCG-Slot1, 'align right, gapx 10', SlotList1, 'wrap, pushx, growx, sizegroup sp',
 		@AHLCG-Icon + ' 2', 'align right', SkillList2, 'pushx, growx, sizegroup sp',
-		@AHLCG-Slot, 'align right, gapx 10', SlotList, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Slot2, 'align right, gapx 10', SlotList2, 'wrap, pushx, growx, sizegroup sp',
 		@AHLCG-Icon + ' 3', 'align right', SkillList3, 'pushx, growx, sizegroup sp',
 		@AHLCG-Stamina, 'align right, gapx 10', StaminaList, 'wrap, pushx, growx, sizegroup sp',
 		@AHLCG-Icon + ' 4', 'align right', SkillList4, 'pushx, growx, sizegroup sp',
-		@AHLCG-Sanity, 'align right, gapx 10', SanityList, 'wrap, pushx, growx, sizegroup sp'
+		@AHLCG-Sanity, 'align right, gapx 10', SanityList, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Icon + ' 5', 'align right', SkillList5, 'pushx, growx, sizegroup sp'
 		);
 		
 	return StatsPanel;
@@ -377,7 +494,7 @@ function layoutEnemyStats( bindings, faceIndex ) {
 	var perInvestigatorButton = new toggleButton( '', perInvestigatorIcon, false );
 	bindings.add( 'PerInvestigator' + BindingSuffixes[faceIndex], perInvestigatorButton, [faceIndex] );
 	
-	var HealthList = new comboBox( AHLCGObject.comboEnemyStat, null );
+	var HealthList = new comboBox( AHLCGObject.comboEnemyHealth, null );
 	bindings.add( 'Health' + BindingSuffixes[faceIndex], HealthList, [faceIndex] );
 	
 	var EvadeList = new comboBox( AHLCGObject.comboEnemyStat, null );
@@ -390,11 +507,11 @@ function layoutEnemyStats( bindings, faceIndex ) {
 	bindings.add( 'Horror' + BindingSuffixes[faceIndex], HorrorList, [faceIndex] );
 
 	StatPanel.place(
-		@AHLCG-Attack, 'align right', AttackList, 'pushx, growx, sizegroup sp',
-		@AHLCG-Damage, 'skip, align right, gapx 10', DamageList, 'wrap, pushx, growx, sizegroup sp',
-		@AHLCG-Health, 'align right', HealthList, 'pushx, growx, sizegroup sp', perInvestigatorButton, 'wmax 30, hmax 30',
-		@AHLCG-Horror, 'align right', HorrorList, 'wrap, pushx, growx',
-		@AHLCG-Evade, 'align right', EvadeList, 'wrap, pushx, growx, sizegroup sp'
+		@AHLCG-Attack, 'align right', AttackList, 'pushx, growx, sizegroup sp, span 2',
+		@AHLCG-Damage, 'align right, gapx 10', DamageList, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Health, 'align right', HealthList, 'pushx, growx', perInvestigatorButton, 'wmax 35, hmin 25, hmax 25',
+		@AHLCG-Horror, 'align right', HorrorList, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Evade, 'align right', EvadeList, 'wrap, pushx, growx, sizegroup sp, span 2'
 		);
 		
 	return StatPanel;
@@ -429,12 +546,12 @@ function layoutWeaknessEnemyStats( bindings, faceIndex ) {
 	bindings.add( 'Horror' + BindingSuffixes[faceIndex], HorrorList, [faceIndex] );
 
 	StatPanel.place(
-		@AHLCG-Type, 'align right', TypeList, 'pushx, growx, sizegroup sp',
-		@AHLCG-Damage, 'skip, align right, gapx 10', DamageList, 'wrap, pushx, growx, sizegroup sp',
-		@AHLCG-Attack, 'align right', AttackList, 'pushx, growx, sizegroup sp',
-		@AHLCG-Horror, 'skip, align right, gapx 10', HorrorList, 'wrap, pushx, growx',
-		@AHLCG-Health, 'align right', HealthList, 'pushx, growx, sizegroup sp', perInvestigatorButton, 'wrap, wmax 30, hmax 30',
-		@AHLCG-Evade, 'align right', EvadeList, 'wrap, pushx, growx, sizegroup sp'
+		@AHLCG-Type, 'align right', TypeList, 'pushx, growx, sizegroup sp, span 2',
+		@AHLCG-Damage, 'align right, gapx 10', DamageList, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Attack, 'align right', AttackList, 'pushx, growx, sizegroup sp, span 2',
+		@AHLCG-Horror, 'align right, gapx 10', HorrorList, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Health, 'align right', HealthList, 'pushx, growx', perInvestigatorButton, 'wrap, wmax 35, hmin 25, hmax 25',
+		@AHLCG-Evade, 'align right', EvadeList, 'wrap, pushx, growx, sizegroup sp, span 2'
 		);
 		
 	return StatPanel;
@@ -453,9 +570,13 @@ function layoutEventStats( diy, bindings, faceIndex ) {
 		try {
 			let className = (String)(ClassList.getSelectedItem());
 			if ( className == 'Weakness' || className == 'BasicWeakness' ) {
-				createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'WeaknessBody-region') ) );
+//				createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'WeaknessBody-region') ) );
+				setTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'WeaknessBody-region') ) );
 			}
-			else createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );			
+			else {
+//				createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );			
+				setTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );
+			}
 		} catch ( ex if ex instanceof ReferenceError ) {
 			// means Body_box has not been created yet (during createInterface)
 			// we can safely ignore this
@@ -476,6 +597,9 @@ function layoutEventStats( diy, bindings, faceIndex ) {
 	var SkillList4 = new comboBox( AHLCGObject.comboSkills, null );
 	bindings.add( 'Skill4' + BindingSuffixes[faceIndex], SkillList4, [faceIndex] );
 	
+	var SkillList5 = new comboBox( AHLCGObject.comboSkills, null );
+	bindings.add( 'Skill5' + BindingSuffixes[faceIndex], SkillList5, [faceIndex] );
+	
 	var CostList = new comboBox( AHLCGObject.comboCost, null );
 	bindings.add( 'ResourceCost' + BindingSuffixes[faceIndex], CostList, [faceIndex] );
 
@@ -489,7 +613,8 @@ function layoutEventStats( diy, bindings, faceIndex ) {
 		@AHLCG-Level, 'align right, gapx 10', LevelList, 'wrap, pushx, growx, sizegroup sp',
 		@AHLCG-Icon + ' 2', 'align right', SkillList2, 'wrap, pushx, growx, sizegroup sp',
 		@AHLCG-Icon + ' 3', 'align right', SkillList3, 'wrap, pushx, growx, sizegroup sp',
-		@AHLCG-Icon + ' 4', 'align right', SkillList4, 'pushx, growx, sizegroup sp'
+		@AHLCG-Icon + ' 4', 'align right', SkillList4, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Icon + ' 5', 'align right', SkillList5, 'pushx, growx, sizegroup sp'
 		);
 
 	return StatPanel;
@@ -501,13 +626,13 @@ function layoutInvestigatorStats( diy, bindings, faceIndex ) {
 
 	var AHLCGObject = Eons.namedObjects.AHLCGObject;
 
-	var ClassList = new comboBox( AHLCGObject.comboClasses, null );
+	var ClassList = new comboBox( AHLCGObject.comboClassesI, null );
 	bindings.add( 'CardClass' + BindingSuffixes[faceIndex], ClassList, [0, 1] );
 
 	ClassList.addActionListener( function updateShape( actionEvent ) {
 		try {
-			createBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ), (String)(ClassList.getSelectedItem()) );
-			
+//			createBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ), (String)(ClassList.getSelectedItem()) );			
+			setBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ), (String)(ClassList.getSelectedItem() ) );
 		} catch ( ex if ex instanceof ReferenceError ) {
 			// means Body_box has not been created yet (during createInterface)
 			// we can safely ignore this
@@ -547,24 +672,60 @@ function layoutInvestigatorStats( diy, bindings, faceIndex ) {
 	return StatPanel;
 }
 
+function layoutStoryInvestigatorStats( diy, bindings, faceIndex ) {
+	var StatPanel = new Grid();
+	StatPanel.setTitle( @AHLCG-BasicData );
+
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	var WillpowerList = new comboBox( AHLCGObject.comboStat, null );
+	bindings.add( 'Willpower' + BindingSuffixes[faceIndex], WillpowerList, [faceIndex] );
+	
+	var IntellectList = new comboBox( AHLCGObject.comboStat, null );
+	bindings.add( 'Intellect' + BindingSuffixes[faceIndex], IntellectList, [faceIndex] );
+	
+	var CombatList = new comboBox( AHLCGObject.comboStat, null );
+	bindings.add( 'Combat' + BindingSuffixes[faceIndex], CombatList, [faceIndex] );
+	
+	var AgilityList = new comboBox( AHLCGObject.comboStat, null );
+	bindings.add( 'Agility' + BindingSuffixes[faceIndex], AgilityList, [faceIndex] );
+	
+	var StaminaList = new comboBox( AHLCGObject.comboInvestigatorHealth, null );
+	bindings.add( 'Stamina' + BindingSuffixes[faceIndex], StaminaList, [faceIndex] );
+	
+	var SanityList = new comboBox( AHLCGObject.comboInvestigatorHealth, null );
+	bindings.add( 'Sanity' + BindingSuffixes[faceIndex], SanityList, [faceIndex] );
+	
+	StatPanel.place(
+		@AHLCG-Stamina, 'align right', StaminaList, 'pushx, growx, sizegroup sp',
+		@AHLCG-Skill-Willpower, 'align right, gapx 10', WillpowerList, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Sanity, 'align right', SanityList, 'pushx, growx, sizegroup sp',
+		@AHLCG-Skill-Intellect, 'align right, gapx 10', IntellectList, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Skill-Combat, 'align right, skip 2', CombatList, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Skill-Agility, 'align right, skip 2', AgilityList, 'pushx, growx, sizegroup sp'
+		);
+
+	return StatPanel;
+}
+
 // no back type
 function layoutLocationBackStats( bindings, faceIndex ) {
 	var StatPanel = new Grid();
 	StatPanel.setTitle( @AHLCG-BasicData );
 
-	var ShroudList = new comboBox( Eons.namedObjects.AHLCGObject.combo020, null );
-	bindings.add( 'Shroud' + BindingSuffixes[faceIndex], ShroudList, [1] );
+	var ShroudList = new comboBox( Eons.namedObjects.AHLCGObject.comboX20, null );
+	bindings.add( 'Shroud' + BindingSuffixes[faceIndex], ShroudList, [faceIndex] );
 	
-	var CluesList = new comboBox( Eons.namedObjects.AHLCGObject.combo020, null );
-	bindings.add( 'Clues' + BindingSuffixes[faceIndex], CluesList, [1] );
+	var CluesList = new comboBox( Eons.namedObjects.AHLCGObject.comboX20, null );
+	bindings.add( 'Clues' + BindingSuffixes[faceIndex], CluesList, [faceIndex] );
 	
 	var perInvestigatorIcon = ImageUtils.createIcon(ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-PerInvestigator.png'), 12, 12);
 	var perInvestigatorButton = new toggleButton( '', perInvestigatorIcon, false );
-	bindings.add( 'PerInvestigator' + BindingSuffixes[faceIndex], perInvestigatorButton, [1] );
+	bindings.add( 'PerInvestigator' + BindingSuffixes[faceIndex], perInvestigatorButton, [faceIndex] );
 
 	StatPanel.place(
 		@AHLCG-Shroud, 'align right', ShroudList, 'pushx, growx, sizegroup sp',
-		@AHLCG-Clues, 'align right', CluesList, 'pushx, growx, sizegroup sp', perInvestigatorButton, 'wmax 30, hmax 30'
+		@AHLCG-Clues, 'align right', CluesList, 'pushx, growx, sizegroup sp', perInvestigatorButton, 'wmax 35, hmin 25, hmax 25'
 		);
 
 	return StatPanel;
@@ -575,10 +736,10 @@ function layoutLocationStats( bindings, faceIndex ) {
 	var StatPanel = new Grid();
 	StatPanel.setTitle( @AHLCG-BasicData );
 
-	var ShroudList = new comboBox( Eons.namedObjects.AHLCGObject.combo020, null );
+	var ShroudList = new comboBox( Eons.namedObjects.AHLCGObject.comboX20, null );
 	bindings.add( 'Shroud' + BindingSuffixes[faceIndex], ShroudList, [0] );
 	
-	var CluesList = new comboBox( Eons.namedObjects.AHLCGObject.combo020, null );
+	var CluesList = new comboBox( Eons.namedObjects.AHLCGObject.comboX20, null );
 	bindings.add( 'Clues' + BindingSuffixes[faceIndex], CluesList, [0] );
 	
 	var perInvestigatorIcon = ImageUtils.createIcon(ImageUtils.get('ArkhamHorrorLCG/icons/AHLCG-PerInvestigator.png'), 12, 12);
@@ -606,7 +767,7 @@ function layoutLocationStats( bindings, faceIndex ) {
 
 	StatPanel.place(
 		@AHLCG-Shroud, 'align right', ShroudList, 'pushx, growx, sizegroup sp',
-		@AHLCG-Clues, 'align right', CluesList, 'pushx, growx, sizegroup sp', perInvestigatorButton, 'wmax 30, hmax 30, wrap',
+		@AHLCG-Clues, 'align right', CluesList, 'pushx, growx, sizegroup sp', perInvestigatorButton, 'wmax 35, hmin 25, hmax 25, wrap',
 		@AHLCG-Back, 'align right', BackList, 'pushx, growx, sizegroup sp'
 		);
 
@@ -648,6 +809,12 @@ function layoutSkillStats( bindings, faceIndex ) {
 	var SkillList4 = new comboBox( AHLCGObject.comboSkills, null );
 	bindings.add( 'Skill4' + BindingSuffixes[faceIndex], SkillList4, [faceIndex] );
 	
+	var SkillList5 = new comboBox( AHLCGObject.comboSkills, null );
+	bindings.add( 'Skill5' + BindingSuffixes[faceIndex], SkillList5, [faceIndex] );
+	
+	var SkillList6 = new comboBox( AHLCGObject.comboSkills, null );
+	bindings.add( 'Skill6' + BindingSuffixes[faceIndex], SkillList6, [faceIndex] );
+	
 	var LevelList = new comboBox( AHLCGObject.comboLevelsN, null );
 	bindings.add( 'Level' + BindingSuffixes[faceIndex], LevelList, [faceIndex] );
 
@@ -657,7 +824,9 @@ function layoutSkillStats( bindings, faceIndex ) {
 		@AHLCG-Icon + ' 1', 'align right', SkillList1, 'wrap, pushx, growx, sizegroup sp',
 		@AHLCG-Icon + ' 2', 'align right', SkillList2, 'wrap, pushx, growx, sizegroup sp',
 		@AHLCG-Icon + ' 3', 'align right', SkillList3, 'wrap, pushx, growx, sizegroup sp',
-		@AHLCG-Icon + ' 4', 'align right', SkillList4, 'wrap, pushx, growx, sizegroup sp'
+		@AHLCG-Icon + ' 4', 'align right', SkillList4, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Icon + ' 5', 'align right', SkillList5, 'wrap, pushx, growx, sizegroup sp',
+		@AHLCG-Icon + ' 6', 'align right', SkillList6, 'pushx, growx, sizegroup sp'
 		);
 		
 	return StatPanel;
@@ -700,27 +869,60 @@ function layoutBackTypeStats( diy, bindings, faceIndex ) {
 	});
 
 	StatsPanel.place(
-		@AHLCG-Back, 'align right', BackList, 'wrap'
+		@AHLCG-Back, 'align right ', BackList, 'wrap, width 40%'
 		);
 		
 	return StatsPanel;
 }
 
 function layoutGuideStats( bindings, faceIndex ) {
-	var StatPanel = new Grid();
-	StatPanel.setTitle( @AHLCG-BasicData );
+	var StatsPanel = new Grid();
+	StatsPanel.setTitle( @AHLCG-BasicData );
 
 	var pageSpinner = new spinner( 0, 100, 1, 1 );
 	bindings.add( 'Page' + BindingSuffixes[faceIndex], pageSpinner, [0] );
 		
-//	var columnSpinner = new spinner( 1, 2, 1, 1 );
-//	bindings.add( 'Columns' + BindingSuffixes[faceIndex], columnSpinner, [0] );
-
-	StatPanel.place(
+	StatsPanel.place(
 		@AHLCG-Page, 'align right, gapx 10', pageSpinner, 'wrap'
-//		@AHLCG-Columns, 'align right, gapx 10', columnSpinner, 'wrap'
 		);
 		
+	return StatsPanel;
+}
+
+function layoutChaosStats( bindings, faceIndex ) {
+	var StatsPanel = new Grid();	
+	StatsPanel.setTitle( @AHLCG-BasicData );
+
+	var trackerField = new textField( '', 30 );
+	bindings.add( 'TrackerBox', trackerField, [0,1] );
+
+	StatsPanel.place( 
+		@AHLCG-TrackerBox, 'align right', trackerField, 'wrap, pushx, growx'
+		);
+	
+	return StatsPanel;
+}
+
+function layoutStoryStats( bindings, faceIndex ) {
+	var StatPanel = new Grid();
+	StatPanel.setTitle( @AHLCG-BasicData );
+
+	var TemplateList = new comboBox( Eons.namedObjects.AHLCGObject.comboStoryTemplate, null );
+	bindings.add( 'Template' + BindingSuffixes[faceIndex], TemplateList, [faceIndex] );
+	
+	TemplateList.addActionListener( function updateTemplate( actionEvent ) {
+		if ( (String)(TemplateList.getSelectedItem()) == 'Story' ) {
+ 			CardTypes[faceIndex] = 'Story';
+ 		}
+ 		else {
+ 			CardTypes[faceIndex] = 'Chaos';
+ 		}
+	});
+	
+	StatPanel.place(
+		@AHLCG-Template, 'align right', TemplateList, 'pushx, growx, sizegroup sp'
+		);
+
 	return StatPanel;
 }
 
@@ -770,7 +972,6 @@ function layoutCopyright( bindings, faces, faceIndex ) {
 	CopyrightPanel.setTitle( @AHLCG-CopyrightTitle );
 
 	var copyrightField = new textField( '', 30 );
-//	bindings.add( 'Copyright' + BindingSuffixes[faceIndex], copyrightField, faces );
 	bindings.add( 'Copyright', copyrightField, faces );
 
 	CopyrightPanel.place( 
@@ -814,11 +1015,13 @@ function layoutText( bindings, parts, suffix, faceIndex ) {
 				var height = 6;
 				if ( CardTypes[faceIndex] == 'Scenario' ) height = 18;
 				else if ( CardTypes[faceIndex] == 'Guide75' ) height = 40;
+				else if ( CardTypes[faceIndex] == 'GuideA4' ) height = 40;
 				
 				field = new textArea( '', height, 30 );
 				bindings.add( key + BindingSuffixes[faceIndex], field, [ faceIndex ] );
 
 				if ( CardTypes[faceIndex] == 'Guide75' ) tipCount = 3;
+				else if ( CardTypes[faceIndex] == 'GuideA4' )  tipCount = 3;
 				else tipCount = 2;
 				break;
 			case 'Header':
@@ -828,8 +1031,14 @@ function layoutText( bindings, parts, suffix, faceIndex ) {
 				tipCount = 0;
 				break;
 			case 'Victory':
-				field = new textField( '', 30 );
-				bindings.add( key + BindingSuffixes[faceIndex], field, [ faceIndex ] );
+//				if ( CardTypes[faceIndex] == 'Location' ) {
+					field = new textArea( '', 2, 30 );
+					bindings.add( key + BindingSuffixes[faceIndex], field, [ faceIndex ] );
+//				}
+//				else {
+//					field = new textField( '', 30 );
+//					bindings.add( key + BindingSuffixes[faceIndex], field, [ faceIndex ] );
+//				}
 				
 				tipCount = 1;
 				break;
@@ -893,59 +1102,239 @@ function layoutText( bindings, parts, suffix, faceIndex ) {
 			);
 		}
 	}
-/*
-	var lineSpinner = new spinner( 25, 300, 1, 100 );
-	var paragraphSpinner = new spinner( 25, 300, 1, 100 );
 
-	bindings.add( 'LineSpacing' + BindingSuffixes[faceIndex], lineSpinner, [ faceIndex ] );
-
-	TextPanel.place(
-		@AHLCG-LineSpacing, 'align right', lineSpinner, 'split 2', '%', 'wrap'
-	);
-*/				
 	return TextPanel;
 }
 
-function layoutInvestigatorTextBack( bindings, faceIndex ) {
+function layoutVictoryText( bindings, faceIndex ) {	
+	var TextPanel = new Grid();
+	TextPanel.setTitle( @AHLCG-Victory );
+	
+	var spaceSpinner = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Victory' + BindingSuffixes[faceIndex] + 'Spacing', spaceSpinner, [ faceIndex ] );
+
+	var field = new textArea( '', 2, 30 );
+	bindings.add( 'Victory' + BindingSuffixes[faceIndex], field, [ faceIndex ] );
+				
+	var tip = new tipButton( @AHLCG-VictoryTip1 );
+
+	TextPanel.place(
+		@AHLCG-Spacing, 'align right', spaceSpinner, 'wrap',
+		@AHLCG-Victory, 'aligny top, gaptop 5, align right', field, 'pushx, growx',
+		tip, 'wrap, aligny top, gaptop 5'
+	);
+
+	return TextPanel;
+}
+
+function layoutInvestigatorTextBack( diy, bindings, faceIndex ) {
+	var StylePanel = new Grid();
+	StylePanel.setTitle( @AHLCG-Sections );
 	var TextPanel = new Grid();
 	TextPanel.setTitle( @AHLCG-Rules );
 	
-	var deckSizeSpinner = new spinner( 1, 60, 1, 1 );
-	bindings.add( 'DeckSize' + BindingSuffixes[faceIndex], deckSizeSpinner, [faceIndex] );
+	var StandardButton = new button( @AHLCG-Standard );
+	var PrologueButton = new button( @AHLCG-TCUPrologue );
 
-	var sizeSpinner = new spinner( 0, 50, 1, 1 );
-	bindings.add( 'DeckSize' + BindingSuffixes[faceIndex] + 'Spacing', sizeSpinner, [faceIndex] );
+	StylePanel.place(
+		StandardButton, 'pushx, growx',
+		PrologueButton, 'pushx, growx'
+		);
 
-	var deckOptionsText = new textArea( '', 6, 30, true );
-	bindings.add( 'DeckOptions' + BindingSuffixes[faceIndex], deckOptionsText, [faceIndex] );
-	
-	var optionsSpinner = new spinner( 0, 50, 1, 1 );
-	bindings.add( 'DeckOptions' + BindingSuffixes[faceIndex] + 'Spacing', optionsSpinner, [faceIndex] );
+	var name1 = new textField( '', 30 );
+	bindings.add( 'Text1Name' + BindingSuffixes[faceIndex], name1, [ faceIndex ] );
+	var text1 = new textArea( '', 4, 30, true );
+	bindings.add( 'Text1' + BindingSuffixes[faceIndex], text1, [faceIndex] );
+	var spinner1 = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Text1' + BindingSuffixes[faceIndex] + 'Spacing', spinner1, [faceIndex] );
+		
+	var name2 = new textField( '', 30 );
+	bindings.add( 'Text2Name' + BindingSuffixes[faceIndex], name2, [ faceIndex ] );
+	var text2 = new textArea( '', 4, 30, true );
+	bindings.add( 'Text2' + BindingSuffixes[faceIndex], text2, [faceIndex] );
+	var spinner2 = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Text2' + BindingSuffixes[faceIndex] + 'Spacing', spinner2, [faceIndex] );
 
-	var deckRequirementsText = new textArea( '', 6, 30, true );
-	bindings.add( 'DeckRequirements' + BindingSuffixes[faceIndex], deckRequirementsText, [faceIndex] );
+	var name3 = new textField( '', 30 );
+	bindings.add( 'Text3Name' + BindingSuffixes[faceIndex], name3, [ faceIndex ] );
+	var text3 = new textArea( '', 4, 30, true );
+	bindings.add( 'Text3' + BindingSuffixes[faceIndex], text3, [faceIndex] );
+	var spinner3 = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Text3' + BindingSuffixes[faceIndex] + 'Spacing', spinner3, [faceIndex] );
 
-	var requirementsSpinner = new spinner( 0, 50, 1, 1 );
-	bindings.add( 'DeckRequirements' + BindingSuffixes[faceIndex] + 'Spacing', requirementsSpinner, [faceIndex] );
+	var name4 = new textField( '', 30 );
+	bindings.add( 'Text4Name' + BindingSuffixes[faceIndex], name4, [ faceIndex ] );
+	var text4 = new textArea( '', 4, 30, true );
+	bindings.add( 'Text4' + BindingSuffixes[faceIndex], text4, [faceIndex] );
+	var spinner4 = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Text4' + BindingSuffixes[faceIndex] + 'Spacing', spinner4, [faceIndex] );
 
-	var deckRestrictionsText = new textArea( '', 6, 30, true );
-	bindings.add( 'DeckRestrictions' + BindingSuffixes[faceIndex], deckRestrictionsText, [faceIndex] );
+	var name5 = new textField( '', 30 );
+	bindings.add( 'Text5Name' + BindingSuffixes[faceIndex], name5, [ faceIndex ] );
+	var text5 = new textArea( '', 4, 30, true );
+	bindings.add( 'Text5' + BindingSuffixes[faceIndex], text5, [faceIndex] );
+	var spinner5 = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Text5' + BindingSuffixes[faceIndex] + 'Spacing', spinner5, [faceIndex] );
 
-	var restrictionsSpinner = new spinner( 0, 50, 1, 1 );
-	bindings.add( 'DeckRestrictions' + BindingSuffixes[faceIndex] + 'Spacing', restrictionsSpinner, [faceIndex] );
+	var name6 = new textField( '', 30 );
+	bindings.add( 'Text6Name' + BindingSuffixes[faceIndex], name6, [ faceIndex ] );
+	var text6 = new textArea( '', 4, 30, true );
+	bindings.add( 'Text6' + BindingSuffixes[faceIndex], text6, [faceIndex] );
+	var spinner6 = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Text6' + BindingSuffixes[faceIndex] + 'Spacing', spinner6, [faceIndex] );
 
-	var additionalRequirementsText = new textArea( '', 6, 30, true );
-	bindings.add( 'AdditionalRequirements' + BindingSuffixes[faceIndex], additionalRequirementsText, [faceIndex] );
+	var name7 = new textField( '', 30 );
+	bindings.add( 'Text7Name' + BindingSuffixes[faceIndex], name7, [ faceIndex ] );
+	var text7 = new textArea( '', 4, 30, true );
+	bindings.add( 'Text7' + BindingSuffixes[faceIndex], text7, [faceIndex] );
+	var spinner7 = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Text7' + BindingSuffixes[faceIndex] + 'Spacing', spinner7, [faceIndex] );
 
-	var additionalRequirementsSpinner = new spinner( 0, 50, 1, 1 );
-	bindings.add( 'AdditionalRequirements' + BindingSuffixes[faceIndex] + 'Spacing', additionalRequirementsSpinner, [faceIndex] );
+	var name8 = new textField( '', 30 );
+	bindings.add( 'Text8Name' + BindingSuffixes[faceIndex], name8, [ faceIndex ] );
+	var text8 = new textArea( '', 4, 30, true );
+	bindings.add( 'Text8' + BindingSuffixes[faceIndex], text8, [faceIndex] );
 
 	var storyText = new textArea( '', 12, 30, true );
 	bindings.add( 'InvStory' + BindingSuffixes[faceIndex], storyText, [faceIndex] );
 
 	TextPanel.place(
-		@AHLCG-DeckSize, 'align right', deckSizeSpinner, 'wrap',
+		@AHLCG-Section + ' 1', 'align right', name1, 'wrap, pushx, growx', 
+		@AHLCG-Text, 'align right', text1, 'wrap, pushx, growx',
+		@AHLCG-Spacing, 'align right', spinner1, 'wrap',
+		@AHLCG-Section + ' 2', 'align right', name2, 'wrap, pushx, growx', 
+		@AHLCG-Text, 'align right', text2, 'wrap, pushx, growx',
+		@AHLCG-Spacing, 'align right', spinner2, 'wrap',
+		@AHLCG-Section + ' 3', 'align right', name3, 'wrap, pushx, growx', 
+		@AHLCG-Text, 'align right', text3, 'wrap, pushx, growx',
+		@AHLCG-Spacing, 'align right', spinner3, 'wrap',
+		@AHLCG-Section + ' 4', 'align right', name4, 'wrap, pushx, growx', 
+		@AHLCG-Text, 'align right', text4, 'wrap, pushx, growx',
+		@AHLCG-Spacing, 'align right', spinner4, 'wrap',
+		@AHLCG-Section + ' 5', 'align right', name5, 'wrap, pushx, growx', 
+		@AHLCG-Text, 'align right', text5, 'wrap, pushx, growx',
+		@AHLCG-Spacing, 'align right', spinner5, 'wrap',
+		@AHLCG-Section + ' 6', 'align right', name6, 'wrap, pushx, growx', 
+		@AHLCG-Text, 'align right', text6, 'wrap, pushx, growx',
+		@AHLCG-Spacing, 'align right', spinner6, 'wrap',
+		@AHLCG-Section + ' 7', 'align right', name7, 'wrap, pushx, growx', 
+		@AHLCG-Text, 'align right', text7, 'wrap, pushx, growx',
+		@AHLCG-Spacing, 'align right', spinner7, 'wrap',
+		@AHLCG-Section + ' 8', 'align right', name8, 'wrap, pushx, growx', 
+		@AHLCG-Text, 'align right', text8, 'wrap, pushx, growx',
+		@AHLCG-Story, 'align right', storyText, 'pushx, growx'
+		);
+
+	StandardButton.addActionListener( function updateHeaders( actionEvent ) {
+//		name1.setText('Testing');
+		name1.setText( 'Deck Size' );
+		name2.setText( 'Secondary Class Choice' );
+		name3.setText( 'Deckbuilding Options' );
+		name4.setText( 'Deckbuilding Requirements</b> (do not count toward deck size)' );
+		name5.setText( 'Deckbuilding Restrictions' );
+		name6.setText( 'Additional Requirements' );
+		name7.setText( 'Additional Restrictions' );
+		name8.setText( '' );
+
+		text1.viewport.getView().setText('30.');
+		text2.viewport.getView().setText('');
+		text3.viewport.getView().setText('');
+		text4.viewport.getView().setText('');
+		text5.viewport.getView().setText('');
+		text6.viewport.getView().setText('');
+		text7.viewport.getView().setText('');
+		text8.viewport.getView().setText('');
+	});
+		
+	PrologueButton.addActionListener( function updateHeaders( actionEvent ) {
+		name1.setText( 'Setup' );
+		name2.setText( 'Starting Play Area' );
+		name3.setText( 'Opening Hand' );
+		name4.setText( '' );
+		name5.setText( '' );
+		name6.setText( '' );
+		name7.setText( '' );
+		name8.setText( '' );
+
+		text1.viewport.getView().setText('');
+		text2.viewport.getView().setText('');
+		text3.viewport.getView().setText('');
+		text4.viewport.getView().setText('');
+		text5.viewport.getView().setText('');
+		text6.viewport.getView().setText('');
+		text7.viewport.getView().setText('');
+		text8.viewport.getView().setText('');
+	});
+
+	return [ StylePanel, TextPanel ];
+}
+/*
+function layoutInvestigatorTextBack( bindings, faceIndex ) {
+	var TextPanel = new Grid();
+	TextPanel.setTitle( @AHLCG-Rules );
+	
+	var deckSizeText = new textArea( '', 2, 30, true );
+	bindings.add( 'DeckSize' + BindingSuffixes[faceIndex], deckSizeText, [faceIndex] );
+
+	var sizeSpinner = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'DeckSize' + BindingSuffixes[faceIndex] + 'Spacing', sizeSpinner, [faceIndex] );
+
+	var secondaryClassText = new textArea( '', 4, 30, true );
+	bindings.add( 'SecondaryClass' + BindingSuffixes[faceIndex], secondaryClassText, [faceIndex] );
+
+	var secondarySpinner = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'SecondaryClass' + BindingSuffixes[faceIndex] + 'Spacing', secondarySpinner, [faceIndex] );
+
+	var deckOptionsText = new textArea( '', 4, 30, true );
+	bindings.add( 'DeckOptions' + BindingSuffixes[faceIndex], deckOptionsText, [faceIndex] );
+	
+	var optionsSpinner = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'DeckOptions' + BindingSuffixes[faceIndex] + 'Spacing', optionsSpinner, [faceIndex] );
+
+	var deckRequirementsText = new textArea( '', 4, 30, true );
+	bindings.add( 'DeckRequirements' + BindingSuffixes[faceIndex], deckRequirementsText, [faceIndex] );
+
+	var requirementsSpinner = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'DeckRequirements' + BindingSuffixes[faceIndex] + 'Spacing', requirementsSpinner, [faceIndex] );
+
+	var deckRestrictionsText = new textArea( '', 4, 30, true );
+	bindings.add( 'DeckRestrictions' + BindingSuffixes[faceIndex], deckRestrictionsText, [faceIndex] );
+
+	var restrictionsSpinner = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'DeckRestrictions' + BindingSuffixes[faceIndex] + 'Spacing', restrictionsSpinner, [faceIndex] );
+
+	var additionalRequirementsText = new textArea( '', 4, 30, true );
+	bindings.add( 'AdditionalRequirements' + BindingSuffixes[faceIndex], additionalRequirementsText, [faceIndex] );
+
+	var additionalRequirementsSpinner = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'AdditionalRequirements' + BindingSuffixes[faceIndex] + 'Spacing', additionalRequirementsSpinner, [faceIndex] );
+/-*
+	var setupText = new textArea( '', 4, 30, true );
+	bindings.add( 'Setup' + BindingSuffixes[faceIndex], setupText, [faceIndex] );
+
+	var setupSpinner = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'Setup' + BindingSuffixes[faceIndex] + 'Spacing', setupSpinner, [faceIndex] );
+
+	var playAreaText = new textArea( '', 4, 30, true );
+	bindings.add( 'StartingPlayArea' + BindingSuffixes[faceIndex], playAreaText, [faceIndex] );
+
+	var playAreaSpinner = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'StartingPlayArea' + BindingSuffixes[faceIndex] + 'Spacing', playAreaSpinner, [faceIndex] );
+
+	var handText = new textArea( '', 4, 30, true );
+	bindings.add( 'OpeningHand' + BindingSuffixes[faceIndex], handText, [faceIndex] );
+
+	var handSpinner = new spinner( 0, 50, 1, 1 );
+	bindings.add( 'OpeningHand' + BindingSuffixes[faceIndex] + 'Spacing', handSpinner, [faceIndex] );
+*-/
+	var storyText = new textArea( '', 12, 30, true );
+	bindings.add( 'InvStory' + BindingSuffixes[faceIndex], storyText, [faceIndex] );
+
+	TextPanel.place(
+		@AHLCG-DeckSize, 'align right', deckSizeText, 'wrap, pushx, growx',
 		@AHLCG-Spacing, 'align right', sizeSpinner, 'wrap',
+		@AHLCG-SecondaryClass, 'align right', secondaryClassText, 'wrap, pushx, growx',
+		@AHLCG-Spacing, 'align right', secondarySpinner, 'wrap',
 		@AHLCG-DeckOptions, 'align right', deckOptionsText, 'wrap, pushx, growx',
 		@AHLCG-Spacing, 'align right', optionsSpinner, 'wrap',
 		@AHLCG-DeckRequirements, 'align right', deckRequirementsText, 'wrap, pushx, growx',
@@ -954,15 +1343,29 @@ function layoutInvestigatorTextBack( bindings, faceIndex ) {
 		@AHLCG-Spacing, 'align right', restrictionsSpinner, 'wrap',
 		@AHLCG-AdditionalRequirements, 'align right', additionalRequirementsText, 'wrap, pushx, growx',
 		@AHLCG-Spacing, 'align right', additionalRequirementsSpinner, 'wrap',
+//		@AHLCG-Setup, 'align right', setupText, 'wrap, pushx, growx',
+//		@AHLCG-Spacing, 'align right', setupSpinner, 'wrap',
+//		@AHLCG-StartingPlayArea, 'align right', playAreaText, 'wrap, pushx, growx',
+//		@AHLCG-Spacing, 'align right', playAreaSpinner, 'wrap',
+//		@AHLCG-OpeningHand, 'align right', handText, 'wrap, pushx, growx',
+//		@AHLCG-Spacing, 'align right', handSpinner, 'wrap',
 		@AHLCG-Story, 'align right', storyText, 'pushx, growx'
 		);
-		
+
 	return TextPanel;
 }
-
-function layoutChaosText( bindings, faceIndex ) {
+*/
+// header = story/chaos
+function layoutChaosText( bindings, faceIndex, header ) {
 	var TextPanel = new Grid();
 	TextPanel.setTitle( @AHLCG-Rules );
+	
+	var headerText = null;
+	
+	if (header) {
+		headerText = new textArea( '', 2, 30, true );
+		bindings.add( 'Header' + BindingSuffixes[faceIndex], headerText, [faceIndex]);
+	}
 	
 	var skullText = new textArea( '', 6, 30, true );
 	bindings.add( 'Skull' + BindingSuffixes[faceIndex], skullText, [faceIndex]);
@@ -970,7 +1373,6 @@ function layoutChaosText( bindings, faceIndex ) {
 	var skullSpinner = new spinner( 0, 50, 0, 1 );
 	bindings.add( 'Skull' + BindingSuffixes[faceIndex] + 'Spacing', skullSpinner, [faceIndex] );
 			
-//	var skullMergeBox = new checkBox( @AHLCG-CombineDown, false, null );
 	var skullMergeList = new comboBox( new Array (
 		ListItem( 'None', @AHLCG-Chaos-None ),
 		ListItem( 'Cultist', @AHLCG-Chaos-Cultist ),
@@ -1006,21 +1408,20 @@ function layoutChaosText( bindings, faceIndex ) {
 		
 	var elderThingText = new textArea( '', 6, 30, true );
 	bindings.add( 'ElderThing' + BindingSuffixes[faceIndex], elderThingText, [faceIndex] );
-			
+	
+	if ( headerText ) 
+		TextPanel.place( @AHLCG-Header, 'align right', headerText, 'wrap, pushx, growx' );
+		
 	TextPanel.place(
-//		@AHLCG-Skull, 'align right', skullText, 'pushx, growx', new tipButton( @AHLCG-Statistics ), 'wrap, aligny top, gaptop 5',
 		@AHLCG-Skull, 'align right', skullText, 'wrap, pushx, growx',
 		@AHLCG-CombineWith, '', skullMergeList, 'wrap',
 		@AHLCG-Spacing, 'align right', skullSpinner, 'wrap', 
-//		@AHLCG-Cultist, 'align right', cultistText, 'pushx, growx', new tipButton( @AHLCG-Statistics ), 'wrap, aligny top, gaptop 5',
 		@AHLCG-Cultist, 'align right', cultistText, 'wrap, pushx, growx',
 		@AHLCG-CombineWith, '', cultistMergeList, 'wrap',
 		@AHLCG-Spacing, 'align right', cultistSpinner, 'wrap', 
-//		@AHLCG-Tablet, 'align right', tabletText, 'pushx, growx', new tipButton( @AHLCG-Statistics ), 'wrap, aligny top, gaptop 5',
 		@AHLCG-Tablet, 'align right', tabletText, 'wrap, pushx, growx',
 		@AHLCG-CombineWith, '', tabletMergeList, 'wrap',
 		@AHLCG-Spacing, 'align right', tabletSpinner, 'wrap', 
-//		@AHLCG-ElderThing, 'align right', elderThingText, 'pushx, growx', new tipButton( @AHLCG-Statistics ), 'wrap, aligny top, gaptop 5'
 		@AHLCG-ElderThing, 'align right', elderThingText, 'wrap, pushx, growx'
 		);
 		
@@ -1045,6 +1446,14 @@ function layoutPortraitOptions( bindings, faces, bindingFaceIndex, artist, mirro
 	var OptionPanel = new Grid();
 	OptionPanel.setTitle( @AHLCG-Options );
 
+	if ( share ) {
+		var shareBox = new checkBox( @AHLCG-SharePortrait, true, null );
+		bindings.add( 'PortraitShare', shareBox, faces );
+		
+		OptionPanel.place(
+			shareBox, 'wrap, span 2'
+			);
+	}
 	if ( artist ) {
 		var artistField = new textField( '', 30 );
 		bindings.add( 'Artist' + BindingSuffixes[bindingFaceIndex], artistField, faces );
@@ -1055,14 +1464,7 @@ function layoutPortraitOptions( bindings, faces, bindingFaceIndex, artist, mirro
 	}
 	if ( mirror != null) {
 		OptionPanel.place( 
-//			mirror, 'span 2, split 2, align left'
 			mirror, 'align right'
-			);
-	}
-	if ( share != null) {
-		OptionPanel.place( 
-//			share, 'align left'
-			share, 'align right'
 			);
 	}
 					
@@ -1082,7 +1484,8 @@ function layoutGuidePortraitOptions( diy, bindings, faces, bindingFaceIndex, por
 	// update portrait pan/scale, stencil
 	PositionList.addActionListener( function updatePosition( actionEvent ) {
 		try {
-			if ( (String)(PositionList.getSelectedItem()) != $( 'PositionPortrait'+ (portraitIndex+1) )  ) {
+			// assume pan is 0 before this has run -> run this once when component is created
+			if ( ( portrait.getPanX() == 0.0 && portrait.getPanY() == 0.0 ) || (String)(PositionList.getSelectedItem()) != $( 'PositionPortrait'+ (portraitIndex+1) )  ) {
 				// update portrait positioning
 				let region = getGuidePortraitRegion( diy, (String)(PositionList.getSelectedItem()) );
 
@@ -1097,14 +1500,14 @@ function layoutGuidePortraitOptions( diy, bindings, faces, bindingFaceIndex, por
 					
 					let coveringScale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
 
-					portrait.pan = Point2D.Float( region.x + (region.width - clipDimension.width) / 2, region.y + (region.height - clipDimension.height) / 2 );					
+					portrait.pan = Point2D.Float( region.x + (region.width - clipDimension.width) / 2, region.y + (region.height - clipDimension.height) / 2);
 					portrait.scale = ImageUtilities.idealCoveringScaleForImage( region.width, region.height, image.getWidth(), image.getHeight() );
 					portrait.scale = coveringScale;
-				
+
 					panel.portrait = portrait;
 				}
 			}
-			
+
 			createPortraitStencil( diy, portrait, panel, (String)(PositionList.getSelectedItem()), $PageType );
 		} catch ( ex ) {
 			Error.handleUncaught( ex );
@@ -1146,11 +1549,8 @@ function layoutPortraitsWithPanels( diy, bindings, frontPortrait, backPortrait, 
 			
 		let frontMirrorButton = null;
 		if (mirror) frontMirrorButton = createPortraitMirrorButton( frontPortrait, frontPortraitImagePanel );
-		
-		let frontShareButton = null;
-		if (share) frontShareButton = createPortraitShareButton( bindings );
 
-		let frontOptionPanel = layoutPortraitOptions( bindings, [0], FACE_FRONT, true, frontMirrorButton, frontShareButton );
+		let frontOptionPanel = layoutPortraitOptions( bindings, [0], FACE_FRONT, true, frontMirrorButton, false );
 		if ( backNeeded ) frontOptionPanel.setTitle( @AHLCG-Options + ': ' + @AHLCG-Front );
 
 		PortraitTab.place( frontPortraitImagePanel, 'wrap, pushx, growx' );
@@ -1158,7 +1558,6 @@ function layoutPortraitsWithPanels( diy, bindings, frontPortrait, backPortrait, 
 		
 		resultArray.push( frontPortraitImagePanel );
 	}
-//	if ( backPortrait != null && backPortrait.length > 0 ) {
 	if ( backNeeded ) {
 		let backPortraitImagePanel = null;
 		if ( frontNeeded ) backPortraitImagePanel = new portraitPanel( diy, getPortraitIndex( backPortrait ), @AHLCG-Portrait + ' : ' + @AHLCG-Back );
@@ -1167,7 +1566,7 @@ function layoutPortraitsWithPanels( diy, bindings, frontPortrait, backPortrait, 
 		let backMirrorButton = null;
 		if (mirror) backMirrorButton = createPortraitMirrorButton( backPortrait, backPortraitImagePanel );
 
-		let backOptionPanel = layoutPortraitOptions( bindings, [1], FACE_BACK, backArtist, backMirrorButton, null );
+		let backOptionPanel = layoutPortraitOptions( bindings, [1], FACE_BACK, backArtist, backMirrorButton, share );
 		if ( frontNeeded ) backOptionPanel.setTitle( @AHLCG-Options + ': ' + @AHLCG-Back );
 
 		PortraitTab.place( backPortraitImagePanel, 'wrap, pushx, growx' );
@@ -1219,7 +1618,7 @@ function layoutGuidePortraits( diy, bindings, leftPortrait, rightPortrait, mirro
 	return [ PortraitTab, leftPortraitImagePanel, rightPortraitImagePanel ];
 }
 
-function layoutCollection( bindings, portraitPanel, selectFaces, faces, bindingFaceIndex ) {
+function layoutCollection( bindings, portraitPanel, useSpinner, selectFaces, faces, bindingFaceIndex ) {
 	var CollectionPanel = new Grid();
 	CollectionPanel.setTitle( @AHLCG-Collection );
 
@@ -1236,7 +1635,10 @@ function layoutCollection( bindings, portraitPanel, selectFaces, faces, bindingF
 
 				PortraitList[ getPortraitIndex( 'Collection' ) ].setSource( icon );
 //				image = createInvertedImage( PortraitList[getPortraitIndex( 'Collection' )].getImage() );
-				image = createInvertedImage( ImageUtils.read( icon ) );
+				
+				if ( CardTypes[1] == 'Story') image = ImageUtils.read( icon );	// story/story
+				else image = createInvertedImage( ImageUtils.read( icon ) );
+				
 				PortraitList[ getPortraitIndex( 'Collection' ) ].setImage( icon, image );
 				portraitPanel.updatePanel();
 				setPortraitPanelFileFieldEnabled( portraitPanel, false );				
@@ -1249,8 +1651,15 @@ function layoutCollection( bindings, portraitPanel, selectFaces, faces, bindingF
 		}
 	});
 
-	var collectionSpinner = new spinner(1, 999, 1, 1);
-	bindings.add( 'CollectionNumber' + BindingSuffixes[bindingFaceIndex], collectionSpinner, faces );
+	var collectionNumber;
+	if ( useSpinner ) {
+		collectionNumber = new spinner(1, 999, 1, 1);
+	}
+	else {
+		collectionNumber = new textField( '', 8 );
+		collectionNumber.setHorizontalAlignment(JTextField.RIGHT);
+	}
+	bindings.add( 'CollectionNumber' + BindingSuffixes[bindingFaceIndex], collectionNumber, faces );
 
 	CollectionPanel.place(
 		@AHLCG-Collection, 'align right', CollectionList, 'wrap, pushx, growx, span 3'
@@ -1264,20 +1673,20 @@ function layoutCollection( bindings, portraitPanel, selectFaces, faces, bindingF
 		bindings.add( 'ShowCollectionNumberBack' + BindingSuffixes[bindingFaceIndex], backBox, [0, 1] );
 								
 		CollectionPanel.place(
-			@AHLCG-CollectionNumber, 'align right', collectionSpinner, 'align left',
+			@AHLCG-CollectionNumber, 'align right', collectionNumber, 'align left',
 			frontBox, 'align right', backBox, 'align right, gapx 10'
 		);
 	}
 	else {
 		CollectionPanel.place(
-			@AHLCG-CollectionNumber, 'align right', collectionSpinner, 'wrap'
+			@AHLCG-CollectionNumber, 'align right', collectionNumber, 'wrap'
 		);
 	}
 
 	return CollectionPanel;
 }
 
-function layoutEncounter( bindings, portraitPanel, useSpinner, selectFaces, iconFaces, numberFaces, bindingFaceIndex ) {
+function layoutEncounter( bindings, portraitPanel, selectFaces, iconFaces, numberFaces, bindingFaceIndex ) {
 	var EncounterPanel = new Grid();
 	EncounterPanel.setTitle( @AHLCG-EncounterSet );
 
@@ -1305,20 +1714,13 @@ function layoutEncounter( bindings, portraitPanel, useSpinner, selectFaces, icon
 		}
 	});
 
-	var encounterNumber;
-
-	if ( useSpinner ) {
-		encounterNumber = new spinner(1, 99, 1, 1);
-	}
-	else {
-		encounterNumber = new textField( '', 6 );
-		encounterNumber.setHorizontalAlignment(JTextField.RIGHT);
-	}
+	var encounterNumber = new textField( '', 8 );
+	encounterNumber.setHorizontalAlignment(JTextField.RIGHT);
 	
 	bindings.add( 'EncounterNumber' + BindingSuffixes[bindingFaceIndex], encounterNumber, numberFaces );
 		
-	var totalSpinner = new spinner(1, 99, 1, 1);
-	bindings.add( 'EncounterTotal' + BindingSuffixes[bindingFaceIndex], totalSpinner, numberFaces );
+	var totalNumber = new textField( "", 4);
+	bindings.add( 'EncounterTotal' + BindingSuffixes[bindingFaceIndex], totalNumber, numberFaces );
 
 	EncounterPanel.place(
 		@AHLCG-Set, 'align right', EncounterList, 'wrap, pushx, growx, span 3'
@@ -1333,14 +1735,14 @@ function layoutEncounter( bindings, portraitPanel, useSpinner, selectFaces, icon
 								
 		EncounterPanel.place(
 			@AHLCG-SetNumber, 'align right', encounterNumber, 'align left, split 3',
-			' / ', 'align left', totalSpinner, 'align left',
+			' / ', 'align left', totalNumber, 'align left',
 			frontBox, 'align right', backBox, 'align right, gapx 10'
 		);
 	}
 	else {
 		EncounterPanel.place(
 			@AHLCG-SetNumber, 'align right', encounterNumber, 'split',
-			' / ', 'split', totalSpinner, 'split, wrap'
+			' / ', 'split', totalNumber, 'split, wrap'
 		);
 	}
 

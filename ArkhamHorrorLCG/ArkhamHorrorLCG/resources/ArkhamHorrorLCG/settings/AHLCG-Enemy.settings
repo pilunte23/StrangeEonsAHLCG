@@ -28,9 +28,9 @@ AHLCG-Enemy-BackPortrait-portrait-clip-region = 0,241,375,284
 
 AHLCG-Enemy-Attack-region = 107,51,26,27
 AHLCG-Enemy-Evade-region = 248,51,23,27
-AHLCG-Enemy-Health-region = 178,45,20,35
-AHLCG-Enemy-HealthPerInv-region = 169,45,27,35
-AHLCG-Enemy-PerInv-region = 191,55,17,17
+AHLCG-Enemy-Health-region = 168,45,40,35
+AHLCG-Enemy-HealthPerInv-region = 170,45,27,35
+AHLCG-Enemy-PerInv-region = 191,51,17,17
 
 AHLCG-Enemy-Damage1-region = 132,284,19,23
 AHLCG-Enemy-Damage2-region = 109,277,19,23
@@ -46,13 +46,15 @@ AHLCG-Enemy-Horror5-region = 308,241,27,24
 AHLCG-Enemy-CollectionPortrait-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Enemy-CollectionPortrait-portrait-pany = 0
 
-AHLCG-Enemy-Collection-portrait-clip-region = 319,512,13,13
-AHLCG-Enemy-DefaultCollection-portrait-clip-region = 319,512,13,13
+AHLCG-Enemy-Collection-portrait-clip-region = 320,510,13,13
+AHLCG-Enemy-DefaultCollection-portrait-clip-region = 320,510,13,13
 
 AHLCG-Enemy-EncounterPortrait-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Enemy-EncounterPortrait-portrait-pany = 0
 
 AHLCG-Enemy-Encounter-portrait-clip-region = 174,274,28,28
 AHLCG-Enemy-DefaultEncounter-portrait-clip-region = 174,274,28,28
+AHLCG-Enemy-ReturnEncounter-portrait-clip-region = 169,270,37,33
+AHLCG-Enemy-DefaultReturnEncounter-portrait-clip-region = 169,270,37,33
 
 AHLCG-Enemy-Dash-tint = 38.0, 0.14, 1.0

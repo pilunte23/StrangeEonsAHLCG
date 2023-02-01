@@ -24,7 +24,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function setDefaults() {
@@ -54,6 +54,12 @@ function setDefaults() {
 	$Artist = '';
 	$Copyright = '';
 
+	$ShowCollectionNumberFront = '1';
+	$ShowCollectionNumberBack = '1';
+	
+	$ShowEncounterNumberFront = '1';
+	$ShowEncounterNumberBack = '1';
+
 	// back
 	$UniqueBack = '0';
 	$SubtitleBack = '';
@@ -79,7 +85,7 @@ function setDefaults() {
 	
 	$ArtistBack = '';
 
-	$PortraitShare = '1';
+	$PortraitShare = '1';	
 }
 
 function createInterface( diy, editor ) {
@@ -114,7 +120,7 @@ function createInterface( diy, editor ) {
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
 
 	var CollectionImagePanel = new portraitPanel( diy, getPortraitIndex( 'Collection' ), @AHLCG-CustomCollection );
-	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, [0], FACE_FRONT );
+	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, true, [0, 1], FACE_FRONT );
 	
 	var CollectionTab = new Grid();
 	CollectionTab.editorTabScrolling = true;
@@ -122,7 +128,7 @@ function createInterface( diy, editor ) {
 	CollectionTab.addToEditor(editor, @AHLCG-Collection);
 
 	var EncounterImagePanel = new portraitPanel( diy, getPortraitIndex( 'Encounter' ), @AHLCG-CustomEncounterSet );
-	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, true, false, [0], [0], FACE_FRONT );
+	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, true, [0, 1], [0, 1], FACE_FRONT );
 
 	var EncounterTab = new Grid();
 	EncounterTab.editorTabScrolling = true;
@@ -151,7 +157,8 @@ function createFrontPainter( diy, sheet ) {
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
 	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
-	createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );
+//	createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );
+	setTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );
 
 	initBodyTags( diy, Body_box );	
 	
@@ -193,13 +200,18 @@ function createBackPainter( diy, sheet ) {
 	BackBody_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Body-style'), null);
 	BackBody_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Body-alignment'));
 	BackBody_box.setLineTightness( $(getExpandedKey(FACE_BACK, 'Body', '-tightness') + '-tightness') );	
-	createTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ) );
+//	createTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ) );
+	setTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ) );
 
 	initBodyTags( diy, BackBody_box );	
 	
 	BackArtist_box = markupBox(sheet);
 	BackArtist_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Artist-style'), null);
 	BackArtist_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Artist-alignment'));
+
+	BackCopyright_box = markupBox(sheet);
+	BackCopyright_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Copyright-style'), null);
+	BackCopyright_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Copyright-alignment'));
 
 	BackCollection_box = markupBox(sheet);
 	BackCollection_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'CollectionNumber-style'), null);
@@ -229,15 +241,15 @@ function paintFront( g, diy, sheet ) {
 
 	if ( $Damage > 0 )  drawDamage( g, diy, sheet );
 	if ( $Horror > 0 )	drawHorror( g, diy, sheet );
+	
+	var collectionSuffix = false;
+	if ( $ShowCollectionNumberFront == '1' && $ShowCollectionNumberBack == '1' ) collectionSuffix = true;
 
-	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, true );
-	
-	drawEncounterIcon( g, diy, sheet );	
-	drawEncounterInfo( g, diy, sheet );
+	var CollectionBox = $ShowCollectionNumberFront == '1' ? Collection_box : null;
+	var EncounterBox = $ShowEncounterNumberFront == '1' ? Encounter_box : null;
+
+//	drawCollectorInfo( g, diy, sheet, $ShowCollectionNumberFront == '1', collectionSuffix, $ShowEncounterNumberFront == '1', true, true );
+	drawCollectorInfo( g, diy, sheet, CollectionBox, collectionSuffix, EncounterBox, true, Copyright_box, Artist_box );
 }
 
 function paintBack( g, diy, sheet ) {
@@ -265,19 +277,20 @@ function paintBack( g, diy, sheet ) {
 	if ( $DamageBack > 0 )  drawDamage( g, diy, sheet );
 	if ( $HorrorBack > 0 )	drawHorror( g, diy, sheet );
 
-	if ( $ArtistBack.length > 0 ) drawArtist( g, diy, sheet );
-	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, true );
-	
-	drawEncounterIcon( g, diy, sheet );	
-	drawEncounterInfo( g, diy, sheet );
+	var collectionSuffix = false;
+	if ( $ShowCollectionNumberFront == '1' && $ShowCollectionNumberBack == '1' ) collectionSuffix = true;
+
+	var collectionBox = $ShowCollectionNumberBack == '1' ? BackCollection_box : null;
+	var encounterBox = $ShowEncounterNumberBack == '1' ? BackEncounter_box : null;
+
+//	drawCollectorInfo( g, diy, sheet, $ShowCollectionNumberBack == '1', collectionSuffix, $ShowEncounterNumberBack == '1', true, true );
+	drawCollectorInfo( g, diy, sheet, collectionBox, collectionSuffix, encounterBox, true, BackCopyright_box, BackArtist_box );
 }
 
 function onClear() {
 	setDefaults();
 }
-
+/*
 function createTextShape( textBox, textRegion ) {
 	var x = textRegion.x;
 	var y = textRegion.y;
@@ -307,17 +320,31 @@ function createTextShape( textBox, textRegion ) {
 		
 	textBox.pageShape = PageShape.GeometricShape( path, textRegion );	
 }
+*/
+function setTextShape( box, region ) {
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	box.pageShape = AHLCGObject.getEnemyTextShape( region );
+}
 
 // These can be used to perform special processing during open/save.
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	readPortraits( diy, oos, PortraitTypeList );
+	readPortraits( diy, oos, PortraitTypeList, true );
+
+	if ( diy.version < 10 ) {
+		$ShowCollectionNumberFront = '1';
+		$ShowCollectionNumberBack = '1';
+
+		$ShowEncounterNumberFront = '1';
+		$ShowEncounterNumberBack = '1';
+	}
 
 	updateCollection();
 	updateEncounter();
 	
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function onWrite( diy, oos ) {

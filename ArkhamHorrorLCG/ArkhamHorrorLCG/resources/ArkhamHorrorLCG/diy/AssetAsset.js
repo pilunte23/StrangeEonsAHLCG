@@ -24,21 +24,24 @@ function create( diy ) {
 	createPortraits( diy, PortraitTypeList );
 	setDefaultCollection();
 
-	diy.version = 8;
+	diy.version = 11;
 }
 
 function setDefaults() {
 	$Unique = '0';
 	$Subtitle = '';
 	$CardClass = 'Neutral';
+	$CardClass2 = 'None';
 	$ResourceCost = '0';
 	$Level = 'None';
 	$Skill1 = 'None';
 	$Skill2 = 'None';
 	$Skill3 = 'None';
 	$Skill4 = 'None';
+	$Skill5 = 'None';
 	
 	$Slot = 'None';
+	$Slot2 = 'None';
 	$Stamina = 'None';
 	$Sanity = 'None';
 	
@@ -56,18 +59,24 @@ function setDefaults() {
 	$Artist = '';
 	$Copyright = '';
 	
+	$ShowCollectionNumberFront = '1';
+	$ShowCollectionNumberBack = '1';
+	
 	//Back
 	$UniqueBack = '0';
 	$SubtitleBack = '';
 	$CardClassBack = 'Neutral';
+	$CardClassBack2 = 'None';
 	$ResourceCostBack = '0';
 	$LevelBack = 'None';
 	$Skill1Back = 'None';
 	$Skill2Back = 'None';
 	$Skill3Back = 'None';
 	$Skill4Back = 'None';
+	$Skill5Back = 'None';
 	
 	$SlotBack = 'None';
+	$Slot2Back = 'None';
 	$StaminaBack = 'None';
 	$SanityBack = 'None';
 	
@@ -117,7 +126,7 @@ function createInterface( diy, editor ) {
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
 
 	var CollectionImagePanel = new portraitPanel( diy, getPortraitIndex( 'Collection' ), @AHLCG-CustomCollection );
-	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, [0, 1], FACE_FRONT );
+	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, true, [0, 1], FACE_FRONT );
 		
 	var CollectionTab = new Grid();
 	CollectionTab.editorTabScrolling = true;
@@ -153,7 +162,6 @@ function createFrontPainter( diy, sheet ) {
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
-//	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
 
 	initBodyTags( diy, Body_box );	
 	
@@ -198,7 +206,6 @@ function createBackPainter( diy, sheet ) {
 	BackBody_box = markupBox(sheet);
 	BackBody_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Body-style'), null);
 	BackBody_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Body-alignment'));
-//	BackBody_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
 
 	initBodyTags( diy, BackBody_box );	
 	
@@ -221,11 +228,16 @@ function paintFront( g, diy, sheet ) {
 	clearImage( g, sheet );
 
 	PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
-	drawTemplate( g, sheet, $CardClass );
+	drawAssetTemplate( g, diy, sheet, $CardClass, $CardClass2 );
 	drawLabel( g, diy, sheet, Label_box, #AHLCG-Label-Asset );
 	drawName( g, diy, sheet, Name_box );
 
-	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, Subtitle_box, $CardClass, true );
+	var cClass = $CardClass;
+	if ( isDualClass( $CardClass, $CardClass2 ) ) cClass = 'Dual';
+	else {
+		// no subtitles for multiclass
+		if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, Subtitle_box, cClass, true );
+	}
 
 	if ($CardClass == 'Weakness' ) {	
 		drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-Weakness );
@@ -233,36 +245,42 @@ function paintFront( g, diy, sheet ) {
 	else if ($CardClass == 'BasicWeakness' ) {	
 		drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-BasicWeakness );
 	}	
-//	if ( $CardClass != 'Weakness' ) {
 	else {
-		drawLevel( g, diy, sheet, $CardClass );
+		drawLevel( g, diy, sheet, cClass );
 	}
 		
 	drawCost( g, diy, sheet );
 
-	drawSkillIcons( g, diy, sheet, $CardClass );
-	drawSlot( g, diy, sheet );
+	drawSkillIcons( g, diy, sheet, cClass );
+	drawSlots( g, diy, sheet );
 	drawStamina( g, diy, sheet );
 	drawSanity( g, diy, sheet );
 	
 	drawBody( g, diy, sheet, Body_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ) );
 
-	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, true );
+	var collectionSuffix = false;
+	if ( $ShowCollectionNumberFront == '1' && $ShowCollectionNumberBack == '1' ) collectionSuffix = true;
+
+	var collectionBox =  $ShowCollectionNumberFront == '1' ? Collection_box : null;
+
+//	drawCollectorInfo( g, diy, sheet, $ShowCollectionNumberFront == '1', collectionSuffix, false, false, true );
+	drawCollectorInfo( g, diy, sheet, collectionBox, collectionSuffix, null, false, Copyright_box, Artist_box );
 }
 
 function paintBack( g, diy, sheet ) {
 	clearImage( g, sheet );
 
 	PortraitList[getPortraitIndex( 'BackPortrait' )].paint( g, sheet.getRenderTarget() );
-	drawTemplate( g, sheet, $CardClassBack );
+	drawAssetTemplate( g, diy, sheet, $CardClassBack, $CardClass2Back );
 	drawLabel( g, diy, sheet, BackLabel_box, #AHLCG-Label-Asset );
 	drawName( g, diy, sheet, BackName_box );
 
-	if ( $SubtitleBack.length > 0 ) drawSubtitle( g, diy, sheet, BackSubtitle_box, $CardClassBack, true );
+//	if ( $SubtitleBack.length > 0 ) drawSubtitle( g, diy, sheet, BackSubtitle_box, $CardClassBack, true );
+	
+	var cClass = $CardClassBack;
+	if ( isDualClass( $CardClassBack, $CardClass2Back ) ) cClass = 'Dual';
+
+	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, Subtitle_box, cClass, true );
 
 	if ($CardClassBack == 'Weakness' ) {	
 		drawSubtype( g, diy, sheet, BackSubtype_box, #AHLCG-Label-Weakness );
@@ -270,25 +288,27 @@ function paintBack( g, diy, sheet ) {
 	else if ($CardClassBack == 'BasicWeakness' ) {	
 		drawSubtype( g, diy, sheet, BackSubtype_box, #AHLCG-Label-BasicWeakness );
 	}	
-//	if ( $CardClassBack != 'Weakness' ) {
 	else {
-		drawLevel( g, diy, sheet, $CardClassBack );
+		drawLevel( g, diy, sheet, cClass );
 	}
 		
 	drawCost( g, diy, sheet );
 
-	drawSkillIcons( g, diy, sheet, $CardClassBack );
-	drawSlot( g, diy, sheet );
+	drawSkillIcons( g, diy, sheet, cClass );
+	drawSlots( g, diy, sheet );
 	drawStamina( g, diy, sheet );
 	drawSanity( g, diy, sheet );
 	
 	drawBody( g, diy, sheet, BackBody_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ) );
 
-	if ( $ArtistBack.length > 0 ) drawArtist( g, diy, sheet );
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
+	var collectionSuffix = false;
+	if ( $ShowCollectionNumberFront == '1' && $ShowCollectionNumberBack == '1' ) collectionSuffix = true;
+
 	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, true );
+	var collectionBox =  $ShowCollectionNumberBack == '1' ? BackCollection_box : null;
+	
+//	drawCollectorInfo( g, diy, sheet, $ShowCollectionNumberBack == '1', collectionSuffix, false, false, true );
+	drawCollectorInfo( g, diy, sheet, collectionBox, collectionSuffix, null, false, BackCopyright_box, BackArtist_box );
 }
 
 function onClear() {
@@ -299,11 +319,26 @@ function onClear() {
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	readPortraits( diy, oos, PortraitTypeList );
+	readPortraits( diy, oos, PortraitTypeList, true );
 
+	if ( diy.version < 9 ) {
+		$Skill5 = 'None';
+		$Skill5Back = 'None';
+	}
+	if ( diy.version < 10 ) {
+		$ShowCollectionNumberFront = '1';
+		$ShowCollectionNumberBack = '1';
+	}
+	if ( diy.version < 11 ) {
+		$CardClass2 = 'None';
+		$CardClass2Back = 'None';
+		$Slot2 = 'None';
+		$Slot2Back = 'None';
+	}
+	
 	updateCollection();
 
-	diy.version = 8;
+	diy.version = 11;
 }
 
 function onWrite( diy, oos ) {

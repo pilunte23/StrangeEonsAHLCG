@@ -25,7 +25,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 	
-	diy.version = 8;
+	diy.version = 11;
 }
 
 function setDefaults() {
@@ -38,9 +38,12 @@ function setDefaults() {
 	$Skill2 = 'None';
 	$Skill3 = 'None';
 	$Skill4 = 'None';
+	$Skill5 = 'None';
 	
+	$CardClass = 'Neutral';
 	$ResourceCost = '0';
 	$Slot = 'None';
+	$Slot2 = 'None';
 	$Stamina = 'None';
 	$Sanity = 'None';
 	
@@ -83,7 +86,7 @@ function createInterface( diy, editor ) {
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
 
 	var CollectionImagePanel = new portraitPanel( diy, getPortraitIndex( 'Collection' ), @AHLCG-CustomCollection );
-	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, [0], FACE_FRONT );
+	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, false, [0], FACE_FRONT );
 	
 	var CollectionTab = new Grid();
 	CollectionTab.editorTabScrolling = true;
@@ -91,7 +94,7 @@ function createInterface( diy, editor ) {
 	CollectionTab.addToEditor(editor, @AHLCG-Collection);
 
 	var EncounterImagePanel = new portraitPanel( diy, getPortraitIndex( 'Encounter' ), @AHLCG-CustomEncounterSet );
-	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, true, false, [0, 1], [0], FACE_FRONT );
+	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, [0, 1], [0], FACE_FRONT );
 	
 	var EncounterTab = new Grid();
 	EncounterTab.editorTabScrolling = true;
@@ -116,6 +119,10 @@ function createFrontPainter( diy, sheet ) {
 	Subtitle_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Subtitle-style'), null);
 	Subtitle_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'Subtitle-alignment'));
 
+	Subtype_box = markupBox(sheet);
+	Subtype_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Subtype-style'), null);
+	Subtype_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Subtype-alignment'));
+
 	Cost_box = markupBox(sheet);
 	Cost_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_FRONT, 'Cost-style'), null);
 	Cost_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_FRONT, 'Cost-alignment'));
@@ -123,7 +130,6 @@ function createFrontPainter( diy, sheet ) {
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
-//	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
 
 	initBodyTags( diy, Body_box );	
 	
@@ -154,30 +160,28 @@ function paintFront( g, diy, sheet ) {
 
 	PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
 
-	drawTemplate( g, sheet, '' );
+	drawTemplate( g, sheet, $CardClass );
 	drawLabel( g, diy, sheet, Label_box, #AHLCG-Label-Asset );
 	drawName( g, diy, sheet, Name_box );
 
 	if ( $Subtitle.length > 0 ) drawSubtitle( g, diy, sheet, Subtitle_box, 'Neutral', true );
 	
+	if ($CardClass == 'Weakness' ) {	
+		drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-Weakness );
+	}
+
 	drawCost( g, diy, sheet );
 
 	drawSkillIcons( g, diy, sheet, 'Neutral' );
 		
-	drawSlot( g, diy, sheet );
+	drawSlots( g, diy, sheet );
 	drawStamina( g, diy, sheet );
 	drawSanity( g, diy, sheet );
 	
 	drawBody( g, diy, sheet, Body_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ) );
 
-	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, false );
-
-	drawEncounterIcon( g, diy, sheet );	
-	drawEncounterInfo( g, diy, sheet );
+//	drawCollectorInfo( g, diy, sheet, true, false, true, true );
+	drawCollectorInfo( g, diy, sheet, Collection_box, false, Encounter_box, true, Copyright_box, Artist_box );
 }
 
 function paintBack( g, diy, sheet ) {
@@ -194,18 +198,27 @@ function onClear() {
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	readPortraits( diy, oos, PortraitTypeList );
+	readPortraits( diy, oos, PortraitTypeList, true );
 
 	if (diy.version < 2) {
 		$BackTypeBack = 'Player';
 		
 		diy.faceStyle = FaceStyle.TWO_FACES;
 	}
+	if ( diy.version < 9 ) {
+		$Skill5 = 'None';
+	}
+	if ( diy.version < 10 ) {
+		$CardClass = 'Neutral';
+	}
+	if ( diy.version < 11 ) {
+		$Slot2 = 'None';
+	}
 
 	updateCollection();
 	updateEncounter();
 
-	diy.version = 8;
+	diy.version = 11;
 }
 
 function onWrite( diy, oos ) {

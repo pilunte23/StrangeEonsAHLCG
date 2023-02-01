@@ -25,7 +25,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 	
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function setDefaults() {
@@ -34,6 +34,7 @@ function setDefaults() {
 	$ScenarioDeckID = 'a';
 	$Clues = '2';
 	$PerInvestigator = '0';
+	$Asterisk = '0';
 	$Orientation = 'Standard';
 	
 	$ActStory = '';
@@ -84,7 +85,7 @@ function createInterface( diy, editor ) {
 	var PortraitTab = PortraitTabArray[0];
 	PortraitTabArray.splice( 0, 1 );
 
-	var TitlePanel = layoutTitle( diy, bindings, false, [0], FACE_FRONT );
+	var TitlePanel = layoutTitle2( diy, bindings, false, [0], FACE_FRONT );
 	TitlePanel.setTitle( @AHLCG-Title + ': ' + @AHLCG-Front );
 	var StatPanel = layoutActStats( diy, bindings, FACE_FRONT, PortraitTabArray );
 	StatPanel.setTitle( @AHLCG-BasicData + ': ' + @AHLCG-Front );
@@ -109,11 +110,10 @@ function createInterface( diy, editor ) {
 	BackTextTab.editorTabScrolling = true;
 	BackTextTab.addToEditor( editor, @AHLCG-Rules + ': ' + @AHLCG-Back );
 
-//	PortraitTab = layoutPortraits( diy, bindings, 'Portrait', 'BackPortrait', true, false, true );
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
 
 	var CollectionImagePanel = new portraitPanel( diy, getPortraitIndex( 'Collection' ), @AHLCG-CustomCollection );
-	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, [0, 1], FACE_FRONT );
+	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, false, [0, 1], FACE_FRONT );
 	
 	var CollectionTab = new Grid();	
 	CollectionTab.editorTabScrolling = true;
@@ -121,7 +121,7 @@ function createInterface( diy, editor ) {
 	CollectionTab.addToEditor(editor, @AHLCG-Collection);
 
 	var EncounterImagePanel = new portraitPanel( diy, getPortraitIndex( 'Encounter' ), @AHLCG-CustomEncounterSet );
-	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, false, [0, 1], [0, 1], FACE_FRONT );
+	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, [0, 1], [0, 1], FACE_FRONT );
 	
 	var EncounterTab = new Grid();
 	EncounterTab.editorTabScrolling = true;
@@ -141,7 +141,6 @@ function createFrontPainter( diy, sheet ) {
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
-//	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
 	updateReversableTextBoxShape( diy, $Orientation );
 
 	initBodyTags( diy, Body_box );	
@@ -185,8 +184,8 @@ function createBackPainter( diy, sheet ) {
 	BackBody_box = markupBox(sheet);
 	BackBody_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Body-style'), null);
 	BackBody_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Body-alignment'));
-//	BackBody_box.setLineTightness( $(getExpandedKey(FACE_BACK, 'Body', '-tightness') + '-tightness') );	
-	createBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ) );
+//	createBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ) );
+	setBackTextShape( BackBody_box, diy.settings.getRegion( getExpandedKey( FACE_BACK, 'Body-region') ) );
 
 	initBodyTags( diy, BackBody_box );	
 	
@@ -194,6 +193,22 @@ function createBackPainter( diy, sheet ) {
 	Victory_box = markupBox(sheet);
 	Victory_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Body-style'), null);
 	Victory_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Victory-alignment'));
+
+	BackCollection_box = markupBox(sheet);
+	BackCollection_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'CollectionNumber-style'), null);
+	BackCollection_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'CollectionNumber-alignment'));
+
+	BackEncounter_box = markupBox(sheet);
+	BackEncounter_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'EncounterNumber-style'), null);
+	BackEncounter_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'EncounterNumber-alignment'));
+
+	BackCopyright_box = markupBox(sheet);
+	BackCopyright_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Copyright-style'), null);
+	BackCopyright_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Copyright-alignment'));
+
+	BackArtist_box = markupBox(sheet);
+	BackArtist_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Artist-style'), null);
+	BackArtist_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Artist-alignment'));
 }
 
 function paintFront( g, diy, sheet ) {
@@ -203,20 +218,16 @@ function paintFront( g, diy, sheet ) {
 
 	drawTemplate( g, sheet, '' );
 
-	drawName( g, diy, sheet, Name_box );
+	drawActAgendaName( g, diy, sheet, Name_box );
 
 	drawBody( g, diy, sheet, Body_box, new Array( 'ActStory', 'Rules' ) );
 
 	drawClues( g, diy, sheet );
 
-	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
+	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet, false );
 
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, true );
-
-	drawEncounterIcon( g, diy, sheet );	
-	drawEncounterInfo( g, diy, sheet );
+//	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+	drawCollectorInfo( g, diy, sheet, Collection_box, true, Encounter_box, true, Copyright_box, Artist_box );
 	
 	drawScenarioIndexFront( g, diy, sheet, #AHLCG-Label-Act, Index_box );
 }
@@ -237,9 +248,6 @@ function paintBack( g, diy, sheet ) {
 
 	drawVictory( g, diy, sheet );
 
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, true );
-
 	if ( $LocationIconBack != 'None' ) drawLocationIcon( g, diy, sheet, 'LocationIcon', true );
 
 	drawShroud( g, diy, sheet );
@@ -249,29 +257,40 @@ function paintBack( g, diy, sheet ) {
 		drawLocationIcon( g, diy, sheet, 'Connection' + index + 'Icon', false );
 	}
 
-	drawEncounterIcon( g, diy, sheet );	
-	drawEncounterInfo( g, diy, sheet );
-
-	if ( $ArtistBack.length > 0 ) drawArtist( g, diy, sheet );
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );	
+//	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+	drawCollectorInfo( g, diy, sheet, BackCollection_box, true, BackEncounter_box, true, BackCopyright_box, BackArtist_box );
 } 
 
 function onClear() {
 	setDefaults();
 }
-
-function createTextShape( textBox, textRegion ) {
+/*
+function createTextShape( textBox, textRegion, reverse) {
 	var x = textRegion.x;
 	var y = textRegion.y;
 	var w = textRegion.width;
 	var h = textRegion.height;
-
+	
 	var path = new java.awt.geom.Path2D.Double();
 
-	var xPathPoints = new Array( 0.000, 0.000, 0.148, 0.148, 1.000, 1.000 );
-	var yPathPoints = new Array( 0.000, 0.850, 0.850, 1.000, 1.000, 0.000 );
-
+	var xPathPoints = new Array( 0.000, 0.000, 0.715, 0.830, 0.830, 1.000, 1.000 );
+	var yPathPoints = new Array( 0.000, 1.000, 1.000, 0.957, 0.850, 0.850, 0.000 );
+	
 	var numPoints = xPathPoints.length;
+	
+	if ( reverse ) {
+		// swap order and x-value
+		for (let i = 0; i < numPoints / 2; i++) {
+			let px = xPathPoints[i];
+			let py = yPathPoints[i];
+			
+			xPathPoints[i] = 1.000 - xPathPoints[numPoints - i - 1];
+			yPathPoints[i] = yPathPoints[numPoints - i - 1];
+			
+			xPathPoints[numPoints - i - 1] = 1.000 - px;
+			yPathPoints[numPoints - i - 1] = py;
+		}
+	}
 	
 	path.moveTo( x + w * xPathPoints[0], y + h * yPathPoints[0] );
 
@@ -324,22 +343,37 @@ function createBackTextShape( textBox, textRegion ) {
 		
 	textBox.pageShape = PageShape.GeometricShape( path, textRegion );
 }
+*/
+function setTextShape( box, region, reverse ) {
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	box.pageShape = AHLCGObject.getActTextShape( region, reverse );
+}
+
+function setBackTextShape( box, region, reverse ) {
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	box.pageShape = AHLCGObject.getLocationTextShape( region, reverse );
+}
 
 // These can be used to perform special processing during open/save.
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	readPortraits( diy, oos, PortraitTypeList );
+	readPortraits( diy, oos, PortraitTypeList, true );
 
 	if ( diy.version < 6 ) {
 		$ScenarioDeckID = 'a';
 		$Orientation = 'Standard';
 	}
-
+	if ( diy.version < 10 ) {
+		$Asterisk = '0';
+	}
+	
 	updateCollection();
 	updateEncounter();
 		
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function onWrite( diy, oos ) {

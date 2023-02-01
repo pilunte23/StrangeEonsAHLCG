@@ -122,7 +122,9 @@ function createSetData() {
 				return 4;
 			},
 			isCellEditable: function( row, column ) {
-				return true;
+				if (column == 0) return true;
+			
+				return false;
 			},
 			addToComboBox: function( box ) {
 				try {
@@ -143,10 +145,6 @@ function createSetData() {
 		}),
 		initialize: function() {
 			try {
-//				this.seTableModel.setColumnIdentifiers( [ '', 'Name', 'Cycle', 'Tag' ] );
-//				this.ueTableModel.setColumnIdentifiers( [ '', 'Name', 'Icon', 'Tag' ] );
-//				this.scTableModel.setColumnIdentifiers( [ '', 'Name', 'Tag' ] );
-//				this.ucTableModel.setColumnIdentifiers( [ '', 'Name', 'Icon', 'Tag' ] );
 				this.seTableModel.setColumnIdentifiers( [ '', @AHLCG-Pref-Name, @AHLCG-Pref-Cycle, @AHLCG-Pref-Tag ] );
 				this.ueTableModel.setColumnIdentifiers( [ '', @AHLCG-Pref-Name, @AHLCG-Pref-Icon, @AHLCG-Pref-Tag ] );
 				this.scTableModel.setColumnIdentifiers( [ '', @AHLCG-Pref-Name, @AHLCG-Pref-Tag ] );
@@ -194,7 +192,7 @@ try {
 	seTable.getColumnModel().getColumn(1).setPreferredWidth(250);
 	seTable.getColumnModel().getColumn(2).setPreferredWidth(200);
 	seTable.getColumnModel().getColumn(3).setPreferredWidth(70);
-	seTable.setAutoCreateRowSorter( true );
+	seTable.setAutoCreateRowSorter( true ); 
 	
 	var seScrollPane = new JScrollPane( seTable );
 	seScrollPane.setPreferredSize( new Dimension( 520, 175 ) );
@@ -520,7 +518,8 @@ function loadAHLCGPreferences( data ) {
 	for( index = 0; index < AHLCGObject.standardEncounterList.length; index++ ) {
 		let entry = AHLCGObject.standardEncounterList[index];
 		let collection = AHLCGObject.standardCollectionList[ entry[1] ];
-		let used = loadUsedValue( 'Encounter', entry[3] );
+
+				let used = loadUsedValue( 'Encounter', entry[3] );
 
 		data.seTableModel.addRow( [ used, @( 'AHLCG-' + entry[0] ), @( 'AHLCG-' + collection[0] ), entry[2] ] );	
 	}	
@@ -541,6 +540,7 @@ function loadAHLCGPreferences( data ) {
 	
 	for( index = 0; index < AHLCGObject.standardCollectionList.length; index++ ) {
 		let entry = AHLCGObject.standardCollectionList[index];
+ 
 		let used = loadUsedValue( 'Collection', index );
 		
 		data.scTableModel.addRow( [ used, @( 'AHLCG-' + entry[0] ), entry[1] ] );						
@@ -580,7 +580,7 @@ function storeAHLCGPreferences( data ) {
 	for( index = 0; index < AHLCGObject.standardEncounterList.length; index++ ) {
 		// we need to convert this index into the used setting string index		
 		let usedIndex = -1;
-		
+
 		for ( i = 0; i < AHLCGObject.standardEncounterList.length; i++) {
 			let entry = AHLCGObject.standardEncounterList[i];
 			
@@ -590,6 +590,8 @@ function storeAHLCGPreferences( data ) {
 			}
 		}
 
+		if (usedIndex < 0) continue;
+	
 		let value = data.seTableModel.getValueAt( usedIndex, 0 );
 
 		if ( value == java.lang.Boolean(false) ) usedString = usedString + '0';
@@ -597,6 +599,7 @@ function storeAHLCGPreferences( data ) {
 
 		if (usedString.length >= 40) {
 			settings.set( 'AHLCG-UseEncounter' + settingsIndex, usedString );
+
 			settingsIndex++;
 			usedString = '';
 		}
@@ -605,8 +608,9 @@ function storeAHLCGPreferences( data ) {
 	if (usedString.length > 0) {
 		settings.set( 'AHLCG-UseEncounter' + settingsIndex, usedString );		
 	}
-	
+
 	var userCount = data.ueTableModel.getRowCount();
+
 	settings.setInt( 'AHLCG-UserEncounterCount', userCount);
 
 	for ( index = 0; index < userCount; index++) {

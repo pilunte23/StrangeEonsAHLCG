@@ -25,7 +25,7 @@ function create( diy ) {
 	setDefaultEncounter();
 	setDefaultCollection();
 
-	diy.version = 8;
+	diy.version = 11;
 }
 
 function setDefaults() {
@@ -34,6 +34,7 @@ function setDefaults() {
 	$ScenarioDeckID = 'a';
 	$Doom = '3';
 	$PerInvestigator = '0';
+	$Asterisk = '0';
 	$Orientation = 'Standard';
 
 	$AgendaStory = '';
@@ -52,9 +53,12 @@ function setDefaults() {
 	$Skill2Back = 'None';
 	$Skill3Back = 'None';
 	$Skill4Back = 'None';
+	$Skill5Back = 'None';
 	
+	$CardClassBack = 'Neutral';
 	$ResourceCostBack = '0';
 	$SlotBack = 'None';
+	$Slot2Back = 'None';
 	$StaminaBack = 'None';
 	$SanityBack = 'None';
 	
@@ -82,7 +86,7 @@ function createInterface( diy, editor ) {
 	var PortraitTab = PortraitTabArray[0];
 	PortraitTabArray.splice( 0, 1 );
 
-	var TitlePanel = layoutTitle( diy, bindings, false, [0], FACE_FRONT );
+	var TitlePanel = layoutTitle2( diy, bindings, false, [0], FACE_FRONT );
 	TitlePanel.setTitle( @AHLCG-Title + ': ' + @AHLCG-Front );
 	var StatPanel = layoutAgendaStats( diy, bindings, FACE_FRONT, PortraitTabArray );
 	StatPanel.setTitle( @AHLCG-BasicData + ': ' + @AHLCG-Front );
@@ -105,11 +109,10 @@ function createInterface( diy, editor ) {
 	BackTextTab.editorTabScrolling = true;
 	BackTextTab.addToEditor( editor, @AHLCG-Rules + ': ' + @AHLCG-Back );
 
-//	PortraitTab = layoutPortraits( diy, bindings, 'Portrait', 'BackPortrait', true, false, true );
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
 
 	var CollectionImagePanel = new portraitPanel( diy, getPortraitIndex( 'Collection' ), @AHLCG-CustomCollection );
-	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, [0, 1], FACE_FRONT );
+	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, false, [0, 1], FACE_FRONT );
 	
 	var CollectionTab = new Grid();	
 	CollectionTab.editorTabScrolling = true;
@@ -117,7 +120,7 @@ function createInterface( diy, editor ) {
 	CollectionTab.addToEditor(editor, @AHLCG-Collection);
 
 	var EncounterImagePanel = new portraitPanel( diy, getPortraitIndex( 'Encounter' ), @AHLCG-CustomEncounterSet );
-	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, false, [0, 1], [0, 1], FACE_FRONT );
+	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, [0, 1], [0, 1], FACE_FRONT );
 	
 	var EncounterTab = new Grid();
 	EncounterTab.editorTabScrolling = true;
@@ -137,7 +140,6 @@ function createFrontPainter( diy, sheet ) {
 	Body_box = markupBox(sheet);
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
-//	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
 	updateReversableTextBoxShape( diy, $Orientation );
 
 	initBodyTags( diy, Body_box );	
@@ -180,6 +182,10 @@ function createBackPainter( diy, sheet ) {
 	BackSubtitle_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_BACK, 'Subtitle-style'), null);
 	BackSubtitle_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_BACK, 'Subtitle-alignment'));
 
+	BackSubtype_box = markupBox(sheet);
+	BackSubtype_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Subtype-style'), null);
+	BackSubtype_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Subtype-alignment'));
+
 	BackCost_box = markupBox(sheet);
 	BackCost_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_BACK, 'Cost-style'), null);
 	BackCost_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_BACK, 'Cost-alignment'));
@@ -187,7 +193,6 @@ function createBackPainter( diy, sheet ) {
 	BackBody_box = markupBox(sheet);
 	BackBody_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Body-style'), null);
 	BackBody_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Body-alignment'));
-//	BackBody_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
 
 	initBodyTags( diy, BackBody_box );	
 	
@@ -217,21 +222,15 @@ function paintFront( g, diy, sheet ) {
 
 	drawTemplate( g, sheet, '' );
 
-	drawName( g, diy, sheet, Name_box );
+	drawActAgendaName( g, diy, sheet, Name_box );
 
 	drawBody( g, diy, sheet, Body_box, new Array( 'AgendaStory', 'Rules' ) );
 
 	drawDoom( g, diy, sheet );
 
-	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, true );
-
-	drawEncounterIcon( g, diy, sheet );	
-	drawEncounterInfo( g, diy, sheet );
-	
+//	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+	drawCollectorInfo( g, diy, sheet, Collection_box, true, Encounter_box, true, Copyright_box, Artist_box );
+		
 	drawScenarioIndexFront( g, diy, sheet, #AHLCG-Label-Agenda, Index_box );
 }
 
@@ -240,36 +239,34 @@ function paintBack( g, diy, sheet ) {
 
 	PortraitList[getPortraitIndex( 'BackPortrait' )].paint( g, sheet.getRenderTarget() );
 
-	drawTemplate( g, sheet, '' );
+	drawTemplate( g, sheet, $CardClassBack );
 	drawLabel( g, diy, sheet, BackLabel_box, #AHLCG-Label-Asset );
 	drawName( g, diy, sheet, BackName_box );
 
 	if ( $SubtitleBack.length > 0 ) drawSubtitle( g, diy, sheet, BackSubtitle_box, 'Neutral', true );
 	
+	if ($CardClassBack == 'Weakness' ) {	
+		drawSubtype( g, diy, sheet, BackSubtype_box, #AHLCG-Label-Weakness );
+	}
+
 	drawCost( g, diy, sheet );
 
 	drawSkillIcons( g, diy, sheet, 'Neutral' );
 		
-	drawSlot( g, diy, sheet );
+	drawSlots( g, diy, sheet );
 	drawStamina( g, diy, sheet );
 	drawSanity( g, diy, sheet );
 	
 	drawBody( g, diy, sheet, BackBody_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ) );
 
-	if ( $ArtistBack.length > 0 ) drawArtist( g, diy, sheet );
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, true );
-
-	drawEncounterIcon( g, diy, sheet );	
-	drawEncounterInfo( g, diy, sheet );
+//	drawCollectorInfo( g, diy, sheet, true, true, true, true, true );
+	drawCollectorInfo( g, diy, sheet, BackCollection_box, true, BackEncounter_box, true, BackCopyright_box, BackArtist_box );
 } 
 
 function onClear() {
 	setDefaults();
 }
-
+/*
 function createTextShape( textBox, textRegion, reverse ) {
 	var x = textRegion.x;
 	var y = textRegion.y;
@@ -307,12 +304,18 @@ function createTextShape( textBox, textRegion, reverse ) {
 		
 	textBox.pageShape = PageShape.GeometricShape( path, textRegion );
 }
+*/
+function setTextShape( box, region, reverse ) {
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	box.pageShape = AHLCGObject.getAgendaTextShape( region, reverse );
+}
 
 // These can be used to perform special processing during open/save.
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	readPortraits( diy, oos, PortraitTypeList );
+	readPortraits( diy, oos, PortraitTypeList, true );
 
 	if ( diy.version < 4 ) {
 		$PerInvestigator = '0';
@@ -321,11 +324,20 @@ function onRead(diy, oos) {
 		$ScenarioDeckID = 'a';
 		$Orientation = 'Standard';
 	}
-	
+	if ( diy.version < 9 ) {
+		$Skill5Back = 'None';
+	}
+	if ( diy.version < 10 ) {
+		$Asterisk = '0';
+	}
+	if ( diy.version < 11 ) {
+		$Slot2Back = 'None';
+	}
+
 	updateCollection();
 	updateEncounter();
 
-	diy.version = 8;
+	diy.version = 11;
 }
 
 function onWrite( diy, oos ) {

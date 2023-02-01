@@ -27,8 +27,10 @@ AHLCG-Treachery-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.pn
 AHLCG-Treachery-Encounter-portrait-pany = 0
 
 AHLCG-Treachery-Encounter-portrait-clip-region = 175,254,28,28
+AHLCG-Treachery-ReturnEncounter-portrait-clip-region = 171,250,36,33
 
 AHLCG-Treachery-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Treachery-Collection-portrait-pany = 0
 
-AHLCG-Treachery-Collection-portrait-clip-region = 319,512,13,13
+AHLCG-Treachery-DefaultCollection-portrait-clip-region = 320,510,13,13
+AHLCG-Treachery-Collection-portrait-clip-region = 320,510,13,13

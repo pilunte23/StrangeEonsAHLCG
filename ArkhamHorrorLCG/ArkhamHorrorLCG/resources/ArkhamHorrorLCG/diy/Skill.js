@@ -15,7 +15,7 @@ function create( diy ) {
 	diy.frontTemplateKey = getExpandedKey(FACE_FRONT, 'Default', '-template');	// not used, set card size
 	diy.backTemplateKey = getExpandedKey(FACE_BACK, 'Default', '-template');
 
-	diy.faceStyle = FaceStyle.PLAIN_BACK;
+	diy.faceStyle = FaceStyle.TWO_FACES;
 
 	diy.name = '';
 
@@ -23,7 +23,7 @@ function create( diy ) {
 	createPortraits( diy, PortraitTypeList );
 	setDefaultCollection();
 
-	diy.version = 8;
+	diy.version = 13;
 }
 
 function setDefaults() {
@@ -33,6 +33,10 @@ function setDefaults() {
 	$Skill2 = 'None';
 	$Skill3 = 'None';
 	$Skill4 = 'None';
+	$Skill5 = 'None';
+	$Skill6 = 'None';
+	
+	$BackStatBack = 'Player';
 	
 	$Traits = '';
 	$Keywords = '';
@@ -56,11 +60,14 @@ function createInterface( diy, editor ) {
 
 	var TitlePanel = layoutTitle( diy, bindings, false, [0], FACE_FRONT );
 	var StatPanel = layoutSkillStats( bindings, FACE_FRONT );
+	StatPanel.setTitle( @AHLCG-BasicData + ': ' + @AHLCG-Front );
+	var BackStatPanel = layoutBackTypeStats( diy, bindings, FACE_BACK );
+	BackStatPanel.setTitle( @AHLCG-BasicData + ': ' + @AHLCG-Back );
 	var CopyrightPanel = layoutCopyright( bindings, [0], FACE_FRONT );
 
 	var StatisticsTab = new Grid();
 	StatisticsTab.editorTabScrolling = true;
-	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', StatPanel, 'wrap, pushx, growx', CopyrightPanel, 'wrap, pushx, growx' );
+	StatisticsTab.place(TitlePanel, 'wrap, pushx, growx', StatPanel, 'wrap, pushx, growx', BackStatPanel, 'wrap, pushx, growx', CopyrightPanel, 'wrap, pushx, growx' );
 	StatisticsTab.addToEditor( editor , @AHLCG-General );
 	
 	var TextTab = layoutText( bindings, [ 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ], '', FACE_FRONT );
@@ -71,7 +78,7 @@ function createInterface( diy, editor ) {
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
 
 	var CollectionImagePanel = new portraitPanel( diy, getPortraitIndex( 'Collection' ), @AHLCG-CustomCollection );
-	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, [0], FACE_FRONT );
+	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, false, [0], FACE_FRONT );
 	
 	var CollectionTab = new Grid();
 	CollectionTab.editorTabScrolling = true;
@@ -98,7 +105,8 @@ function createFrontPainter( diy, sheet ) {
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
 	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
-	createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );
+//	createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );
+	setTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );
 
 	initBodyTags( diy, Body_box );	
 	
@@ -118,14 +126,6 @@ function createFrontPainter( diy, sheet ) {
 }
 
 function createBackPainter( diy, sheet ) {
-	// this won't be called because the default face style
-	// is a plain (unpainted) card back [FaceStyle.PLAIN_BACK]
-	// in fact, we could leave this function out altogether;
-	// look out for this when writing your own scripts
-	// (a do-nothing function will be created to stand in
-	// for any missing DIY functions, so if one of your functions
-	// doesn't seem to be getting called, check the spelling
-	// carefully)
 }
 
 function paintFront( g, diy, sheet ) {
@@ -143,7 +143,6 @@ function paintFront( g, diy, sheet ) {
 	else if ($CardClass == 'BasicWeakness' ) {	
 		drawSubtype( g, diy, sheet, Subtype_box, #AHLCG-Label-BasicWeakness );
 	}
-//	if ( $CardClass != 'Weakness' ) {
 	else {
 		drawLevel( g, diy, sheet, $CardClass );
 	}
@@ -154,22 +153,20 @@ function paintFront( g, diy, sheet ) {
 	if ( $CardClass == 'Weakness' || $CardClass == 'BasicWeakness') regionName = 'WeaknessBody';
 	drawBodyWithRegionName( g, diy, sheet, Body_box, new Array( 'Traits', 'Keywords', 'Rules', 'Flavor', 'Victory' ), regionName );
 
-	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, false );
+//	drawCollectorInfo( g, diy, sheet, true, false, false, false, true );
+	drawCollectorInfo( g, diy, sheet, Collection_box, false, null, false, Copyright_box, Artist_box );
 }
 
 function paintBack( g, diy, sheet ) {
-	// like createBackPainter(), this won't be called because of
-	// the type of card we created
+	clearImage( g, sheet );
+
+	drawBackTemplate( g, sheet );
 }
 
 function onClear() {
 	setDefaults();
 }
-
+/*
 function createTextShape( textBox, textRegion ) {
 	var x = textRegion.x;
 	var y = textRegion.y;
@@ -178,7 +175,7 @@ function createTextShape( textBox, textRegion ) {
 	
 	var path = new java.awt.geom.Path2D.Double();
 	
-	var xPathPoints = new Array( 0.0, 0.025 );
+	var xPathPoints = new Array( 0.0, 0.015 );
 	var yPathPoints = new Array( 0.0, 1.000 );
 	
 	var xControlPoints = new Array( 0.053, 0.088 );
@@ -195,12 +192,12 @@ function createTextShape( textBox, textRegion ) {
 		);
 	}
 
-	path.lineTo( x + w * (1 - xPathPoints[numPoints-1]), y + h * yPathPoints[numPoints-1] );
+	path.lineTo( x + w * (1 + xPathPoints[numPoints-1]), y + h * yPathPoints[numPoints-1] );
 
 	for (let i = numPoints-2; i >= 0; i--) {
 		path.curveTo( x + w * (1.0 + xControlPoints[i*2 + 1]), y + h * yControlPoints[i*2 + 1],
 					  x + w * (1.0 + xControlPoints[i*2]), y + h * yControlPoints[i*2],
-					  x + w * (1.0 - xPathPoints[i]), y + h * yPathPoints[i]
+					  x + w * (1.0 + xPathPoints[i]), y + h * yPathPoints[i]
 		);
 	}
 
@@ -208,16 +205,32 @@ function createTextShape( textBox, textRegion ) {
 		
 	textBox.pageShape = PageShape.GeometricShape( path, textRegion );
 }
+*/
+function setTextShape( box, region ) {
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	box.pageShape = AHLCGObject.getSkillTextShape( region );
+}
 
 // These can be used to perform special processing during open/save.
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	readPortraits( diy, oos, PortraitTypeList );
+	readPortraits( diy, oos, PortraitTypeList, true );
+
+	if ( diy.version < 9 ) {
+		$Skill5 = 'None';
+	}
+	if ( diy.version < 12 ) {
+		$BackTypeBack = 'Player';
+	}
+	if ( diy.version < 13 ) {
+		$Skill6 = 'None';
+	}
 
 	updateCollection();
 	
-	diy.version = 8;
+	diy.version = 13;
 }
 
 function onWrite( diy, oos ) {

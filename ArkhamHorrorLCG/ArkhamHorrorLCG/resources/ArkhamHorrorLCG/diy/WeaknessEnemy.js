@@ -9,7 +9,7 @@ importClass( arkham.component.DefaultPortrait );
 const CardTypes = [ 'WeaknessEnemy', 'WeaknessEnemyBack' ];
 const BindingSuffixes = [ '' ];
 
-const PortraitTypeList = [ 'Portrait-Front', 'Collection-Front' ];
+const PortraitTypeList = [ 'Portrait-Front', 'Collection-Front', 'Encounter-Front' ];
 
 function create( diy ) {
 	diy.frontTemplateKey = getExpandedKey(FACE_FRONT, 'Default', '-template');	// not used, set card size
@@ -21,9 +21,10 @@ function create( diy ) {
 
 	setDefaults();
 	createPortraits( diy, PortraitTypeList );
+	setDefaultEncounter();
 	setDefaultCollection();
 
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function setDefaults() {
@@ -75,12 +76,20 @@ function createInterface( diy, editor ) {
 	PortraitTab.addToEditor(editor, @AHLCG-Portraits);
 
 	var CollectionImagePanel = new portraitPanel( diy, getPortraitIndex( 'Collection' ), @AHLCG-CustomCollection );
-	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, [0], FACE_FRONT );
+	var CollectionPanel = layoutCollection( bindings, CollectionImagePanel, false, false, [0], FACE_FRONT );
 	
 	var CollectionTab = new Grid();
 	CollectionTab.editorTabScrolling = true;
 	CollectionTab.place( CollectionPanel, 'wrap, pushx, growx', CollectionImagePanel, 'wrap, pushx, growx' );
 	CollectionTab.addToEditor(editor, @AHLCG-Collection);
+
+	var EncounterImagePanel = new portraitPanel( diy, getPortraitIndex( 'Encounter' ), @AHLCG-CustomEncounterSet );
+	var EncounterPanel = layoutEncounter( bindings, EncounterImagePanel, false, [0], [0], FACE_FRONT );
+
+	var EncounterTab = new Grid();
+	EncounterTab.editorTabScrolling = true;
+	EncounterTab.place( EncounterPanel, 'wrap, pushx, growx', EncounterImagePanel, 'wrap, pushx, growx' );
+	EncounterTab.addToEditor(editor, @AHLCG-EncounterSet);
 
 	bindings.bind();
 }
@@ -104,7 +113,8 @@ function createFrontPainter( diy, sheet ) {
 	Body_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'Body-style'), null);
 	Body_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'Body-alignment'));
 	Body_box.setLineTightness( $(getExpandedKey(FACE_FRONT, 'Body', '-tightness') + '-tightness') );	
-	createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );
+//	createTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );
+	setTextShape( Body_box, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Body-region') ) );
 
 	initBodyTags( diy, Body_box );	
 	
@@ -121,6 +131,10 @@ function createFrontPainter( diy, sheet ) {
 	Collection_box = markupBox(sheet);
 	Collection_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'CollectionNumber-style'), null);
 	Collection_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'CollectionNumber-alignment'));
+
+	Encounter_box = markupBox(sheet);
+	Encounter_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_FRONT, 'EncounterNumber-style'), null);
+	Encounter_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_FRONT, 'EncounterNumber-alignment'));
 }
 
 function createBackPainter( diy, sheet ) {
@@ -140,6 +154,7 @@ function paintFront( g, diy, sheet ) {
 	PortraitList[getPortraitIndex( 'Portrait' )].paint( g, sheet.getRenderTarget() );
 
 	drawTemplate( g, sheet, '' );
+		
 	drawLabel( g, diy, sheet, Label_box, #AHLCG-Label-Enemy );
 	drawName( g, diy, sheet, Name_box );
 
@@ -154,9 +169,10 @@ function paintFront( g, diy, sheet ) {
 	else if ( $Subtype == 'InvestigatorWeakness' ) {
 		drawOverlay( g, diy, sheet, 'PersonalWeaknessEnemy' );
 	}
+	else if ( $Subtype == 'StoryWeakness' ) {
+		drawOverlay( g, diy, sheet, 'BasicWeaknessEnemy' );
+	}
 
-//	Subtype_box.markupText = subtypeText.toUpperCase();
-//	Subtype_box.draw( g, diy.settings.getRegion( getExpandedKey( FACE_FRONT, 'Subtype-region' ) ) );
 	drawSubtype( g, diy, sheet, Subtype_box, subtypeText );
 
 	drawEnemyStats( g, diy, sheet, [ 'Attack', 'Evade' ] );
@@ -167,11 +183,10 @@ function paintFront( g, diy, sheet ) {
 	if ( $Damage > 0)  drawDamage( g, diy, sheet );
 	if ( $Horror > 0 )	drawHorror( g, diy, sheet );
 
-	if ( $Artist.length > 0 ) drawArtist( g, diy, sheet );
-	if ( $Copyright.length > 0 ) drawCopyright( g, diy, sheet );
-	
-	drawCollectionIcon( g, diy, sheet );
-	drawCollectionNumber (g, diy, sheet, false );
+	var encounterBox = $Subtype == 'StoryWeakness' ? Encounter_box : null;
+
+//	drawCollectorInfo( g, diy, sheet, true, false, $Subtype == 'StoryWeakness', $Subtype == 'StoryWeakness', true );
+	drawCollectorInfo( g, diy, sheet, Collection_box, false, encounterBox, $Subtype == 'StoryWeakness', Copyright_box, Artist_box );
 }
 
 function paintBack( g, diy, sheet ) {
@@ -182,7 +197,7 @@ function paintBack( g, diy, sheet ) {
 function onClear() {
 	setDefaults();
 }
-
+/*
 function createTextShape( textBox, textRegion ) {
 	var x = textRegion.x;
 	var y = textRegion.y;
@@ -212,16 +227,26 @@ function createTextShape( textBox, textRegion ) {
 		
 	textBox.pageShape = PageShape.GeometricShape( path, textRegion );
 }
+*/
+function setTextShape( box, region ) {
+	var AHLCGObject = Eons.namedObjects.AHLCGObject;
+
+	box.pageShape = AHLCGObject.getEnemyTextShape( region );
+}
 
 // These can be used to perform special processing during open/save.
 // For example, you can seamlessly upgrade from a previous version
 // of the script.
 function onRead(diy, oos) {
-	readPortraits( diy, oos, PortraitTypeList );
+	readPortraits( diy, oos, PortraitTypeList, diy.version >= 10 );
+
+	if ( diy.version < 10 ) {
+		setDefaultEncounter();
+	}
 
 	updateCollection();
 	
-	diy.version = 8;
+	diy.version = 10;
 }
 
 function onWrite( diy, oos ) {

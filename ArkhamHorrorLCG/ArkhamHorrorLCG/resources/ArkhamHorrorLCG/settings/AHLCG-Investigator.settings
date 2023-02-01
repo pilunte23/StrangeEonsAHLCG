@@ -3,28 +3,40 @@ AHLCG-InvestigatorBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-Invest
 
 AHLCG-Investigator-Name-region = 48,9,212,27
 AHLCG-Investigator-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 12.2; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.00; FOREGROUND: #000000
+AHLCG-Investigator-ParallelName-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 12.2; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.00; FOREGROUND: #FFFFFF
 AHLCG-Investigator-SubtitleTextG-region = 73,39,175,20
+AHLCG-Investigator-SubtitleTextGP-region = 73,39,175,20
 AHLCG-Investigator-SubtitleTextK-region = 73,39,175,20
+AHLCG-Investigator-SubtitleTextKP-region = 73,39,175,20
 AHLCG-Investigator-SubtitleTextR-region = 73,39,175,20
+AHLCG-Investigator-SubtitleTextRP-region = 73,38,175,20
 AHLCG-Investigator-SubtitleTextM-region = 73,40,175,20
+AHLCG-Investigator-SubtitleTextMP-region = 73,40,175,20
 AHLCG-Investigator-SubtitleTextV-region = 73,39,175,20
 AHLCG-Investigator-SubtitleTextN-region = 73,39,175,20
 AHLCG-Investigator-SubtitleTextW-region = 73,39,175,20
 AHLCG-Investigator-SubtitleTextT-region = 73,39,175,20
 AHLCG-Investigator-Subtitle-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.subtitleSize}; WEIGHT: WEIGHT_BOLD; WIDTH: 1.0; FOREGROUND: #000000
+AHLCG-Investigator-ParallelSubtitle-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.subtitleSize}; WEIGHT: WEIGHT_BOLD; WIDTH: 1.0; FOREGROUND: #FFFFFF
 AHLCG-Investigator-Subtitle-alignment = center, middle
 
 AHLCG-InvestigatorBack-Name-region = 248,6,246,29
 AHLCG-InvestigatorBack-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 11.5; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.10; FOREGROUND: #000000
-AHLCG-InvestigatorBack-SubtitleTextG-region = 297,40,159,15
-AHLCG-InvestigatorBack-SubtitleTextK-region = 297,40,159,15
-AHLCG-InvestigatorBack-SubtitleTextR-region = 297,40,159,15
-AHLCG-InvestigatorBack-SubtitleTextM-region = 297,40,159,15
-AHLCG-InvestigatorBack-SubtitleTextV-region = 297,40,159,15
-AHLCG-InvestigatorBack-SubtitleTextN-region = 297,40,159,15
-AHLCG-InvestigatorBack-SubtitleTextW-region = 297,40,159,15
-AHLCG-InvestigatorBack-SubtitleTextT-region = 297,40,159,15
-AHLCG-InvestigatorBack-Subtitle-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.subtitleSize*1.25}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.95; FOREGROUND: #000000
+AHLCG-InvestigatorBack-ParallelName-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 11.5; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.10; FOREGROUND: #FFFFFF
+AHLCG-InvestigatorBack-SubtitleTextG-region = 297,41,159,15
+AHLCG-InvestigatorBack-SubtitleTextGP-region = 297,41,159,15
+AHLCG-InvestigatorBack-SubtitleTextK-region = 297,41,159,15
+AHLCG-InvestigatorBack-SubtitleTextKP-region = 297,41,159,15
+AHLCG-InvestigatorBack-SubtitleTextR-region = 297,41,159,15
+AHLCG-InvestigatorBack-SubtitleTextRP-region = 297,40,159,15
+AHLCG-InvestigatorBack-SubtitleTextM-region = 297,41,159,15
+AHLCG-InvestigatorBack-SubtitleTextMP-region = 297,41,159,15
+AHLCG-InvestigatorBack-SubtitleTextV-region = 297,41,159,15
+AHLCG-InvestigatorBack-SubtitleTextN-region = 297,41,159,15
+AHLCG-InvestigatorBack-SubtitleTextW-region = 297,41,159,15
+AHLCG-InvestigatorBack-SubtitleTextT-region = 297,41,159,15
+AHLCG-InvestigatorBack-Subtitle-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.subtitleSize*1.05}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.95; FOREGROUND: #000000
+AHLCG-InvestigatorBack-ParallelSubtitle-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.subtitleSize*1.05}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.95; FOREGROUND: #FFFFFF
 AHLCG-InvestigatorBack-Subtitle-alignment = center, middle
 
 AHLCG-Willpower-region = 291,19,16,22
@@ -33,6 +45,7 @@ AHLCG-Combat-region = 412,19,16,22
 AHLCG-Agility-region = 473,19,16,22
 
 AHLCG-Skill-style = FAMILY: {Eons.namedObjects.AHLCGObject.skillFamily}; SIZE: 11.5; WEIGHT: WEIGHT_MEDIUM; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
+AHLCG-ParallelSkill-style = FAMILY: {Eons.namedObjects.AHLCGObject.skillFamily}; SIZE: 11.5; WEIGHT: WEIGHT_MEDIUM; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 AHLCG-Skill-alignment = center, middle
 
 AHLCG-Investigator-Stamina-region = 366,306,31,40	
@@ -54,18 +67,35 @@ AHLCG-Investigator-TransparentPortrait-portrait-clip-region = 0,60,278,315
 
 AHLCG-InvestigatorBack-Portrait-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
 AHLCG-InvestigatorBack-Portrait-portrait-pany = 0
-AHLCG-InvestigatorBack-Portrait-portrait-rotation = 335
+AHLCG-InvestigatorBack-Portrait-portrait-rotation = 354
 AHLCG-InvestigatorBack-Portrait-portrait-scale = 0.65
 
 AHLCG-InvestigatorBack-Portrait-portrait-clip-region = 1,-2,188,206
 
-AHLCG-Investigator-Artist-region = 288,365,102,10
-AHLCG-Investigator-Copyright-region = 397,365,71,10
+AHLCG-Investigator-Artist-region = 288,363,102,10
+AHLCG-Investigator-Copyright-region = 376,363,80,10
 AHLCG-Investigator-Copyright-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 
 AHLCG-Investigator-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Investigator-Collection-portrait-pany = 0
 
-AHLCG-Investigator-Collection-portrait-clip-region = 474,365,13,13
+AHLCG-Investigator-DefaultCollection-portrait-clip-region = 476,360,13,13
+AHLCG-Investigator-Collection-portrait-clip-region = 476,360,13,13
 
-AHLCG-Investigator-CollectionNumber-region = 499,365,21,10
+AHLCG-Investigator-CollectionNumber-region = 472,363,37,10
+
+AHLCG-Investigator-EncounterPortrait-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-Investigator-EncounterPortrait-portrait-pany = 0
+
+AHLCG-Investigator-DefaultEncounter-portrait-clip-region = 11,12,28,28
+AHLCG-Investigator-Encounter-portrait-clip-region = 11,12,28,28
+AHLCG-Investigator-DefaultReturnEncounter-portrait-clip-region = 8,8,33,33
+AHLCG-Investigator-ReturnEncounter-portrait-clip-region = 8,8,33,33
+
+AHLCG-InvestigatorBack-EncounterPortrait-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-InvestigatorBack-EncounterPortrait-portrait-pany = 0
+
+AHLCG-InvestigatorBack-DefaultEncounter-portrait-clip-region = 231,15,28,28
+AHLCG-InvestigatorBack-Encounter-portrait-clip-region = 231,15,28,28
+AHLCG-InvestigatorBack-DefaultReturnEncounter-portrait-clip-region = 228,11,33,33
+AHLCG-InvestigatorBack-ReturnEncounter-portrait-clip-region = 228,11,33,33

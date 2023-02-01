@@ -1,0 +1,42 @@
+AHLCG-GuideA4-Default-template = ArkhamHorrorLCG/templates/AHLCG-GuideA4Empty.jp2
+
+AHLCG-GuideA4-Name-region = 375,312,490,46
+AHLCG-GuideA4-Name-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 20.0; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #FFFFFF
+
+#AHLCG-GuideA4-ResHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #492925
+#AHLCG-GuideA4-SAHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #3d534e
+#AHLCG-Guide75-KeyHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #7e0607
+AHLCG-GuideA4-ResHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #63251d
+AHLCG-GuideA4-SAHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #2d5b58
+AHLCG-GuideA4-KeyHeader-style = FAMILY: {Eons.namedObjects.AHLCGObject.titleFamily}; SIZE: 16.1; WEIGHT: WEIGHT_REGULAR; WIDTH: 1.07; FOREGROUND: #7e0607
+AHLCG-GuideA4-Header-alignment = center
+
+AHLCG-GuideA4-Body-region = 65,65,1109,1624
+AHLCG-GuideA4-BodyLeftTitle-region = 65,417,537,1272
+AHLCG-GuideA4-BodyRightTitle-region = 637,417,537,1272
+AHLCG-GuideA4-BodyLeftEmpty-region = 65,65,537,1624
+AHLCG-GuideA4-BodyRightEmpty-region = 637,65,537,1624
+AHLCG-GuideA4-Body-alignment = left, top
+AHLCG-GuideA4-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize*1.06}; WEIGHT: WEIGHT_MEDIUM; WIDTH: 1.00; FOREGROUND: #000000
+AHLCG-GuideA4-Body-tightness = 1.65
+AHLCG-GuideA4-BodySection-tightness = 1.0
+AHLCG-GuideA4-BodyName-region = 56,83,268,390
+AHLCG-GuideA4-BodyResolution-region = 56,98,268,375
+
+AHLCG-GuideA4-ResBullet-style = FOREGROUND: #492925
+AHLCG-GuideA4-SABullet-style = FOREGROUND: #3d534e
+
+AHLCG-GuideA4-PageOdd-region = 604,1704,30,32
+AHLCG-GuideA4-PageEven-region = 606,1704,30,32
+AHLCG-GuideA4-Page-alignment = center, middle
+AHLCG-GuideA4-Page-style = FAMILY: {Eons.namedObjects.AHLCGObject.skillFamily}; SIZE: 12.0; WEIGHT: WEIGHT_MEDIUM; WIDTH: 0.98; FOREGROUND: #000000
+
+AHLCG-GuideA4-Portrait1-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+AHLCG-GuideA4-Portrait1-portrait-panx = 0
+AHLCG-GuideA4-Portrait1-portrait-pany = 0
+AHLCG-GuideA4-Portrait1-portrait-clip-region = 65,65,1109,1629
+
+AHLCG-GuideA4-Portrait2-portrait-template = ArkhamHorrorLCG/default-portraits/DefaultTexture.jp2
+AHLCG-GuideA4-Portrait2-portrait-panx = 0
+AHLCG-GuideA4-Portrait2-portrait-pany = 0
+AHLCG-GuideA4-Portrait2-portrait-clip-region = 65,65,1109,1629

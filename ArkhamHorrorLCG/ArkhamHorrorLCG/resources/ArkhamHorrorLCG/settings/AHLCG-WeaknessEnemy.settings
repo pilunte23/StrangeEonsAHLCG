@@ -47,4 +47,13 @@ AHLCG-WeaknessEnemy-Horror5-region = 310,238,27,24
 AHLCG-WeaknessEnemy-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-WeaknessEnemy-Collection-portrait-pany = 0
 
-AHLCG-WeaknessEnemy-Collection-portrait-clip-region = 319,512,13,13
+AHLCG-WeaknessEnemy-DefaultCollection-portrait-clip-region = 320,510,13,13
+AHLCG-WeaknessEnemy-Collection-portrait-clip-region = 320,510,13,13
+
+AHLCG-WeaknessEnemy-EncounterPortrait-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
+AHLCG-WeaknessEnemy-EncounterPortrait-portrait-pany = 0
+
+AHLCG-WeaknessEnemy-Encounter-portrait-clip-region = 173,274,28,28
+AHLCG-WeaknessEnemy-DefaultEncounter-portrait-clip-region = 173,274,28,28
+AHLCG-WeaknessEnemy-ReturnEncounter-portrait-clip-region = 168,270,37,33
+AHLCG-WeaknessEnemy-DefaultReturnEncounter-portrait-clip-region = 168,270,37,33
