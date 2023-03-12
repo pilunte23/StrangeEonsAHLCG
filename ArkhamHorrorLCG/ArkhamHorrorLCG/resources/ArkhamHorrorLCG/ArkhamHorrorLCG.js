@@ -362,7 +362,7 @@ function gameObject( masterSettings ) {
 		'StrangeEons'
 	);
 								
-	// Highest = 208 (WoToG)
+	// Highest = 209 (RTT)
 	// NameKey, CollectionID, Tag, Index into select keys
 	this.standardEncounterList = new Array(
 		[ 'ALightInTheFog', 22, 'alitf', 199 ],
@@ -472,6 +472,7 @@ function gameObject( masterSettings ) {
 		[ 'Rats', 0, 'rats', 19 ],
 		[ 'ReadOrDie', 14, 'readordie', 167 ],
 		[ 'RealmOfDeath', 10, 'rlmdth', 117 ],
+		[ 'RedTideRising', 14, 'redtiri', 209 ],
 		[ 'ResurgentEvils', 9, 'resevl', 96 ],
 		[ 'ReturnToAPhantomOfTruth', 11, 'rphntm', 133 ],
 		[ 'ReturnToBlackStarsRise', 11, 'rbsr', 134 ],
