@@ -2,7 +2,7 @@
 AHLCG-Story-Default-template = ArkhamHorrorLCG/templates/AHLCG-Enemy.jp2
 AHLCG-StoryBack-Default-template = ArkhamHorrorLCG/templates/AHLCG-AssetStory.jp2
 
-AHLCG-Story-Label-region = 138,508,100,14
+AHLCG-Story-Label-region = 138,509,100,14
 AHLCG-Story-Label-alignment = center, middle
 AHLCG-Story-Label-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.largeLabelSize*0.92}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.95; FOREGROUND: #000000
 

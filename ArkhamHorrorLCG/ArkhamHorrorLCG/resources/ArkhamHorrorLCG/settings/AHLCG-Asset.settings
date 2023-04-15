@@ -51,7 +51,7 @@ AHLCG-Asset-BasicWeaknessIcon-region = 329,11,30,30
 AHLCG-Asset-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Asset-Collection-portrait-pany = 0
 
-AHLCG-Asset-Collection-portrait-clip-region = 320,510,13,13
-AHLCG-Asset-DefaultCollection-portrait-clip-region = 320,510,13,13
+AHLCG-Asset-Collection-portrait-clip-region = 320,506,13,13
+AHLCG-Asset-DefaultCollection-portrait-clip-region = 320,506,13,13
 
 AHLCG-Asset-Dash-tint = 0.0, 0.0, 1.0

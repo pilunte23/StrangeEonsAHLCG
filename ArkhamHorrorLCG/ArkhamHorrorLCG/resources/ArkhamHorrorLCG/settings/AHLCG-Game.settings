@@ -19,12 +19,11 @@ AHLCG-SkillIcon6-region = 13,292,25,26
 AHLCG-Slot-region = 309,454,51,52
 AHLCG-Slot2-region = 255,454,51,52
 
-AHLCG-Artist-region = 14,513,121,10
+AHLCG-Artist-region = 14,509,121,10
 AHLCG-Artist-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 AHLCG-Artist-alignment = left, middle
-AHLCG-Copyright-region = 124,513,86,10
+AHLCG-Copyright-region = 124,509,86,10
 AHLCG-Copyright-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
-#AHLCG-Copyright-alignment = center, middle
 AHLCG-Copyright-alignment = right, middle
 
 AHLCG-Stamina-region = 148,465,33,41
@@ -34,11 +33,11 @@ AHLCG-Body-tightness = 1.0
 
 AHLCG-Clues-region = 239,296,51,48
 
-AHLCG-CollectionNumber-region = 318,513,37,10
+AHLCG-CollectionNumber-region = 318,509,37,10
 AHLCG-CollectionNumber-alignment = right, middle
 AHLCG-CollectionNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 
-AHLCG-EncounterNumber-region = 247,513,55,10
+AHLCG-EncounterNumber-region = 247,509,55,10
 AHLCG-EncounterNumber-alignment = right, middle
 AHLCG-EncounterNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: 4.5; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 

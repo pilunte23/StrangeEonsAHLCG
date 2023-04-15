@@ -47,14 +47,14 @@ AHLCG-Chaos-ReturnEncounter-portrait-clip-region = 169,54,35,35
 #AHLCG-Chaos-EncounterNumber-alignment = right, middle
 #AHLCG-Chaos-EncounterNumber-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_ULTRABOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 
-AHLCG-Chaos-Copyright-region = 19,513,102,10
+AHLCG-Chaos-Copyright-region = 19,509,102,10
 AHLCG-Chaos-Copyright-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.collectionSize}; WEIGHT: WEIGHT_BOLD; WIDTH: WIDTH_REGULAR; FOREGROUND: #FFFFFF
 AHLCG-Chaos-Copyright-alignment = left, middle
 
 AHLCG-Chaos-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Chaos-Collection-portrait-pany = 0
 
-AHLCG-Chaos-DefaultCollection-portrait-clip-region = 320,513,13,13
-AHLCG-Chaos-Collection-portrait-clip-region = 320,513,13,13
+AHLCG-Chaos-DefaultCollection-portrait-clip-region = 320,509,13,13
+AHLCG-Chaos-Collection-portrait-clip-region = 320,509,13,13
 
 #AHLCG-Chaos-CollectionNumber-region = 333,515,21,10

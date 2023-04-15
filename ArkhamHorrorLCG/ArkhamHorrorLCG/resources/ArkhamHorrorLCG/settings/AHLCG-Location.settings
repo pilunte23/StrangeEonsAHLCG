@@ -21,11 +21,11 @@ AHLCG-LocationBack-SubtitleText-region = 95,36,191,21
 AHLCG-LocationBack-Subtitle-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.subtitleSize}; WEIGHT: WEIGHT_BOLD; WIDTH: 0.95; FOREGROUND: #000000
 AHLCG-LocationBack-Subtitle-alignment = center, middle
 
-AHLCG-Location-Body-region = 20,300,336,143
+AHLCG-Location-Body-region = 20,300,336,141
 AHLCG-Location-Body-alignment = left
 AHLCG-Location-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WEIGHT: WEIGHT_MEDIUM; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
 AHLCG-Location-Body-tightness = 1.0
-AHLCG-LocationBack-Body-region = 20,300,336,143
+AHLCG-LocationBack-Body-region = 20,300,336,141
 AHLCG-LocationBack-Body-alignment = left
 AHLCG-LocationBack-Body-style = FAMILY: {Eons.namedObjects.AHLCGObject.bodyFamily}; SIZE: {Eons.namedObjects.AHLCGObject.bodyFontSize}; WEIGHT: WEIGHT_MEDIUM; WIDTH: WIDTH_REGULAR; FOREGROUND: #000000
 
@@ -44,29 +44,30 @@ AHLCG-Location-BackPortrait-portrait-pany = 0
 AHLCG-Location-BackPortrait-portrait-clip-region = 0,42,375,275
 
 AHLCG-LocationIcon-region = 14,6,36,35
-AHLCG-Connection1Icon-region = 67,467,35,35
-AHLCG-Connection2Icon-region = 108,459,35,35
-AHLCG-Connection3Icon-region = 150,456,34,34
-AHLCG-Connection4Icon-region = 191,456,34,34
-AHLCG-Connection5Icon-region = 232,459,35,35
-AHLCG-Connection6Icon-region = 273,467,35,35
+AHLCG-Connection1Icon-region = 65,454,35,35
+AHLCG-Connection2Icon-region = 107,447,35,35
+AHLCG-Connection3Icon-region = 149,444,34,34
+AHLCG-Connection4Icon-region = 191,444,34,34
+AHLCG-Connection5Icon-region = 232,447,35,35
+AHLCG-Connection6Icon-region = 274,454,35,35
+
 
 AHLCG-Location-Shroud-region = 11,251,49,49
 AHLCG-Location-Clues-region = 318,251,49,50
 AHLCG-Location-CluesPerInv-region = 311,251,49,49
 AHLCG-Location-PerInv-region = 338,254,30,45
 
-AHLCG-Location-Victory-region = 262,418,104,42
+AHLCG-Location-Victory-region = 262,407,104,42
 AHLCG-Location-Victory-alignment = right, bottom
 AHLCG-Location-Victory-tightness = 0.7
 
 AHLCG-Location-Collection-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Location-Collection-portrait-pany = 0
 
-AHLCG-Location-DefaultCollection-portrait-clip-region = 320,510,13,13
-AHLCG-Location-Collection-portrait-clip-region = 320,510,13,13
-AHLCG-LocationBack-DefaultCollection-portrait-clip-region = 320,510,13,13
-AHLCG-LocationBack-Collection-portrait-clip-region = 320,510,13,13
+AHLCG-Location-DefaultCollection-portrait-clip-region = 320,506,13,13
+AHLCG-Location-Collection-portrait-clip-region = 320,506,13,13
+AHLCG-LocationBack-DefaultCollection-portrait-clip-region = 320,506,13,13
+AHLCG-LocationBack-Collection-portrait-clip-region = 320,506,13,13
 
 AHLCG-Location-Encounter-portrait-template = ArkhamHorrorLCG/images/empty1x1.png
 AHLCG-Location-Encounter-portrait-pany = 0
@@ -76,5 +77,9 @@ AHLCG-LocationBack-Encounter-portrait-clip-region = 174,245,28,28
 AHLCG-Location-ReturnEncounter-portrait-clip-region = 170,241,37,34
 AHLCG-LocationBack-ReturnEncounter-portrait-clip-region = 170,241,37,34
 
-AHLCG-Location-Copyright-region = 143,513,86,10
-AHLCG-LocationBack-Copyright-region = 128,513,86,10
+AHLCG-Location-Copyright-region = 143,509,86,10
+AHLCG-LocationBack-Copyright-region = 128,509,86,10
+#AHLCG-Location-Artist-region = 14,503,121,10
+#AHLCG-LocationBack-Artist-region = 14,503,121,10
+#AHLCG-Location-CollectionNumber-region = 318,503,37,10
+#AHLCG-Location-EncounterNumber-region = 247,503,55,10
