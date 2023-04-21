@@ -235,9 +235,9 @@ function createBackPainter( diy, sheet ) {
 	Victory_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey(FACE_BACK, 'Body-style'), null);
 	Victory_box.alignment = diy.settings.getTextAlignment(getExpandedKey(FACE_BACK, 'Victory-alignment'));
 
-	BackArtist_box = markupBox(sheet);
-	BackArtist_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_BACK, 'Artist-style'), null);
-	BackArtist_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_BACK, 'Artist-alignment'));
+	Artist_box = markupBox(sheet);
+	Artist_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_BACK, 'Artist-style'), null);
+	Artist_box.alignment = diy.settings.getTextAlignment(getExpandedKey( FACE_BACK, 'Artist-alignment'));
 
 	BackCopyright_box = markupBox(sheet);
 	BackCopyright_box.defaultStyle = diy.settings.getTextStyle(getExpandedKey( FACE_BACK, 'Copyright-style'), null);
@@ -301,7 +301,7 @@ function paintBack( g, diy, sheet ) {
 	}
 
 //	drawCollectorInfo( g, diy, sheet, true, false, true, true, true );
-	drawCollectorInfo( g, diy, sheet, BackCollection_box, false, BackEncounter_box, true, BackCopyright_box, BackArtist_box );
+	drawCollectorInfo( g, diy, sheet, BackCollection_box, false, BackEncounter_box, true, BackCopyright_box, Artist_box );
 }
 
 function onClear() {
